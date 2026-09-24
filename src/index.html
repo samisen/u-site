@@ -6,13 +6,19 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Tailor-made villas in Bali, created around how you want to live, stay and invest. Own the lifestyle, enjoy the experience, and let your property work for you.">
-  <meta name="theme-color" content="#0f7b6c">
+  <!-- Safari reads these before any stylesheet, and uses them for the area
+       outside the page (the overscroll underlay) as well as the browser
+       chrome. The JS below keeps them in step with an explicit toggle. -->
+  <meta name="theme-color" content="#0f7b6c" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0c1110" media="(prefers-color-scheme: dark)">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link id="theme-light" rel="stylesheet" href="theme-light.css" media="all">
-  <link id="theme-dark" rel="stylesheet" href="theme-dark.css" media="not all">
+  <!-- both themes sit in the cache so swapping between them costs no round trip -->
+  <link rel="preload" as="style" href="theme-light.css">
+  <link rel="preload" as="style" href="theme-dark.css">
+  <link id="theme-css" rel="stylesheet" href="theme-light.css">
   <script>
     (function () {
       var stored = null;
@@ -23,13 +29,14 @@
       // applied here too, so the UA paints its own surfaces in the right
       // scheme from the very first frame, before styles.css is parsed
       document.documentElement.style.colorScheme = theme;
-      // `media` rather than `disabled`: Safari does not reliably honour
-      // link.disabled, and a stylesheet that stays active alongside the other
-      // theme leaves every Ant Design component styled twice.
-      var l = document.getElementById('theme-light');
-      var d = document.getElementById('theme-dark');
-      if (l) l.media = theme === 'dark' ? 'not all' : 'all';
-      if (d) d.media = theme === 'dark' ? 'all' : 'not all';
+      // One link whose href changes, rather than two links toggled through
+      // `media` or `disabled`: WebKit does not reliably start applying a
+      // stylesheet that was inert when the document loaded, which left the
+      // Ant Design components that carry no styling of our own — segmented
+      // controls, selects — on the light theme however dark the page was.
+      // Swapping href is an ordinary stylesheet load, which every engine honours.
+      var link = document.getElementById('theme-css');
+      if (link) link.href = theme === 'dark' ? 'theme-dark.css' : 'theme-light.css';
     })();
   </script>
 </head>

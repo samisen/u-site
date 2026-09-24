@@ -99,7 +99,9 @@ export const DEFAULT_CONFIG: VillaConfig = {
   finish: 'essential',
   extras: ['carport', 'solar'],
   area: 'pererenan',
-  landSqm: 400,
+  // a single-storey three-bedroom villa puts its whole footprint on the
+  // ground, so the starting plot has to carry it inside the 50% KDB limit
+  landSqm: 500,
   rooms: { ...DEFAULT_ROOMS },
 };
 
@@ -486,40 +488,46 @@ const LEASE_YEARS = 25;
  */
 export const COVERAGE_LIMIT_PCT = 50;
 
-/** Everything the drawing puts on the ground — roofed or not, pool and deck included. */
-export function siteAreaOf(config: VillaConfig): number {
-  const ground = buildPlans(config)[0];
-  return Math.round(ground.rooms.reduce((s, r) => s + r.w * r.h, 0));
-}
+/**
+ * The ground the layout actually occupies: the bounding rectangle of the whole
+ * ground-floor drawing, pool and deck and carport included.
+ *
+ * The sum of the room areas is not the right measure — it ignores the gaps
+ * between the pool, the deck and the building, so a layout could pass on area
+ * while plainly running off the plot.
+ */
+export function plotUseOf(config: VillaConfig): number {
+  const rooms = buildPlans(config)[0].rooms;
 
-/** How much facade the pool has to run along: the villa's depth on the ground floor. */
-export function facadeDepthOf(config: VillaConfig): number {
-  const ground = buildPlans({ ...config, pool: 'none' })[0];
-  return ground.rooms.find((r) => r.id === 'hall')?.h ?? 0;
+  // The villa, its deck and the pool sit against each other, so the land they
+  // take is the rectangle around them — the gaps between them are part of the
+  // cost. The carport and staff block stand apart with their own access, so
+  // they are counted at their own size rather than inflating that rectangle.
+  const detached = new Set(['carport', 'staff']);
+  const core = rooms.filter((r) => !detached.has(r.id));
+  if (!core.length) return 0;
+
+  const coreArea =
+    (Math.max(...core.map((r) => r.x + r.w)) - Math.min(...core.map((r) => r.x))) *
+    (Math.max(...core.map((r) => r.y + r.h)) - Math.min(...core.map((r) => r.y)));
+
+  const apart = rooms
+    .filter((r) => detached.has(r.id))
+    .reduce((sum, r) => sum + r.w * r.h, 0);
+
+  return Math.round(coreArea + apart);
 }
 
 /**
- * Whether this pool fits — both along the facade and on the plot.
+ * Whether the plot can take this pool. Everything the drawing puts on the
+ * ground has to sit inside the land, and the pool is usually what tips it.
  *
- * The pool runs parallel to the villa, so one longer than the facade hangs off
- * both ends of the building; that is the overflow you can see in the drawing,
- * and it is a separate question from whether the plot has the area for it.
- *
- * "No pool" is always available — when the building alone is too big for the
- * plot, the answer is a smaller building, not a locked-out pool selector.
+ * "No pool" is always available — when the layout is too big for the plot
+ * without one, the answer is a smaller villa, not a locked-out selector.
  */
 export function poolFitsPlot(config: VillaConfig, pool: PoolType): boolean {
   if (pool === 'none') return true;
-  const spec = POOLS.find((p) => p.id === pool)!;
-  if (spec.length > facadeDepthOf(config)) return false;
-  return siteAreaOf({ ...config, pool }) <= config.landSqm;
-}
-
-/** Why a pool is unavailable, for the tooltip on its disabled button. */
-export function poolBlockedBy(config: VillaConfig, pool: PoolType): 'facade' | 'plot' | null {
-  if (poolFitsPlot(config, pool)) return null;
-  const spec = POOLS.find((p) => p.id === pool)!;
-  return spec.length > facadeDepthOf(config) ? 'facade' : 'plot';
+  return plotUseOf({ ...config, pool }) <= config.landSqm;
 }
 
 /** The largest pool this plot can still take, for when the plot shrinks. */

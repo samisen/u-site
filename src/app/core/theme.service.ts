@@ -36,14 +36,22 @@ export class ThemeService {
     // autofill follow the toggle in WebKit as well
     this.doc.documentElement.style.colorScheme = mode;
 
-    // toggled through `media`, not `disabled` — see the note in index.html
-    const light = this.doc.getElementById('theme-light') as HTMLLinkElement | null;
-    const dark = this.doc.getElementById('theme-dark') as HTMLLinkElement | null;
-    if (light) light.media = mode === 'dark' ? 'not all' : 'all';
-    if (dark) dark.media = mode === 'dark' ? 'all' : 'not all';
+    // one stylesheet whose href changes — see the note in index.html
+    const link = this.doc.getElementById('theme-css') as HTMLLinkElement | null;
+    if (link) {
+      const next = mode === 'dark' ? 'theme-dark.css' : 'theme-light.css';
+      // compare resolved URLs: link.href is absolute, and the app is served
+      // from a sub-path on Pages
+      if (!link.href.endsWith(next)) link.href = next;
+    }
 
-    const meta = this.doc.querySelector('meta[name="theme-color"]');
-    meta?.setAttribute('content', mode === 'dark' ? '#0c1110' : '#0f7b6c');
+    // Two theme-color metas are declared, one per preferred scheme, so Safari
+    // has the right value before any stylesheet loads. An explicit choice
+    // overrides the OS preference, so both are set to the active colour.
+    const color = mode === 'dark' ? '#0c1110' : '#0f7b6c';
+    this.doc
+      .querySelectorAll('meta[name="theme-color"]')
+      .forEach((meta) => meta.setAttribute('content', color));
 
     if (persist) {
       try {

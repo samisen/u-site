@@ -31,7 +31,6 @@ import {
   EXTRAS,
   fitRoomsToPlot,
   largestPoolThatFits,
-  poolBlockedBy,
   poolFitsPlot,
   ExtraId,
   FINISHES,
@@ -225,11 +224,7 @@ export class DesignPage {
   }
 
   poolNote(pool: PoolType): string | null {
-    switch (poolBlockedBy(this.config(), pool)) {
-      case 'facade': return 'Longer than this villa’s facade — add bedrooms or floor area first';
-      case 'plot': return 'Larger than this plot can take';
-      default: return null;
-    }
+    return this.poolDisabled(pool) ? 'This plot has no room left for it' : null;
   }
   setArea(area: AreaId): void { this.patch({ area }); }
 
