@@ -6,9 +6,12 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { ThemeService } from '../core/theme.service';
+import { I18nService, Locale, LOCALES, TranslatePipe } from '../core/i18n';
 import { BRAND } from '../core/brand';
+import { WhatsappService } from '../core/whatsapp.service';
 
 interface NavItem {
+  /** Translation key. */
   label: string;
   link: string;
   blurb: string;
@@ -18,7 +21,7 @@ interface NavItem {
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, NzButtonModule, NzDrawerModule, NzIconModule],
+  imports: [RouterLink, RouterLinkActive, NzButtonModule, NzDrawerModule, NzIconModule, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './header.html',
   styleUrl: './header.css',
@@ -28,6 +31,10 @@ export class HeaderComponent {
   private readonly router = inject(Router);
   private readonly doc = inject(DOCUMENT);
   readonly theme = inject(ThemeService);
+  readonly i18n = inject(I18nService);
+  readonly whatsapp = inject(WhatsappService);
+
+  readonly locales = LOCALES;
 
   readonly scrolled = signal(false);
   readonly drawerOpen = signal(false);
@@ -35,13 +42,13 @@ export class HeaderComponent {
   readonly brand = BRAND;
 
   readonly nav: NavItem[] = [
-    { label: 'Why Bali', link: '/why-bali', blurb: 'The lifestyle and the demand behind it' },
-    { label: 'The Opportunity', link: '/opportunity', blurb: 'How a villa can perform' },
-    { label: 'Projects', link: '/projects', blurb: 'Where we build, and what is open' },
-    { label: 'Design Your Villa', link: '/design-your-villa', blurb: 'Plan and budget, live' },
-    { label: 'How We Build', link: '/how-we-build', blurb: 'Land to operations, in six steps' },
+    { label: 'nav.whyBali', link: '/why-bali', blurb: 'nav.whyBali.blurb' },
+    { label: 'nav.opportunity', link: '/opportunity', blurb: 'nav.opportunity.blurb' },
+    { label: 'nav.projects', link: '/projects', blurb: 'nav.projects.blurb' },
+    { label: 'nav.design', link: '/design-your-villa', blurb: 'nav.design.blurb' },
+    { label: 'nav.process', link: '/how-we-build', blurb: 'nav.process.blurb' },
     // Insights is reached from Why Bali and The Opportunity, and from the footer
-    { label: 'Insights', link: '/insights', blurb: 'Investor education and lifestyle', secondary: true },
+    { label: 'nav.insights', link: '/insights', blurb: 'nav.insights.blurb', secondary: true },
   ];
 
   /** The bar shows the primary destinations only. */
@@ -69,5 +76,9 @@ export class HeaderComponent {
 
   closeDrawer(): void {
     this.drawerOpen.set(false);
+  }
+
+  setLocale(id: Locale): void {
+    if (id !== this.i18n.locale()) void this.i18n.use(id);
   }
 }

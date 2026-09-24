@@ -1,7 +1,4 @@
 import { Routes } from '@angular/router';
-import { BRAND } from './core/brand';
-
-const t = (page: string) => `${page} — ${BRAND.name}`;
 
 /**
  * The funnel: why the island, then why the numbers, then what is open, then
@@ -12,22 +9,22 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./pages/home/home').then((m) => m.HomePage),
-    title: `${BRAND.name} — ${BRAND.descriptor}`,
+    title: 'title.home',
   },
   {
     path: 'why-bali',
     loadComponent: () => import('./pages/why-bali/why-bali').then((m) => m.WhyBaliPage),
-    title: t('Why Bali'),
+    title: 'title.whyBali',
   },
   {
     path: 'opportunity',
     loadComponent: () => import('./pages/opportunity/opportunity').then((m) => m.OpportunityPage),
-    title: t('The Opportunity'),
+    title: 'title.opportunity',
   },
   {
     path: 'projects',
     loadComponent: () => import('./pages/projects/projects').then((m) => m.ProjectsPage),
-    title: t('Projects'),
+    title: 'title.projects',
   },
   {
     path: 'projects/:slug',
@@ -36,23 +33,23 @@ export const routes: Routes = [
   {
     path: 'design-your-villa',
     loadComponent: () => import('./pages/design/design').then((m) => m.DesignPage),
-    title: t('Design Your Villa'),
+    title: 'title.design',
   },
   {
     path: 'how-we-build',
     loadComponent: () => import('./pages/process/process').then((m) => m.ProcessPage),
-    title: t('How We Build'),
+    title: 'title.process',
   },
   {
     path: 'contact',
     loadComponent: () => import('./pages/contact/contact').then((m) => m.ContactPage),
-    title: t('Contact'),
+    title: 'title.contact',
   },
 
   {
     path: 'insights',
     loadComponent: () => import('./pages/insights/insights').then((m) => m.InsightsPage),
-    title: t('Insights'),
+    title: 'title.insights',
   },
   {
     path: 'insights/:slug',
@@ -69,6 +66,6 @@ export const routes: Routes = [
   {
     path: '**',
     loadComponent: () => import('./pages/not-found/not-found').then((m) => m.NotFoundPage),
-    title: t('Page not found'),
+    title: 'title.notFound',
   },
 ];

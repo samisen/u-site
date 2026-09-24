@@ -10,6 +10,7 @@ import { BaliMapComponent } from '../../shared/bali-map';
 import { CtaBandComponent } from '../../shared/cta-band';
 import { ProjectCardComponent } from '../../shared/project-card';
 import { RevealDirective } from '../../shared/reveal.directive';
+import { TranslatePipe } from '../../core/i18n';
 import { VideoPlayerComponent } from '../../shared/video-player';
 
 @Component({
@@ -23,6 +24,7 @@ import { VideoPlayerComponent } from '../../shared/video-player';
     CtaBandComponent,
     VideoPlayerComponent,
     RevealDirective,
+    TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.html',

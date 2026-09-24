@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { BRAND } from '../core/brand';
+import { TranslatePipe } from '../core/i18n';
+import { WhatsappService } from '../core/whatsapp.service';
 
 /**
  * The always-available conversion route. Most enquiries here start on
@@ -8,15 +10,15 @@ import { BRAND } from '../core/brand';
  */
 @Component({
   selector: 'app-whatsapp-fab',
-  imports: [NzIconModule],
+  imports: [NzIconModule, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a
       class="fab"
-      [href]="brand.whatsappUrl"
+      [href]="whatsapp.url()"
       target="_blank"
       rel="noopener noreferrer"
-      [attr.aria-label]="'Message us on WhatsApp, ' + brand.whatsapp"
+      [attr.aria-label]="'whatsapp.aria' | t: { number: brand.whatsapp }"
     >
       <nz-icon nzType="whats-app" />
       <span class="fab-label">WhatsApp</span>
@@ -57,4 +59,5 @@ import { BRAND } from '../core/brand';
 })
 export class WhatsappFabComponent {
   readonly brand = BRAND;
+  readonly whatsapp = inject(WhatsappService);
 }

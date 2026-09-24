@@ -2,29 +2,30 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { TranslatePipe } from '../core/i18n';
 import { RevealDirective } from './reveal.directive';
 
 @Component({
   selector: 'app-cta-band',
-  imports: [RouterLink, NzButtonModule, NzIconModule, RevealDirective],
+  imports: [RouterLink, NzButtonModule, NzIconModule, RevealDirective, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="cta">
       <div class="container inner" appReveal>
-        <p class="eyebrow">{{ eyebrow() }}</p>
-        <h2 class="display">{{ heading() }}</h2>
-        <p class="lede">{{ lede() }}</p>
+        <p class="eyebrow">{{ eyebrow() | t }}</p>
+        <h2 class="display">{{ heading() | t }}</h2>
+        <p class="lede">{{ lede() | t }}</p>
         <div class="actions">
           <a nz-button nzType="primary" nzSize="large" routerLink="/contact">
-            {{ primaryLabel() }}
+            {{ primaryLabel() | t }}
             <nz-icon nzType="arrow-right" />
           </a>
-          <a nz-button nzSize="large" nzGhost routerLink="/projects">Browse projects</a>
+          <a nz-button nzSize="large" nzGhost routerLink="/projects">{{ 'cta.browseProjects' | t }}</a>
         </div>
         <p class="reassure">
-          <nz-icon nzType="check" /> No fee for a first conversation
+          <nz-icon nzType="check" /> {{ 'cta.reassure1' | t }}
           <span class="sep"></span>
-          <nz-icon nzType="check" /> Reply within one working day
+          <nz-icon nzType="check" /> {{ 'cta.reassure2' | t }}
         </p>
       </div>
     </section>
@@ -83,11 +84,10 @@ import { RevealDirective } from './reveal.directive';
     `,
   ],
 })
+/** Every input is a translation key, including the defaults. */
 export class CtaBandComponent {
-  readonly eyebrow = input('Your piece of Bali');
-  readonly heading = input('Your Piece of Bali Starts Here.');
-  readonly lede = input(
-    'Tell us how you want to use a villa here, roughly when, and what you are unsure about. You will get a straight answer, and nothing to sign.',
-  );
-  readonly primaryLabel = input('Start a Conversation');
+  readonly eyebrow = input('ctaBand.default.eyebrow');
+  readonly heading = input('ctaBand.default.heading');
+  readonly lede = input('ctaBand.default.lede');
+  readonly primaryLabel = input('cta.primary');
 }

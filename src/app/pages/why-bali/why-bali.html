@@ -1,7 +1,7 @@
 <app-page-hero
-  eyebrow="Why Bali"
-  heading="Own a Piece of the Lifestyle"
-  lede="Bali is more than a destination. It is a lifestyle people return to — and the flow of people returning is what makes a villa here more than a holiday home."
+  eyebrow="whyBali.eyebrow"
+  heading="whyBali.title"
+  lede="whyBali.heroLede"
   image="media/villa-pool-aerial.jpg"
 />
 
@@ -10,15 +10,15 @@
   <div class="container strip-grid">
     <div class="stat">
       <span class="stat-value">{{ tourism.baliArrivalsLabel }}</span>
-      <span class="stat-label">Direct foreign tourist arrivals to Bali, 2025</span>
+      <span class="stat-label">{{ 'whyBali.stat.arrivals' | t }}</span>
     </div>
     <div class="stat">
       <span class="stat-value">+{{ tourism.baliGrowthPct }}%</span>
-      <span class="stat-label">Change on 2024</span>
+      <span class="stat-label">{{ 'whyBali.stat.growth' | t }}</span>
     </div>
     <div class="stat">
       <span class="stat-value">1.4bn</span>
-      <span class="stat-label">International tourist arrivals worldwide, 2024</span>
+      <span class="stat-label">{{ 'whyBali.stat.global' | t }}</span>
     </div>
   </div>
 </section>
@@ -27,12 +27,12 @@
 <section class="section section-lg">
   <div class="container story-grid">
     <div class="story-copy" appReveal>
-      <p class="eyebrow">The demand behind the island</p>
-      <h2 class="display">Millions come for the lifestyle. That supports an economy.</h2>
+      <p class="eyebrow">{{ 'whyBali.story.eyebrow' | t }}</p>
+      <h2 class="display">{{ 'whyBali.story.title' | t }}</h2>
       @for (para of copy.paragraphs; track $index) {
-        <p class="lede">{{ para }}</p>
+        <p class="lede">{{ para | t }}</p>
       }
-      <p class="sources">Arrival figures: BPS Statistics Indonesia. Global figure: UN Tourism.</p>
+      <p class="sources">{{ 'whyBali.sources' | t }}</p>
     </div>
 
     <figure class="story-media" appReveal="100">
@@ -40,9 +40,9 @@
         class="story-video"
         src="media/villa-pool-clip.mp4"
         poster="media/villa-pool-clip-poster.jpg"
-        label="Play the pool film"
+        label="video.poolFilm"
       />
-      <figcaption>Sungai House · Pererenan</figcaption>
+      <figcaption>{{ 'whyBali.videoCaption' | t }}</figcaption>
     </figure>
   </div>
 </section>
@@ -51,16 +51,16 @@
 <section class="section section-lg section-sand">
   <div class="container">
     <div class="head" appReveal>
-      <p class="eyebrow">What people actually come for</p>
-      <h2 class="display">Six reasons they keep coming back.</h2>
+      <p class="eyebrow">{{ 'whyBali.facets.eyebrow' | t }}</p>
+      <h2 class="display">{{ 'whyBali.facets.title' | t }}</h2>
     </div>
 
     <div class="grid grid-3">
       @for (f of copy.facets; track f.title; let i = $index) {
         <article class="facet" [appReveal]="(i % 3) * 60">
           <nz-icon [nzType]="f.icon" class="facet-icon" />
-          <h3>{{ f.title }}</h3>
-          <p>{{ f.text }}</p>
+          <h3>{{ f.title | t }}</h3>
+          <p>{{ f.text | t }}</p>
         </article>
       }
     </div>
@@ -72,16 +72,12 @@
   <div class="container">
     <div class="head head-split" appReveal>
       <div>
-        <p class="eyebrow">Not one market</p>
-        <h2 class="display">Bali is eight markets, not one.</h2>
-        <p class="lede">
-          Nightly rates on the Bukit are roughly double what the north-west coast achieves, and Ubud
-          fills in the season when the west coast empties. The area decides the guest, the rate and
-          the risk.
-        </p>
+        <p class="eyebrow">{{ 'whyBali.areas.eyebrow' | t }}</p>
+        <h2 class="display">{{ 'home.areas.title' | t }}</h2>
+        <p class="lede">{{ 'whyBali.areas.lede' | t }}</p>
       </div>
       <a class="head-link" routerLink="/projects">
-        See what is open
+        {{ 'whyBali.areas.link' | t }}
         <nz-icon nzType="arrow-right" />
       </a>
     </div>
@@ -97,11 +93,11 @@
   <div class="container">
     <div class="head head-split" appReveal>
       <div>
-        <p class="eyebrow">Keep reading</p>
-        <h2 class="display">The longer version.</h2>
+        <p class="eyebrow">{{ 'common.keepReading' | t }}</p>
+        <h2 class="display">{{ 'whyBali.reading.title' | t }}</h2>
       </div>
       <a class="head-link" routerLink="/insights">
-        All insights
+        {{ 'common.allInsights' | t }}
         <nz-icon nzType="arrow-right" />
       </a>
     </div>
@@ -109,11 +105,13 @@
     <div class="grid grid-2">
       @for (a of reading; track a.slug; let i = $index) {
         <a class="read-card" [routerLink]="['/insights', a.slug]" [appReveal]="i * 70">
-          <div class="read-media"><img [src]="a.image" [alt]="a.title" loading="lazy" /></div>
+          <div class="read-media"><img [src]="a.image" [alt]="a.title | t" loading="lazy" /></div>
           <div class="read-body">
-            <p class="read-meta">{{ a.category }} · {{ a.readMinutes }} min</p>
-            <h3>{{ a.title }}</h3>
-            <p class="read-excerpt">{{ a.excerpt }}</p>
+            <p class="read-meta">
+              {{ categoryKey(a.category) | t }} · {{ 'unit.minutes' | t: { n: a.readMinutes } }}
+            </p>
+            <h3>{{ a.title | t }}</h3>
+            <p class="read-excerpt">{{ a.excerpt | t }}</p>
           </div>
         </a>
       }
@@ -122,8 +120,8 @@
 </section>
 
 <app-cta-band
-  eyebrow="Next"
-  heading="See what a villa here can actually do."
-  lede="The lifestyle case is easy to feel. The investment case should be written down — assumptions, costs and all."
-  primaryLabel="Start a Conversation"
+  eyebrow="whyBali.cta.eyebrow"
+  heading="whyBali.cta.heading"
+  lede="whyBali.cta.lede"
+  primaryLabel="cta.primary"
 />

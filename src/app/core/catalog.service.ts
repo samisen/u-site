@@ -1,6 +1,7 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { AREAS, AREA_MAP, FAQS, PILLARS, PROCESS, PROJECTS, STATS, TESTIMONIALS } from './data';
 import { Area, AreaId, Project, ProjectStatus, ProjectType } from './models';
+import { I18nService } from './i18n';
 
 export interface ProjectFilters {
   search: string;
@@ -22,14 +23,10 @@ export const EMPTY_FILTERS: ProjectFilters = {
   sort: 'featured',
 };
 
-const HANDOVER_ORDER = (p: Project) => {
-  const m = /Q(\d)\s(\d{4})/.exec(p.handover);
-  if (m) return Number(m[2]) * 10 + Number(m[1]);
-  return p.status === 'delivered' ? 0 : 99999;
-};
-
 @Injectable({ providedIn: 'root' })
 export class CatalogService {
+  private readonly i18n = inject(I18nService);
+
   readonly projects = signal<Project[]>(PROJECTS);
   readonly areas = signal<Area[]>(AREAS);
   readonly pillars = PILLARS;
@@ -47,6 +44,8 @@ export class CatalogService {
   );
 
   readonly filtered = computed<Project[]>(() => {
+    // re-reads when the language changes, so a search stays valid after a switch
+    this.i18n.version();
     const f = this.filters();
     const needle = f.search.trim().toLowerCase();
 
@@ -57,7 +56,11 @@ export class CatalogService {
       if (f.maxPrice != null && p.priceFromUsd > f.maxPrice) return false;
       if (f.minYield != null && p.projectedGrossYield < f.minYield) return false;
       if (needle) {
-        const hay = `${p.name} ${p.headline} ${p.summary} ${this.areaName(p.area)}`.toLowerCase();
+        // the fields hold keys, so the visitor is searching what they can read
+        const hay = [p.name, p.headline, p.summary, this.areaName(p.area)]
+          .map((key) => this.i18n.t(key))
+          .join(' ')
+          .toLowerCase();
         if (!hay.includes(needle)) return false;
       }
       return true;
@@ -71,7 +74,7 @@ export class CatalogService {
       case 'yield-desc':
         return [...list].sort((a, b) => b.projectedGrossYield - a.projectedGrossYield);
       case 'handover-asc':
-        return [...list].sort((a, b) => HANDOVER_ORDER(a) - HANDOVER_ORDER(b));
+        return [...list].sort((a, b) => a.handoverOrder - b.handoverOrder);
       default:
         return list;
     }
@@ -105,6 +108,7 @@ export class CatalogService {
     return AREA_MAP.get(id);
   }
 
+  /** Translation key for an area's name — pipe it, or pass it through `t`. */
   areaName(id: AreaId): string {
     return AREA_MAP.get(id)?.name ?? id;
   }

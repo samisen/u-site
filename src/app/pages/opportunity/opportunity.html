@@ -1,7 +1,7 @@
 <app-page-hero
-  eyebrow="The opportunity"
-  heading="Your Property Can Do More"
-  lede="A villa in Bali is usually run closer to a small hotel than to a rental flat. That changes what drives revenue — and it means design decisions and operating decisions are the same decision."
+  eyebrow="opportunity.eyebrow"
+  heading="opportunity.title"
+  lede="opportunity.heroLede"
   image="media/villa-facade.jpg"
 />
 
@@ -10,21 +10,21 @@
   <div class="container">
     <div class="yield-grid">
       <div appReveal>
-        <p class="eyebrow">Indicative performance</p>
+        <p class="eyebrow">{{ 'opportunity.yield.eyebrow' | t }}</p>
         <p class="yield-headline">{{ claim.range }}<sup>*</sup></p>
-        <p class="yield-measure">Indicative Gross Rental Yield</p>
-        <p class="yield-sub">{{ claim.subline }}</p>
+        <p class="yield-measure">{{ 'opportunity.yield.measure' | t }}</p>
+        <p class="yield-sub">{{ claim.subline | t }}</p>
       </div>
 
       <div class="yield-aside" appReveal="100">
-        <p class="yield-note">{{ claim.footnote }}</p>
+        <p class="yield-note">{{ claim.footnote | t }}</p>
         <div class="yield-actions">
           <a nz-button nzSize="large" nzGhost routerLink="/contact">
-            {{ brand.cta.overview }}
+            {{ brand.cta.overview | t }}
             <nz-icon nzType="arrow-right" />
           </a>
           <a class="yield-link" routerLink="/how-we-build">
-            How we arrive at the number
+            {{ 'opportunity.yield.how' | t }}
             <nz-icon nzType="arrow-right" />
           </a>
         </div>
@@ -37,10 +37,10 @@
 <section class="section section-lg">
   <div class="container container-narrow">
     <div class="head" appReveal>
-      <p class="eyebrow">The model</p>
-      <h2 class="display">{{ copy.lead }}</h2>
+      <p class="eyebrow">{{ 'opportunity.model.eyebrow' | t }}</p>
+      <h2 class="display">{{ copy.lead | t }}</h2>
       @for (para of copy.paragraphs; track $index) {
-        <p class="lede">{{ para }}</p>
+        <p class="lede">{{ para | t }}</p>
       }
     </div>
   </div>
@@ -50,8 +50,8 @@
       @for (d of copy.drivers; track d.title; let i = $index) {
         <article class="driver" [appReveal]="i * 60">
           <nz-icon [nzType]="d.icon" class="driver-icon" />
-          <h3>{{ d.title }}</h3>
-          <p>{{ d.text }}</p>
+          <h3>{{ d.title | t }}</h3>
+          <p>{{ d.text | t }}</p>
         </article>
       }
     </div>
@@ -62,13 +62,9 @@
 <section class="section section-lg section-sand">
   <div class="container">
     <div class="head" appReveal>
-      <p class="eyebrow">Global comparison</p>
-      <h2 class="display">Put the Numbers in Perspective</h2>
-      <p class="lede">
-        Context, not an apples-to-apples claim. The bars are broad country-level residential gross
-        rental yields for standard long-term rent. The Bali range beside them is a different
-        measure, from a different operating model — which is exactly why it is not a seventh bar.
-      </p>
+      <p class="eyebrow">{{ 'opportunity.compare.eyebrow' | t }}</p>
+      <h2 class="display">{{ 'opportunity.compare.title' | t }}</h2>
+      <p class="lede">{{ 'opportunity.compare.lede' | t }}</p>
     </div>
 
     <div appReveal>
@@ -82,15 +78,12 @@
   <div class="container">
     <div class="head head-split" appReveal>
       <div>
-        <p class="eyebrow">In practice</p>
-        <h2 class="display">The assumptions, applied.</h2>
-        <p class="lede">
-          Each project page shows the gross yield, the net after our modelled costs, and the inputs
-          both come from — so you can argue with them.
-        </p>
+        <p class="eyebrow">{{ 'opportunity.practice.eyebrow' | t }}</p>
+        <h2 class="display">{{ 'opportunity.practice.title' | t }}</h2>
+        <p class="lede">{{ 'opportunity.practice.lede' | t }}</p>
       </div>
       <a class="head-link" routerLink="/projects">
-        All projects
+        {{ 'common.allProjects' | t }}
         <nz-icon nzType="arrow-right" />
       </a>
     </div>
@@ -104,10 +97,10 @@
     </div>
 
     <div class="reading-row" appReveal>
-      <span class="reading-label">Related reading</span>
+      <span class="reading-label">{{ 'common.relatedReading' | t }}</span>
       @for (a of reading; track a.slug) {
         <a [routerLink]="['/insights', a.slug]">
-          {{ a.title }}
+          {{ a.title | t }}
           <nz-icon nzType="arrow-right" />
         </a>
       }
@@ -116,8 +109,8 @@
 </section>
 
 <app-cta-band
-  eyebrow="Go deeper"
-  heading="Ask us for the investment overview."
-  lede="The full document sets out the operating model, the cost assumptions, a worked example and the questions we think you should be asking any developer in Bali — including us."
-  primaryLabel="Request the Investment Overview"
+  eyebrow="opportunity.cta.eyebrow"
+  heading="opportunity.cta.heading"
+  lede="opportunity.cta.lede"
+  primaryLabel="cta.overview"
 />

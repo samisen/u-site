@@ -52,7 +52,10 @@ export interface Project {
   projectedNetYield: number;   // % per year, after management and operating costs
   targetOccupancy: number;     // 0–1
   nightlyRateUsd: number;
+  /** Translation key — "Q1 2027" reads differently in every language. */
   handover: string;
+  /** Sort value behind that key: year * 10 + quarter, 0 delivered, 99999 none. */
+  handoverOrder: number;
   progress: number;            // 0–100
   unitsTotal: number;
   unitsAvailable: number;

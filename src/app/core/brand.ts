@@ -4,6 +4,10 @@
  * The developer brief treats "Turta Escape" as a working placeholder, so every
  * brand reference on the site reads from here: change these values and the
  * name, wordmark, contact details and legal footer change everywhere.
+ *
+ * Names, addresses and numbers are the same in every language and stay here as
+ * they are. Anything with words in it — the strapline, the calls to action,
+ * the yield qualifier — is a translation key resolved through the `t` pipe.
  */
 const BRAND_BASE = {
   name: 'Turta Escape',
@@ -11,8 +15,8 @@ const BRAND_BASE = {
   wordmarkTail: 'Escape',
   isPlaceholder: true,
 
-  coreIdea: 'Own the lifestyle. Enjoy the experience. Let your property work for you.',
-  descriptor: 'Tailor-made villas in Bali',
+  coreIdea: 'brand.coreIdea',
+  descriptor: 'brand.descriptor',
 
   email: 'hello@turtaescape.com',
   phone: '+62 361 000 000',
@@ -21,16 +25,16 @@ const BRAND_BASE = {
   /** Digits only, international, no leading zero — the form wa.me accepts. */
   whatsappDigits: '905333994648',
   address: ['Jl. Pantai Pererenan No. 88', 'Mengwi, Badung, Bali 80351', 'Indonesia'],
-  hours: 'Mon–Sat, 09:00–18:00 WITA (UTC+8)',
+  hours: 'brand.hours',
 
   cta: {
-    primary: 'Start a Conversation',
-    opportunity: 'Explore the Opportunity',
-    process: 'See How It Works',
-    overview: 'Request the Investment Overview',
-    tailorMade: 'Tell Us How You Want to Use Your Villa',
-    project: 'View Project Details',
-    insights: 'Read the Insights',
+    primary: 'cta.primary',
+    opportunity: 'cta.opportunity',
+    process: 'cta.process',
+    overview: 'cta.overview',
+    tailorMade: 'cta.tailorMade',
+    project: 'cta.project',
+    insights: 'cta.insights',
   },
 } as const;
 
@@ -39,23 +43,15 @@ export function whatsappLink(text: string): string {
   return `https://wa.me/${BRAND_BASE.whatsappDigits}?text=${encodeURIComponent(text)}`;
 }
 
-export const BRAND = {
-  ...BRAND_BASE,
-  /** Derived, never authored — see whatsappLink above. */
-  whatsappUrl: whatsappLink(
-    `Hello ${BRAND_BASE.name}, I'd like to talk about a villa project in Bali.`,
-  ),
-} as const;
-
+export const BRAND = BRAND_BASE;
 
 /** The yield claim and its mandatory qualifier. Never show one without the other. */
 export const YIELD_CLAIM = {
+  /** A number, so it reads the same everywhere. */
   range: '12–22%',
-  headline: '12–22%* Indicative Gross Rental Yield',
-  subline:
-    'Potential gross rental yield for selected villa concepts, depending on location, design, pricing, occupancy and operating model.',
-  footnote:
-    '*Indicative range, not a guarantee. Actual performance varies by project. Gross yield is before operating expenses, taxes, management, maintenance, utilities, platform fees and other costs.',
+  headline: 'yield.headline',
+  subline: 'yield.subline',
+  footnote: 'yield.footnote',
 } as const;
 
 export const TOURISM = {
@@ -63,19 +59,17 @@ export const TOURISM = {
   baliArrivalsLabel: '6,948,754',
   baliArrivalsShort: '6.95M',
   baliGrowthPct: 9.72,
-  baliSentence:
-    'In 2025, Bali recorded 6,948,754 direct foreign tourist arrivals, an increase of 9.72% from 2024.',
-  globalSentence:
-    'Around 1.4 billion international tourist arrivals were recorded worldwide in 2024.',
+  baliSentence: 'tourism.bali',
+  globalSentence: 'tourism.global',
   sources: [
     {
-      label: 'BPS Statistics Indonesia — Bali foreign arrivals, Jan–Dec 2025',
+      label: 'tourism.source.bpsArrivals',
       url: 'https://bali.bps.go.id/en/news/2026/02/02/347/bali-s-foreign-arrivals-jan-dec-2025-rise--with-australia-remaining-the-largest-contributor-overall-.htm',
     },
     {
-      label: 'BPS Statistics Indonesia — Tourism overview of Bali Province, December 2025',
+      label: 'tourism.source.bpsOverview',
       url: 'https://bali.bps.go.id/en/pressrelease/2026/02/02/718014/tourism-overview-of-bali-province--december-2025.html',
     },
-    { label: 'UN Tourism — international arrivals benchmark', url: 'https://www.unwto.org/' },
+    { label: 'tourism.source.unTourism', url: 'https://www.unwto.org/' },
   ],
 } as const;

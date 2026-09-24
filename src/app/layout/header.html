@@ -1,6 +1,6 @@
 <header class="site-header" [class.is-solid]="scrolled() || !isHome()">
   <div class="container bar">
-    <a class="brand" routerLink="/" [attr.aria-label]="brand.name + ' — home'">
+    <a class="brand" routerLink="/" [attr.aria-label]="'header.brandHome' | t: { brand: brand.name }">
       <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
         <rect width="64" height="64" rx="15" class="mark-bg" />
         <path d="M32 14 46 27v3H18v-3z" class="mark-roof" />
@@ -12,18 +12,36 @@
       </span>
     </a>
 
-    <nav class="nav-desktop" aria-label="Main">
+    <nav class="nav-desktop" [attr.aria-label]="'header.mainNav' | t">
       @for (item of navBar; track item.link) {
-        <a [routerLink]="item.link" routerLinkActive="is-active">{{ item.label }}</a>
+        <a [routerLink]="item.link" routerLinkActive="is-active">{{ item.label | t }}</a>
       }
     </nav>
 
     <div class="bar-actions">
+      <!-- language: three letters rather than a menu, so the choice is one tap -->
+      <div class="lang" role="group" [attr.aria-label]="'header.language' | t">
+        @for (l of locales; track l.id) {
+          <button
+            type="button"
+            class="lang-btn"
+            [class.is-on]="i18n.locale() === l.id"
+            [attr.aria-pressed]="i18n.locale() === l.id"
+            [attr.title]="l.name"
+            [attr.lang]="l.id"
+            (click)="setLocale(l.id)"
+          >
+            <span aria-hidden="true">{{ l.short }}</span>
+            <span class="sr-only">{{ l.name }}</span>
+          </button>
+        }
+      </div>
+
       <button
         type="button"
         class="icon-btn theme-btn"
         (click)="theme.toggle()"
-        [attr.aria-label]="theme.mode() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+        [attr.aria-label]="(theme.mode() === 'dark' ? 'header.toLight' : 'header.toDark') | t"
       >
         @if (theme.mode() === 'dark') {
           <svg viewBox="0 0 24 24" aria-hidden="true" class="ico">
@@ -39,9 +57,9 @@
         }
       </button>
 
-      <a class="cta-desktop" nz-button nzType="primary" routerLink="/contact">{{ brand.cta.primary }}</a>
+      <a class="cta-desktop" nz-button nzType="primary" routerLink="/contact">{{ brand.cta.primary | t }}</a>
 
-      <button type="button" class="icon-btn menu-btn" (click)="openDrawer()" aria-label="Open menu">
+      <button type="button" class="icon-btn menu-btn" (click)="openDrawer()" [attr.aria-label]="'header.openMenu' | t">
         <nz-icon nzType="menu" />
       </button>
     </div>
@@ -59,44 +77,62 @@
   <ng-container *nzDrawerContent>
     <div class="drawer-inner">
       <div class="drawer-top">
-        <span class="drawer-label">Menu</span>
-        <button type="button" class="icon-btn" (click)="closeDrawer()" aria-label="Close menu">
+        <span class="drawer-label">{{ 'header.menu' | t }}</span>
+        <button type="button" class="icon-btn" (click)="closeDrawer()" [attr.aria-label]="'header.closeMenu' | t">
           <nz-icon nzType="close" />
         </button>
       </div>
 
-      <nav class="drawer-nav" aria-label="Mobile">
+      <nav class="drawer-nav" [attr.aria-label]="'header.mobileNav' | t">
         <a routerLink="/" routerLinkActive="is-current" [routerLinkActiveOptions]="{ exact: true }" (click)="closeDrawer()">
-          <span class="d-label">Home</span>
-          <span class="d-blurb">Start here</span>
+          <span class="d-label">{{ 'nav.home' | t }}</span>
+          <span class="d-blurb">{{ 'nav.home.blurb' | t }}</span>
         </a>
         @for (item of navMain; track item.link) {
           <a [routerLink]="item.link" routerLinkActive="is-current" (click)="closeDrawer()">
-            <span class="d-label">{{ item.label }}</span>
-            <span class="d-blurb">{{ item.blurb }}</span>
+            <span class="d-label">{{ item.label | t }}</span>
+            <span class="d-blurb">{{ item.blurb | t }}</span>
           </a>
         }
       </nav>
 
-      <nav class="drawer-sub" aria-label="More">
+      <nav class="drawer-sub" [attr.aria-label]="'header.more' | t">
         @for (item of navSecondary; track item.link) {
           <a [routerLink]="item.link" routerLinkActive="is-current" (click)="closeDrawer()">
-            {{ item.label }}
+            {{ item.label | t }}
           </a>
         }
       </nav>
 
       <div class="drawer-foot">
+        <div class="lang-row">
+          <span class="lang-row-label">{{ 'header.language' | t }}</span>
+          <div class="lang" role="group" [attr.aria-label]="'header.language' | t">
+            @for (l of locales; track l.id) {
+              <button
+                type="button"
+                class="lang-btn"
+                [class.is-on]="i18n.locale() === l.id"
+                [attr.aria-pressed]="i18n.locale() === l.id"
+                [attr.lang]="l.id"
+                (click)="setLocale(l.id)"
+              >
+                {{ l.name }}
+              </button>
+            }
+          </div>
+        </div>
+
         <button type="button" class="theme-row" (click)="theme.toggle()">
-          <span>{{ theme.mode() === 'dark' ? 'Light theme' : 'Dark theme' }}</span>
+          <span>{{ (theme.mode() === 'dark' ? 'header.lightTheme' : 'header.darkTheme') | t }}</span>
           <nz-icon nzType="swap" />
         </button>
-        <a class="wa-row" [href]="brand.whatsappUrl" target="_blank" rel="noopener noreferrer">
+        <a class="wa-row" [href]="whatsapp.url()" target="_blank" rel="noopener noreferrer">
           <nz-icon nzType="whats-app" />
           WhatsApp
         </a>
         <a nz-button nzType="primary" nzBlock nzSize="large" routerLink="/contact" (click)="closeDrawer()">
-          {{ brand.cta.primary }}
+          {{ brand.cta.primary | t }}
         </a>
       </div>
     </div>

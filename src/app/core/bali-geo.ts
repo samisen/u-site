@@ -36,6 +36,6 @@ export const AREA_POINTS: Record<AreaId, MapPoint> = {
 
 /** Reference points, so the map reads as a map rather than a diagram. */
 export const MAP_LANDMARKS = [
-  { label: 'Ngurah Rai airport', x: 572.6, y: 540.1, kind: 'airport' as const },
-  { label: 'Denpasar', x: 607, y: 480.1, kind: 'city' as const },
+  { label: 'map.landmark.airport', x: 572.6, y: 540.1, kind: 'airport' as const },
+  { label: 'map.landmark.denpasar', x: 607, y: 480.1, kind: 'city' as const },
 ];

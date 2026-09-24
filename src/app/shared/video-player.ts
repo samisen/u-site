@@ -7,6 +7,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { TranslatePipe } from '../core/i18n';
 
 /**
  * Click-to-play video.
@@ -17,7 +18,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
  */
 @Component({
   selector: 'app-video-player',
-  imports: [NzIconModule],
+  imports: [NzIconModule, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="player" [class.is-playing]="started()">
@@ -28,7 +29,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
         preload="none"
         playsinline
         [controls]="started()"
-        [attr.aria-label]="label()"
+        [attr.aria-label]="label() | t"
         (play)="started.set(true)"
         (ended)="started.set(false)"
       ></video>
@@ -38,7 +39,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
           <span class="play">
             <nz-icon nzType="play-circle" />
           </span>
-          <span class="cover-label">{{ label() }}</span>
+          <span class="cover-label">{{ label() | t }}</span>
         </button>
       }
     </div>
@@ -108,7 +109,8 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 export class VideoPlayerComponent {
   readonly src = input.required<string>();
   readonly poster = input<string>('');
-  readonly label = input<string>('Play the video');
+  /** Translation key. */
+  readonly label = input<string>('video.play');
 
   readonly started = signal(false);
   private readonly videoRef = viewChild<ElementRef<HTMLVideoElement>>('video');

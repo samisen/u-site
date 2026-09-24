@@ -1,23 +1,21 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { TranslatePipe } from '../../core/i18n';
 
 @Component({
   selector: 'app-not-found',
-  imports: [RouterLink, NzButtonModule],
+  imports: [RouterLink, NzButtonModule, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="nf">
       <div class="container nf-inner">
         <p class="eyebrow">404</p>
-        <h1 class="display">This one is not on the map.</h1>
-        <p class="lede">
-          The page you were after does not exist — or it was a plot, and it sold. Either way, there
-          is plenty else to look at.
-        </p>
+        <h1 class="display">{{ 'notFound.title' | t }}</h1>
+        <p class="lede">{{ 'notFound.lede' | t }}</p>
         <div class="nf-actions">
-          <a nz-button nzType="primary" nzSize="large" routerLink="/">Back to the home page</a>
-          <a nz-button nzSize="large" routerLink="/projects">Browse projects</a>
+          <a nz-button nzType="primary" nzSize="large" routerLink="/">{{ 'notFound.home' | t }}</a>
+          <a nz-button nzSize="large" routerLink="/projects">{{ 'cta.browseProjects' | t }}</a>
         </div>
       </div>
     </section>

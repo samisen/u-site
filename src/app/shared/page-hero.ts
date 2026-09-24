@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { TranslatePipe } from '../core/i18n';
 
 @Component({
   selector: 'app-page-hero',
+  imports: [TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="page-hero" [class.has-image]="!!image()">
@@ -10,10 +12,10 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
         <span class="veil"></span>
       }
       <div class="container inner">
-        <p class="eyebrow">{{ eyebrow() }}</p>
-        <h1 class="display" [innerHTML]="heading()"></h1>
+        <p class="eyebrow">{{ eyebrow() | t }}</p>
+        <h1 class="display" [innerHTML]="heading() | t"></h1>
         @if (lede()) {
-          <p class="lede">{{ lede() }}</p>
+          <p class="lede">{{ lede() | t }}</p>
         }
         <ng-content />
       </div>
@@ -57,6 +59,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     `,
   ],
 })
+/** Every input is a translation key. */
 export class PageHeroComponent {
   readonly eyebrow = input('');
   readonly heading = input('');

@@ -4,22 +4,18 @@
   <span class="hero-veil"></span>
 
   <div class="container hero-inner">
-    <p class="hero-kicker">{{ brand.coreIdea }}</p>
+    <p class="hero-kicker">{{ brand.coreIdea | t }}</p>
 
-    <h1 class="display hero-title">
-      A Place to Live.<br />
-      A Property to Enjoy.<br />
-      <em>An Investment Designed to Perform.</em>
-    </h1>
+    <h1 class="display hero-title" [innerHTML]="'home.hero.title' | t"></h1>
 
-    <p class="hero-support">{{ hero.support }}</p>
+    <p class="hero-support">{{ hero.support | t }}</p>
 
     <div class="hero-actions">
       <a nz-button nzType="primary" nzSize="large" routerLink="/design-your-villa">
-        {{ brand.cta.tailorMade }}
+        {{ brand.cta.tailorMade | t }}
         <nz-icon nzType="arrow-right" />
       </a>
-      <a nz-button nzSize="large" nzGhost routerLink="/projects">See the projects</a>
+      <a nz-button nzSize="large" nzGhost routerLink="/projects">{{ 'home.hero.seeProjects' | t }}</a>
     </div>
   </div>
 </section>
@@ -28,9 +24,9 @@
 <section class="section section-lg">
   <div class="container">
     <div class="head" appReveal>
-      <p class="eyebrow">Two things. One property.</p>
-      <h2 class="display">A villa you use, and an asset that works when you are not there.</h2>
-      <p class="lede">{{ mission }}</p>
+      <p class="eyebrow">{{ 'home.values.eyebrow' | t }}</p>
+      <h2 class="display">{{ 'home.values.title' | t }}</h2>
+      <p class="lede">{{ mission | t }}</p>
     </div>
 
     <div class="values">
@@ -42,18 +38,18 @@
                 class="value-player"
                 [src]="hero.video"
                 [poster]="v.image"
-                label="Play the villa film"
+                label="video.villaFilm"
               />
             } @else {
-              <img [src]="v.image" [alt]="v.title" loading="lazy" />
+              <img [src]="v.image" [alt]="v.title | t" loading="lazy" />
             }
           </div>
 
           <div class="value-body">
-            <p class="eyebrow">{{ v.eyebrow }}</p>
-            <h3 class="title-md">{{ v.title }}</h3>
-            <p class="value-lead">{{ v.lead }}</p>
-            <p class="value-text">{{ v.body }}</p>
+            <p class="eyebrow">{{ v.eyebrow | t }}</p>
+            <h3 class="title-md">{{ v.title | t }}</h3>
+            <p class="value-lead">{{ v.lead | t }}</p>
+            <p class="value-text">{{ v.body | t }}</p>
           </div>
         </article>
       }
@@ -69,14 +65,12 @@
         <img class="door-bg" src="img/uluwatu-cliffs.jpg" alt="" aria-hidden="true" loading="lazy" />
         <span class="door-veil"></span>
         <span class="door-body">
-          <span class="door-eyebrow">Why Bali</span>
-          <span class="door-title">Own a Piece of the Lifestyle</span>
+          <span class="door-eyebrow">{{ 'nav.whyBali' | t }}</span>
+          <span class="door-title">{{ 'whyBali.title' | t }}</span>
           <span class="door-text">
-            {{ tourism.baliArrivalsShort }} direct foreign arrivals in 2025, up
-            {{ tourism.baliGrowthPct }}% on the year before. What sits underneath that number, and
-            what it means for a property here.
+            {{ 'home.door.whyBali.text' | t: { arrivals: tourism.baliArrivalsShort, growth: tourism.baliGrowthPct } }}
           </span>
-          <span class="door-go">Read the story <nz-icon nzType="arrow-right" /></span>
+          <span class="door-go">{{ 'home.door.whyBali.go' | t }} <nz-icon nzType="arrow-right" /></span>
         </span>
       </a>
 
@@ -84,17 +78,16 @@
         <img class="door-bg" src="media/villa-pool-aerial.jpg" alt="" aria-hidden="true" loading="lazy" />
         <span class="door-veil"></span>
         <span class="door-body">
-          <span class="door-eyebrow">The opportunity</span>
-          <span class="door-title">Your Property Can Do More</span>
+          <span class="door-eyebrow">{{ 'opportunity.eyebrow' | t }}</span>
+          <span class="door-title">{{ 'opportunity.title' | t }}</span>
           <span class="door-text">
-            A short-term hospitality model rather than a residential tenancy — and an indicative
-            gross rental yield of {{ claim.range }} for selected villa concepts.<sup>*</sup>
+            {{ 'home.door.opportunity.text' | t: { range: claim.range } }}<sup>*</sup>
           </span>
-          <span class="door-go">See the numbers <nz-icon nzType="arrow-right" /></span>
+          <span class="door-go">{{ 'home.door.opportunity.go' | t }} <nz-icon nzType="arrow-right" /></span>
         </span>
       </a>
     </div>
-    <p class="doors-foot">{{ claim.footnote }}</p>
+    <p class="doors-foot">{{ claim.footnote | t }}</p>
   </div>
 </section>
 
@@ -103,15 +96,12 @@
   <div class="container">
     <div class="head head-split" appReveal>
       <div>
-        <p class="eyebrow">Where we build</p>
-        <h2 class="display">Bali is eight markets, not one.</h2>
-        <p class="lede">
-          Nightly rates on the Bukit are roughly double what the north-west coast achieves, and Ubud
-          fills in the season when the west coast empties. Pick an area to see its numbers.
-        </p>
+        <p class="eyebrow">{{ 'map.empty.eyebrow' | t }}</p>
+        <h2 class="display">{{ 'home.areas.title' | t }}</h2>
+        <p class="lede">{{ 'home.areas.lede' | t }}</p>
       </div>
       <a class="head-link" routerLink="/projects">
-        All projects
+        {{ 'common.allProjects' | t }}
         <nz-icon nzType="arrow-right" />
       </a>
     </div>
@@ -134,32 +124,28 @@
 <section class="section section-lg section-sand design-teaser">
   <div class="container design-grid">
     <div appReveal>
-      <p class="eyebrow">Tailor-made, not one-size-fits-all</p>
-      <h2 class="display">Draw it before you commit to it.</h2>
-      <p class="lede">
-        Choose the style, the bedrooms, the pool and the options. A floor plan redraws with every
-        decision and the budget recalculates beside it — land, build, furniture and the yield the
-        result should produce.
-      </p>
+      <p class="eyebrow">{{ 'home.design.eyebrow' | t }}</p>
+      <h2 class="display">{{ 'home.design.title' | t }}</h2>
+      <p class="lede">{{ 'home.design.lede' | t }}</p>
       <div class="design-actions">
         <a nz-button nzType="primary" nzSize="large" routerLink="/design-your-villa">
-          {{ brand.cta.tailorMade }}
+          {{ brand.cta.tailorMade | t }}
           <nz-icon nzType="arrow-right" />
         </a>
-        <a nz-button nzSize="large" routerLink="/how-we-build">{{ brand.cta.process }}</a>
+        <a nz-button nzSize="large" routerLink="/how-we-build">{{ brand.cta.process | t }}</a>
       </div>
     </div>
 
     <figure class="design-shot" appReveal="100">
-      <img src="media/villa-pool-lounge.jpg" alt="A delivered villa pool and lounge in Pererenan" loading="lazy" />
+      <img src="media/villa-pool-lounge.jpg" [alt]="'home.design.imageAlt' | t" loading="lazy" />
     </figure>
   </div>
 </section>
 
 <!-- ============ 07. FINAL CTA ============ -->
 <app-cta-band
-  eyebrow="Your piece of Bali"
-  heading="Your Piece of Bali Starts Here."
-  lede="Tell us how you want to use it, roughly when, and what you are unsure about. You will get a straight answer, and nothing to sign."
-  primaryLabel="Start a Conversation"
+  eyebrow="ctaBand.default.eyebrow"
+  heading="ctaBand.default.heading"
+  lede="home.cta.lede"
+  primaryLabel="cta.primary"
 />
