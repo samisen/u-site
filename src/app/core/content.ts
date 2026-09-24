@@ -239,7 +239,7 @@ export const OWNER_PROFILES: OwnerProfile[] = [
 ];
 
 export const TAILOR_MADE_LINE =
-  'There is no single perfect villa. There is the right villa for the right owner, location, budget and objective.';
+  'Every owner has a different right villa. We shape it around your location, your budget and what you want the property to do.';
 
 export const ROLE_LINE =
   'Our role is to bring together the right people, knowledge and execution to help you make your Bali property as good as possible.';

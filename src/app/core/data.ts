@@ -615,12 +615,12 @@ export const FAQS: FaqItem[] = [
   {
     question: 'Can a foreigner own property in Bali?',
     answer:
-      'Not freehold, no. Foreign nationals hold property in Indonesia through leasehold (Hak Sewa) or, through an Indonesian company (PT PMA), a right-to-build title (HGB). We structure every project one of those two ways, and the notary explains the difference to you directly before you sign anything.',
+      'Yes — through leasehold (Hak Sewa), or through an Indonesian company (PT PMA) holding a right-to-build title (HGB). Freehold stays with Indonesian nationals, so we structure every project one of those two ways, and the notary walks you through the difference before you sign anything.',
   },
   {
     question: 'What actually happens when the lease expires?',
     answer:
-      'A lease is a contract for a fixed number of years — typically 25 or 30, with an extension period agreed and pre-paid at the start. At expiry the land returns to the owner unless the extension is exercised or a new term is negotiated. We register the extension option notarially on day one, because an unregistered verbal promise is worth nothing in 2055.',
+      'A lease is a contract for a fixed number of years — typically 25 or 30, with an extension period agreed and pre-paid at the start. At expiry the land returns to the owner unless the extension is exercised or a new term is negotiated. We register the extension option notarially on day one, so your right to extend is on the public record from the start.',
   },
   {
     question: 'How much does it cost to build, per square metre?',
@@ -635,12 +635,12 @@ export const FAQS: FaqItem[] = [
   {
     question: 'Are the projected yields guaranteed?',
     answer:
-      'No, and you should be suspicious of anyone who says otherwise. The figures on this site are underwritten from our own operating data on delivered properties in the same area, and we will show you the statements they come from. Occupancy, rates and regulation all move.',
+      'What we can stand behind is where the numbers come from. Every figure on this site is underwritten from our own operating data on delivered properties in the same area, and we will show you the statements behind it. They are projections rather than guarantees — occupancy, rates and regulation all move — so treat them as a well-evidenced range.',
   },
   {
     question: 'Do I have to use your management company?',
     answer:
-      'No. Most owners do, because it is the same team that built the property and they already know where every valve and cable is. But the construction contract and the management agreement are separate documents, and you can sign one without the other.',
+      'That is entirely your choice. Most owners stay with us because it is the same team that built the property and they already know where every valve and cable is. The construction contract and the management agreement are separate documents, so you are free to sign one without the other.',
   },
 ];
 

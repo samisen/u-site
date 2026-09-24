@@ -104,22 +104,22 @@
 }
 .cost-note { margin: 10px 0 0; font-size: 13.2px; line-height: 1.55; color: var(--ink-3); }
 
-/* ---------- risks ---------- */
+/* ---------- safeguards ---------- */
 
-.risk {
+.safeguard {
   padding: 26px 24px 28px;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   height: 100%;
 }
-.risk {
+.safeguard {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   column-gap: 11px;
   align-content: start;
 }
-.risk-icon {
+.safeguard-icon {
   grid-column: 1;
   grid-row: 1;
   margin: 0;
@@ -128,11 +128,11 @@
   line-height: 1;
   align-self: center;
 }
-.risk h3 { grid-column: 2; grid-row: 1; margin: 0; }
-.risk p { grid-column: 1 / -1; grid-row: 2; margin: 10px 0 0; }
-.risk h3 { font-size: 1.08rem; font-weight: 600; line-height: 1.35; color: var(--ink); }
-.risk p { font-size: 14.4px; line-height: 1.65; color: var(--ink-2); }
-.risk-icon { align-self: start; margin-top: 3px; }
+.safeguard h3 { grid-column: 2; grid-row: 1; margin: 0; }
+.safeguard p { grid-column: 1 / -1; grid-row: 2; margin: 10px 0 0; }
+.safeguard h3 { font-size: 1.08rem; font-weight: 600; line-height: 1.35; color: var(--ink); }
+.safeguard p { font-size: 14.4px; line-height: 1.65; color: var(--ink-2); }
+.safeguard-icon { align-self: start; margin-top: 3px; }
 
 /* ---------- faq ---------- */
 
@@ -152,8 +152,8 @@
   border-radius: var(--radius);
   height: 100%;
 }
-.service-icon { grid-column: 1; grid-row: 1; font-size: 20px; color: var(--brand); line-height: 1; align-self: center; }
-.service h3 { grid-column: 2; grid-row: 1; margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--ink); }
+.service-icon { grid-column: 1; grid-row: 1; font-size: 20px; color: var(--brand); line-height: 1; align-self: start; margin-top: 1px; }
+.service h3 { grid-column: 2; grid-row: 1; margin: 0; font-size: 1.05rem; font-weight: 600; line-height: 1.35; color: var(--ink); }
 .service p { grid-column: 1 / -1; grid-row: 2; margin: 10px 0 0; font-size: 14.2px; line-height: 1.6; color: var(--ink-2); }
 
 .statement-grid {
@@ -210,8 +210,8 @@
   border-radius: var(--radius);
   height: 100%;
 }
-.principle-icon { grid-column: 1; grid-row: 1; font-size: 20px; color: var(--brand); line-height: 1; align-self: center; }
-.principle h3 { grid-column: 2; grid-row: 1; margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--ink); }
+.principle-icon { grid-column: 1; grid-row: 1; font-size: 20px; color: var(--brand); line-height: 1; align-self: start; margin-top: 1px; }
+.principle h3 { grid-column: 2; grid-row: 1; margin: 0; font-size: 1.05rem; font-weight: 600; line-height: 1.35; color: var(--ink); }
 .principle p { grid-column: 1 / -1; grid-row: 2; margin: 10px 0 0; font-size: 14.2px; line-height: 1.6; color: var(--ink-2); }
 
 .faq-footnote {

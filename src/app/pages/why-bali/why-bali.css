@@ -58,8 +58,8 @@
   border-radius: var(--radius);
   height: 100%;
 }
-.facet-icon { grid-column: 1; grid-row: 1; font-size: 20px; color: var(--brand); line-height: 1; align-self: center; }
-.facet h3 { grid-column: 2; grid-row: 1; margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--ink); }
+.facet-icon { grid-column: 1; grid-row: 1; font-size: 20px; color: var(--brand); line-height: 1; align-self: start; margin-top: 1px; }
+.facet h3 { grid-column: 2; grid-row: 1; margin: 0; font-size: 1.05rem; font-weight: 600; line-height: 1.35; color: var(--ink); }
 .facet p { grid-column: 1 / -1; grid-row: 2; margin: 10px 0 0; font-size: 14.2px; line-height: 1.6; color: var(--ink-2); }
 
 /* ---------- reading ---------- */

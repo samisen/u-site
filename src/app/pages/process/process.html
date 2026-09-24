@@ -139,24 +139,24 @@
   </div>
 </section>
 
-<!-- ============ WHAT GOES WRONG ============ -->
+<!-- ============ WHAT WE TAKE CARE OF ============ -->
 <section class="section">
   <div class="container">
     <div class="head" appReveal>
-      <p class="eyebrow">What usually goes wrong</p>
-      <h2 class="display">The four ways people lose money in Bali.</h2>
+      <p class="eyebrow">What we take care of</p>
+      <h2 class="display">Four things handled before you have to ask.</h2>
       <p class="lede">
-        We would rather you hear these from us than from a forum thread at two in the morning. Here
-        is each one, and the specific thing we do about it.
+        These four decide how a Bali project turns out, and each one has a specific answer built
+        into the way we work. Ask us about any of them.
       </p>
     </div>
 
     <div class="grid grid-2">
-      @for (r of risks; track r.risk; let i = $index) {
-        <article class="risk" [appReveal]="i * 60">
-          <nz-icon [nzType]="r.icon" class="risk-icon" />
-          <h3>{{ r.risk }}</h3>
-          <p>{{ r.answer }}</p>
+      @for (s of safeguards; track s.title; let i = $index) {
+        <article class="safeguard" [appReveal]="i * 60">
+          <nz-icon [nzType]="s.icon" class="safeguard-icon" />
+          <h3>{{ s.title }}</h3>
+          <p>{{ s.text }}</p>
         </article>
       }
     </div>

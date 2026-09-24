@@ -78,32 +78,32 @@ export class ProcessPage {
   ];
 
   readonly principles = [
-    { icon: 'solution', title: 'Tailor-made, by default', text: 'We start from what you want the property to do, not from a catalogue of house types. The same plot produces a different building for a different owner.' },
-    { icon: 'audit', title: 'Numbers you can argue with', text: 'Every projection carries its assumptions. Where we model a cost, we say what the percentage is. Where something is uncertain, we say that too.' },
-    { icon: 'camera', title: 'Visible while it is being built', text: 'Photographs from site every week and spend reconciled against the bill of quantities every month — whether the news is good or not.' },
-    { icon: 'rise', title: 'Responsible after handover', text: 'The team that designed and built the villa is the team that runs it, so nobody can blame someone who is no longer in the room.' },
+    { icon: 'solution', title: 'Tailor-made by default', text: 'We start from what you want the property to do. The same plot produces a different building for a different owner, and that is the point.' },
+    { icon: 'audit', title: 'Numbers you can check', text: 'Every projection comes with its assumptions written down — the rate, the occupancy, the percentages — so you can follow the reasoning and test it against your own.' },
+    { icon: 'camera', title: 'Visible as it is built', text: 'Photographs from site every week and spend reconciled against the bill of quantities every month, so you always know exactly where your build stands.' },
+    { icon: 'rise', title: 'With you after handover', text: 'The team that designed and built your villa is the team that runs it, so the same people stay accountable for how it performs.' },
   ];
 
-  readonly risks = [
+  readonly safeguards = [
     {
       icon: 'file-protect',
-      risk: 'The land turns out not to be the seller’s to lease.',
-      answer: 'Every plot is checked at the land office against the certificate chain, and the banjar is consulted before an offer. If it does not clear, we walk — and we tell you what we found.',
+      title: 'Title verified first',
+      text: 'Every plot is checked at the land office against the certificate chain, and the banjar is consulted before an offer goes in. You see exactly what we found, and we move forward on land that is clean to lease.',
     },
     {
       icon: 'gold',
-      risk: 'The build cost drifts twenty per cent past the quote.',
-      answer: 'You sign a line-item bill of quantities, not a rate per square metre. Our quantity surveyor reconciles spend against it monthly and variances are raised in the month they occur.',
+      title: 'Cost held to the quote',
+      text: 'You sign a line-item bill of quantities rather than a rate per square metre. Our quantity surveyor reconciles spend against it monthly, so every variance is on the table in the month it happens.',
     },
     {
       icon: 'clock-circle',
-      risk: 'The handover date slips by a year.',
-      answer: 'The programme is contractual, with liquidated damages. Ninety-six per cent of what we have delivered since 2016 landed on or before the contracted date.',
+      title: 'Handover on the agreed date',
+      text: 'The programme is contractual, with liquidated damages behind it. Ninety-six per cent of what we have delivered since 2016 landed on or before the contracted date.',
     },
     {
       icon: 'experiment',
-      risk: 'The villa is finished and then sits empty.',
-      answer: 'Listings, photography and pricing are prepared in the final eight weeks of construction, so the property goes live within three weeks of handover rather than three months.',
+      title: 'Earning from week one',
+      text: 'Listings, photography and pricing are prepared in the final eight weeks of construction, so the villa goes live within three weeks of handover rather than three months.',
     },
   ];
 
@@ -113,7 +113,7 @@ export class ProcessPage {
       text: 'A nightly rate taken from comparable properties in the same area and bedroom count — not from the three best-performing villas on the island — multiplied by an occupancy assumption we can evidence from our own managed portfolio.',
     },
     {
-      title: 'What gross yield does and does not include',
+      title: 'What gross yield covers',
       text: 'Gross rental yield is annual rental revenue divided by total investment, before operating expenses, taxes, management, maintenance, utilities and platform fees. It is a comparison metric, not money in your account.',
     },
     {
@@ -121,8 +121,8 @@ export class ProcessPage {
       text: `We model an ${Math.round(MANAGEMENT_FEE * 100)}% management and channel fee and roughly ${Math.round(OPERATING_COST * 100)}% operating cost — staff, utilities, pool and garden, consumables, repairs and a sinking fund. Both figures appear side by side on every project page.`,
     },
     {
-      title: 'What we do not claim',
-      text: 'No guaranteed return, no fixed income, and no promise that any figure on this site will be achieved. Occupancy, nightly rates, regulation and taxation all move. Every projection here is an assumption you are entitled to challenge.',
+      title: 'How we talk about returns',
+      text: 'Every number here is a projection with its assumptions on show, which is why we publish an evidenced range rather than a guaranteed return or a fixed income. Occupancy, nightly rates, regulation and taxation all move, and you are welcome to challenge any assumption we have made.',
     },
   ];
 
