@@ -247,7 +247,15 @@
    carry its own scroll rather than growing the page */
 @media (max-width: 999px) {
   .editor.is-fullscreen .ed-body { overflow-y: auto; }
-  .editor.is-fullscreen .ed-scroll { min-height: 44svh; }
+  /* the body is the scrollport here, so the drawing sticks to the top of it
+     and the controls scroll underneath, exactly as they do outside full screen */
+  .editor.is-fullscreen .ed-canvas {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    flex: none;
+  }
+  .editor.is-fullscreen .ed-scroll { flex: none; min-height: 0; height: 42svh; padding: 12px; }
 }
 @media (min-width: 1000px) {
   .editor.is-fullscreen .ed-panel-scroll { flex: 1; overflow-y: auto; }
@@ -491,8 +499,11 @@
   }
 
   .editor:not(.is-fullscreen) .ed-scroll {
+    /* not `flex: 1` — a zero basis would let the flex algorithm size this
+       instead of the height, and the drawing would collapse to its content */
+    flex: none;
     min-height: 0;
-    height: 40svh;
+    height: 44svh;
     padding: 12px;
   }
 
@@ -500,15 +511,15 @@
      when it is the thing standing in your way */
   .ed-status {
     align-items: center;
-    gap: 9px;
-    margin: 0 12px 12px;
-    padding: 8px 11px;
-    font-size: 12.6px;
+    gap: 8px;
+    margin: 0 12px 10px;
+    padding: 7px 10px;
+    font-size: 11.6px;
   }
-  .ed-status nz-icon { font-size: 15px; margin-top: 0; }
+  .ed-status nz-icon { font-size: 14px; margin-top: 0; }
   .ed-status-sub { display: none; }
   .ed-status.is-over { align-items: flex-start; }
   .ed-status.is-over nz-icon { margin-top: 1px; }
-  .ed-status.is-over .ed-status-sub { display: block; margin-top: 2px; font-size: 10.8px; }
-  .ed-status-fix { padding: 5px 10px; font-size: 11.5px; }
+  .ed-status.is-over .ed-status-sub { display: block; margin-top: 2px; font-size: 10px; }
+  .ed-status-fix { padding: 4px 9px; font-size: 11px; }
 }
