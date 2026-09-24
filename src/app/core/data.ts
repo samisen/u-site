@@ -1,7 +1,7 @@
 import { Area, FaqItem, Pillar, ProcessStep, Project, Testimonial } from './models';
 import { grossYieldPct, netYieldPct } from './yield-model';
 
-const IMG = '/img';
+const IMG = 'img';
 
 export const AREAS: Area[] = [
   {
@@ -420,16 +420,16 @@ export const PROJECTS: Project[] = [
       'The layout is a hybrid brief: the owner uses it for roughly ten weeks a year, and it is let for the rest. The upper floor carries an owner\u2019s suite that locks and is serviced separately, so personal belongings stay in place while the rest of the villa works.',
       'Everything on this page \u2014 the photographs, the walkthrough, the operating figures \u2014 comes from this building rather than from a render. Ask us for the twelve-month statement and we will send it.',
     ],
-    hero: '/media/villa-pool-aerial.jpg',
+    hero: 'media/villa-pool-aerial.jpg',
     gallery: [
-      '/media/villa-pool-aerial.jpg',
-      '/media/villa-facade.jpg',
-      '/media/villa-pool-lounge.jpg',
-      '/media/villa-deck.jpg',
-      '/media/villa-deck-pool.jpg',
+      'media/villa-pool-aerial.jpg',
+      'media/villa-facade.jpg',
+      'media/villa-pool-lounge.jpg',
+      'media/villa-deck.jpg',
+      'media/villa-deck-pool.jpg',
     ],
-    video: '/media/villa-tour-full.mp4',
-    videoPoster: '/media/villa-tour-full-poster.jpg',
+    video: 'media/villa-tour-full.mp4',
+    videoPoster: 'media/villa-tour-full-poster.jpg',
     priceFromUsd: 495000,
     landSqm: 420,
     builtSqm: 260,

@@ -56,8 +56,8 @@ export interface Insight {
 export const HERO = {
   headline: 'A Place to Live. A Property to Enjoy. An Investment Designed to Perform.',
   support: 'Tailor-made villas in Bali created around how you want to live, stay and invest.',
-  video: '/media/villa-tour-short.mp4',
-  poster: '/media/villa-pool-aerial.jpg',
+  video: 'media/villa-tour-short.mp4',
+  poster: 'media/villa-pool-aerial.jpg',
 };
 
 /* -------------------------------------------------------- the two values -- */
@@ -74,7 +74,7 @@ export const TWO_VALUES: ValuePillar[] = [
       'Bring your family. Work from Bali.',
       'A private base, not a hotel room.',
     ],
-    image: '/media/villa-pool-lounge.jpg',
+    image: 'media/villa-pool-lounge.jpg',
   },
   {
     key: 'investment',
@@ -87,7 +87,7 @@ export const TWO_VALUES: ValuePillar[] = [
       'Operated to perform as well as possible.',
       'Revenue assumptions written down, not implied.',
     ],
-    image: '/media/villa-pool-aerial.jpg',
+    image: 'media/villa-pool-aerial.jpg',
   },
 ];
 
@@ -216,7 +216,7 @@ export const OWNER_PROFILES: OwnerProfile[] = [
     description:
       'The villa is first a place you use. Layout, storage and privacy are designed around how you and your family actually live, and any guest letting fits around your own calendar.',
     priorities: ['Your calendar comes first', 'Personal storage and lock-up', 'Designed around your habits'],
-    image: '/media/villa-deck.jpg',
+    image: 'media/villa-deck.jpg',
   },
   {
     id: 'income',
@@ -225,7 +225,7 @@ export const OWNER_PROFILES: OwnerProfile[] = [
     description:
       'The villa is designed around guest demand: bedroom mix, pool position, photographability and the operational details that keep turnaround fast and reviews high.',
     priorities: ['Designed around guest demand', 'Operationally efficient', 'Revenue assumptions documented'],
-    image: '/media/villa-pool-aerial.jpg',
+    image: 'media/villa-pool-aerial.jpg',
   },
   {
     id: 'hybrid',
@@ -234,7 +234,7 @@ export const OWNER_PROFILES: OwnerProfile[] = [
     description:
       'You use the villa for part of the year and it works for the rest. The design carries an owner’s suite that locks away, and the operating plan is built around your blocked dates.',
     priorities: ['Owner suite that locks', 'Blocked dates without penalty', 'Balanced design decisions'],
-    image: '/media/villa-facade.jpg',
+    image: 'media/villa-facade.jpg',
   },
 ];
 
@@ -261,7 +261,7 @@ export const INSIGHTS: Insight[] = [
     readMinutes: 7,
     date: '12 September 2026',
     author: 'Editorial team',
-    image: '/media/villa-pool-aerial.jpg',
+    image: 'media/villa-pool-aerial.jpg',
     body: [
       'Bali received 6,948,754 direct foreign tourist arrivals in 2025, an increase of 9.72% on 2024. That single figure is the reason most people start looking at property here, but on its own it explains very little. What matters to an owner is not how many people land at the airport — it is how long they stay, what they book, and where.',
       'A guest staying nine nights in Ubud and a guest staying two nights in Kuta contribute to the same arrivals number and behave completely differently as revenue. Length of stay changes your cleaning cost per night, your channel mix, your cancellation profile and how exposed you are to low season.',
@@ -277,7 +277,7 @@ export const INSIGHTS: Insight[] = [
     readMinutes: 6,
     date: '2 September 2026',
     author: 'Editorial team',
-    image: '/media/villa-deck.jpg',
+    image: 'media/villa-deck.jpg',
     body: [
       'Every week you keep for yourself is a week the villa is not earning. That is simply true, and any brochure that pretends otherwise is not worth reading. The interesting part is that the cost of those weeks is not constant — it depends entirely on which weeks you take.',
       'Take the first two weeks of August and you are removing your highest-rate nights of the year. Take late October and the same fortnight costs a fraction of that. Owners who plan their own use around the shoulder season often find the difference between the two patterns is larger than any operational saving anyone can offer them.',
@@ -293,7 +293,7 @@ export const INSIGHTS: Insight[] = [
     readMinutes: 5,
     date: '24 August 2026',
     author: 'Editorial team',
-    image: '/media/villa-facade.jpg',
+    image: 'media/villa-facade.jpg',
     body: [
       'Gross rental yield is annual rental revenue divided by what the property cost. It is a useful comparison metric precisely because it is crude — it ignores everything that happens between a guest paying and money reaching you.',
       'Between those two points sit channel commissions, management fees, housekeeping, laundry, utilities, pool and garden, repairs, a sinking fund for replacement, taxes and the cost of the nights nobody booked. Depending on the property and the operating model, they can account for a third to a half of gross revenue.',
@@ -309,7 +309,7 @@ export const INSIGHTS: Insight[] = [
     readMinutes: 6,
     date: '15 August 2026',
     author: 'Editorial team',
-    image: '/media/villa-pool-lounge.jpg',
+    image: 'media/villa-pool-lounge.jpg',
     body: [
       'Revenue is rate multiplied by occupancy, and the two move against each other. Drop your rate and you fill the calendar, but you may fill it with shorter stays that cost more to service. Hold your rate and you keep margin per night, but you carry more empty nights.',
       'The properties that do well are rarely the cheapest or the most expensive in their street. They are the ones where the rate is set deliberately against a known guest — and where the operator adjusts it weekly rather than setting it once at launch.',
@@ -325,7 +325,7 @@ export const INSIGHTS: Insight[] = [
     readMinutes: 6,
     date: '6 August 2026',
     author: 'Editorial team',
-    image: '/media/villa-deck-pool.jpg',
+    image: 'media/villa-deck-pool.jpg',
     body: [
       'Location sets your ceiling. Design decides how much of that ceiling you reach. Guest experience decides whether you keep reaching it in year three.',
       'The common failure is treating them in sequence — buy the land, then design something, then find someone to run it. Each decision then constrains the next one, usually badly: a plot with a beautiful view and a layout that faces away from it, or a villa that photographs well and takes four hours to turn around between guests.',
@@ -341,7 +341,7 @@ export const INSIGHTS: Insight[] = [
     readMinutes: 5,
     date: '28 July 2026',
     author: 'Editorial team',
-    image: '/media/villa-facade.jpg',
+    image: 'media/villa-facade.jpg',
     body: [
       'There is no single perfect villa. There is the right villa for the right owner, location, budget and objective — and the gap between those versions is larger than most people expect.',
       'An owner who will spend three months a year in the property wants storage, a kitchen that works for cooking rather than photographs, and a suite that can be closed off. An owner who will visit twice a year wants bedroom parity, fast turnaround and a layout that reads well in twelve photographs.',
@@ -357,7 +357,7 @@ export const INSIGHTS: Insight[] = [
     readMinutes: 8,
     date: '19 July 2026',
     author: 'Editorial team',
-    image: '/media/villa-deck.jpg',
+    image: 'media/villa-deck.jpg',
     body: [
       'Foreign nationals do not hold freehold title in Indonesia. Property is held through leasehold, or through an Indonesian company structure that carries a right-to-build title. Both are ordinary, both are used constantly, and both have details that reward attention.',
       'The single most important one is what happens at the end of the term. A lease is a contract for a fixed number of years, usually with an extension agreed at the start. Whether that extension is registered notarially, and on what terms, is the difference between an asset and a promise.',
@@ -373,7 +373,7 @@ export const INSIGHTS: Insight[] = [
     readMinutes: 6,
     date: '9 July 2026',
     author: 'Editorial team',
-    image: '/media/villa-pool-lounge.jpg',
+    image: 'media/villa-pool-lounge.jpg',
     body: [
       'A long residential tenancy is a financial product: one contract, one payment a month, low workload, low upside. A short-term hospitality operation is a small business: many contracts, daily work, staff, consumables, reviews, and a materially higher gross.',
       'Comparing their headline yields directly is misleading, because they are not the same measure of the same thing. The residential figure is close to net. The hospitality figure is a long way from it.',
@@ -389,7 +389,7 @@ export const INSIGHTS: Insight[] = [
     readMinutes: 7,
     date: '30 June 2026',
     author: 'Editorial team',
-    image: '/media/villa-pool-aerial.jpg',
+    image: 'media/villa-pool-aerial.jpg',
     body: [
       'Start at the top line. What nightly rate is assumed, and against which comparable properties? A model built on the best three villas in the area is not a model, it is an aspiration.',
       'Then occupancy. Is it a year-round average, and does it account for low season? An 85% assumption is achievable in parts of Bali and fantasy in others.',
@@ -406,7 +406,7 @@ export const INSIGHTS: Insight[] = [
     readMinutes: 4,
     date: '21 June 2026',
     author: 'Editorial team',
-    image: '/media/villa-deck-pool.jpg',
+    image: 'media/villa-deck-pool.jpg',
     body: [
       'You land in the evening, and someone you know is at the airport. The fridge has what you asked for. The pool is the temperature it always is. By the second morning you have stopped checking your phone before breakfast.',
       'None of that is a return, and we would not try to put a number on it. But it is the reason most owners we work with started looking in the first place, and it is why we design around how someone wants to live before we design around what the property should earn.',
