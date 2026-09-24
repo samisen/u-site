@@ -12,7 +12,9 @@ export type FinishLevel = 'essential' | 'prestige';
 export type PoolType = 'none' | 'plunge' | 'standard' | 'infinity';
 export type ExtraId =
   | 'rooftop' | 'staff' | 'study' | 'outdoor-kitchen'
-  | 'gym' | 'carport' | 'solar' | 'generator';
+  | 'gym' | 'carport' | 'solar' | 'generator'
+  | 'yoga' | 'massage' | 'jacuzzi' | 'sauna' | 'ice-bath'
+  | 'pickleball' | 'padel';
 
 /** Per-room floor areas in m², driven directly from the editor. */
 export interface RoomSizes {
@@ -92,7 +94,7 @@ export const PRESETS: { id: string; name: string; note: string; patch: Partial<V
 export const DEFAULT_CONFIG: VillaConfig = {
   style: 'tropical',
   bedrooms: 3,
-  storeys: 2,
+  storeys: 1,
   pool: 'standard',
   finish: 'essential',
   extras: ['carport', 'solar'],
@@ -151,16 +153,48 @@ export const POOLS: { id: PoolType; name: string; size: string; cost: number; le
   { id: 'infinity', name: 'Infinity edge', size: '11.0 × 4.0 m', cost: 62000, length: 11, width: 4 },
 ];
 
-export const EXTRAS: { id: ExtraId; name: string; note: string; cost: number }[] = [
-  { id: 'carport', name: 'Carport', note: 'Two bays, covered', cost: 9000 },
-  { id: 'solar', name: 'Solar hot water', note: 'Cuts the power bill', cost: 6500 },
-  { id: 'staff', name: 'Staff quarters', note: 'Detached, with bathroom', cost: 18000 },
-  { id: 'study', name: 'Study / office', note: 'Enclosed, air conditioned', cost: 14000 },
-  { id: 'rooftop', name: 'Rooftop terrace', note: 'Needs the second storey', cost: 22000 },
-  { id: 'outdoor-kitchen', name: 'Outdoor kitchen', note: 'Poolside, with bar', cost: 11000 },
-  { id: 'gym', name: 'Gym', note: 'Ground floor, 14 m²', cost: 16000 },
-  { id: 'generator', name: 'Backup generator', note: 'Auto transfer switch', cost: 8500 },
+export const EXTRAS: { id: ExtraId; name: string; note: string; cost: number; sqm: number }[] = [
+  { id: 'rooftop', name: 'Rooftop terrace', note: 'Needs the second storey', cost: 22000, sqm: 32 },
+  { id: 'study', name: 'Office / workspace', note: 'Enclosed, air conditioned', cost: 14000, sqm: 16 },
+  { id: 'gym', name: 'Gym', note: 'Ground floor, off the living zone', cost: 16000, sqm: 22 },
+  { id: 'yoga', name: 'Yoga shala', note: 'Open-sided, timber floor', cost: 19000, sqm: 20 },
+  { id: 'massage', name: 'Massage room', note: 'Treatment room off the garden', cost: 12000, sqm: 15 },
+  { id: 'outdoor-kitchen', name: 'Outdoor kitchen', note: 'Poolside, with bar', cost: 11000, sqm: 10 },
+  { id: 'jacuzzi', name: 'Jacuzzi', note: 'Heated, set into the garden deck', cost: 9500, sqm: 6 },
+  { id: 'sauna', name: 'Sauna', note: 'Cedar cabin, four person', cost: 13000, sqm: 6 },
+  { id: 'ice-bath', name: 'Ice bath', note: 'Chilled plunge, beside the sauna', cost: 6000, sqm: 3 },
+  { id: 'pickleball', name: 'Pickleball court', note: 'Regulation 13.4 × 6.1 m', cost: 28000, sqm: 82 },
+  { id: 'padel', name: 'Padel court', note: 'Regulation 20 × 10 m, glazed', cost: 85000, sqm: 200 },
+  { id: 'carport', name: 'Carport', note: 'Two bays, covered', cost: 9000, sqm: 17 },
+  { id: 'staff', name: 'Staff quarters', note: 'Detached, with bathroom', cost: 18000, sqm: 13 },
+  { id: 'solar', name: 'Solar hot water', note: 'Cuts the power bill', cost: 6500, sqm: 0 },
+  { id: 'generator', name: 'Backup generator', note: 'Auto transfer switch', cost: 8500, sqm: 0 },
 ];
+
+/** Options that take a strip of the living-side column. Depth = area / column width. */
+const INDOOR_EXTRAS: { id: ExtraId; label: string }[] = [
+  { id: 'study', label: 'Study / office' },
+  { id: 'gym', label: 'Gym' },
+  { id: 'yoga', label: 'Yoga shala' },
+  { id: 'massage', label: 'Massage room' },
+];
+
+/** Small wet options, drawn in a column in the garden beyond the pool. */
+const WET_EXTRAS: { id: ExtraId; label: string; w: number; h: number; kind: RoomKind }[] = [
+  { id: 'jacuzzi', label: 'Jacuzzi', w: 2.4, h: 2.4, kind: 'pool' },
+  { id: 'sauna', label: 'Sauna', w: 2.6, h: 2.2, kind: 'service' },
+  { id: 'ice-bath', label: 'Ice bath', w: 1.6, h: 1.6, kind: 'pool' },
+];
+
+/** Courts, at their regulation footprint — which is the point of drawing them. */
+const COURT_EXTRAS: { id: ExtraId; label: string; w: number; h: number }[] = [
+  { id: 'pickleball', label: 'Pickleball court', w: 6.1, h: 13.4 },
+  { id: 'padel', label: 'Padel court', w: 10, h: 20 },
+];
+
+function extraSqm(id: ExtraId): number {
+  return EXTRAS.find((e) => e.id === id)?.sqm ?? 0;
+}
 
 /* ------------------------------------------------------------------ plan -- */
 
@@ -224,8 +258,12 @@ function bedroomRowHeights(config: VillaConfig, count: number, startIndex: numbe
 }
 
 function ensuiteWidth(config: VillaConfig): number {
-  // one width for every bathroom, so the building keeps a straight edge
-  return config.rooms.ensuite / (config.rooms.bedroom / BED_DEPTH);
+  // one width for every bathroom, so the building keeps a straight edge.
+  // With a single bedroom there are no "other bedrooms" to set, so the master
+  // is the reference — otherwise a control the editor hides would still move
+  // the drawing.
+  const reference = config.bedrooms > 1 ? config.rooms.bedroom : config.rooms.master;
+  return config.rooms.ensuite / (reference / BED_DEPTH);
 }
 
 function bedroomRows(
@@ -290,8 +328,10 @@ function serviceRows(config: VillaConfig, fromY: number, toY: number): PlanRoom[
 export function buildPlans(config: VillaConfig): FloorPlan[] {
   const gBeds = groundBedrooms(config);
   const uBeds = config.bedrooms - gBeds;
-  const hasStudy = config.extras.includes('study');
-  const hasGym = config.extras.includes('gym');
+  const indoorExtras = INDOOR_EXTRAS.filter((e) => config.extras.includes(e.id)).map((e) => ({
+    ...e,
+    h: extraSqm(e.id) / LEFT_W,
+  }));
 
   /* ---------- ground floor ---------- */
 
@@ -300,9 +340,8 @@ export function buildPlans(config: VillaConfig): FloorPlan[] {
 
   const livingH = config.rooms.living / LEFT_W;
   const kitchenH = config.rooms.kitchen / LEFT_W;
-  const studyH = hasStudy ? 3.2 : 0;
-  const gymH = hasGym ? 3.4 : 0;
-  const leftStack = livingH + kitchenH + studyH + gymH;
+  const indoorH = indoorExtras.reduce((sum, e) => sum + e.h, 0);
+  const leftStack = livingH + kitchenH + indoorH;
 
   // the two zones have to agree on a height; the living room absorbs any slack
   const groundH = Math.max(leftStack, rightStack + (gBeds ? 2.6 : 8), 9);
@@ -313,13 +352,9 @@ export function buildPlans(config: VillaConfig): FloorPlan[] {
     { id: 'kitchen', label: 'Kitchen & dining', x: 0, y: livingActual, w: LEFT_W, h: kitchenH, kind: 'living', counts: true },
   ];
   let ly = livingActual + kitchenH;
-  if (hasStudy) {
-    ground.push({ id: 'study', label: 'Study', x: 0, y: ly, w: LEFT_W, h: studyH, kind: 'service', counts: true });
-    ly += studyH;
-  }
-  if (hasGym) {
-    ground.push({ id: 'gym', label: 'Gym', x: 0, y: ly, w: LEFT_W, h: gymH, kind: 'service', counts: true });
-    ly += gymH;
+  for (const e of indoorExtras) {
+    ground.push({ id: e.id, label: e.label, x: 0, y: ly, w: LEFT_W, h: e.h, kind: 'service', counts: true });
+    ly += e.h;
   }
 
   ground.push({ id: 'hall', label: 'Hall', x: LEFT_W, y: 0, w: HALL_W, h: groundH, kind: 'hall', counts: true });
@@ -343,6 +378,27 @@ export function buildPlans(config: VillaConfig): FloorPlan[] {
       kind: 'pool',
       counts: false,
     });
+  }
+
+  /* ---------- garden, working outwards from the pool ---------- */
+
+  const GARDEN_GAP = 1.2;
+  let gx = -DECK_D - (pool.length > 0 ? pool.width : 0);
+
+  const wet = WET_EXTRAS.filter((e) => config.extras.includes(e.id));
+  if (wet.length) {
+    gx -= GARDEN_GAP + Math.max(...wet.map((e) => e.w));
+    let wy = 0;
+    for (const e of wet) {
+      // a sauna is a roofed cabin and counts; open water does not
+      ground.push({ id: e.id, label: e.label, x: gx, y: wy, w: e.w, h: e.h, kind: e.kind, counts: e.kind === 'service' });
+      wy += e.h + 0.8;
+    }
+  }
+
+  for (const c of COURT_EXTRAS.filter((e) => config.extras.includes(e.id))) {
+    gx -= GARDEN_GAP + c.w;
+    ground.push({ id: c.id, label: c.label, x: gx, y: 0, w: c.w, h: c.h, kind: 'outdoor', counts: false });
   }
 
   const buildingW = LEFT_W + HALL_W + BED_DEPTH + ensuiteWidth(config);
@@ -429,6 +485,72 @@ const LEASE_YEARS = 25;
  * excluded from the calculation.
  */
 export const COVERAGE_LIMIT_PCT = 50;
+
+/** Everything the drawing puts on the ground — roofed or not, pool and deck included. */
+export function siteAreaOf(config: VillaConfig): number {
+  const ground = buildPlans(config)[0];
+  return Math.round(ground.rooms.reduce((s, r) => s + r.w * r.h, 0));
+}
+
+/**
+ * Whether this pool still leaves the whole layout inside the plot boundary.
+ * "No pool" is always available — when the building alone is too big for the
+ * plot, the answer is a smaller building, not a locked-out pool selector.
+ */
+export function poolFitsPlot(config: VillaConfig, pool: PoolType): boolean {
+  if (pool === 'none') return true;
+  return siteAreaOf({ ...config, pool }) <= config.landSqm;
+}
+
+/** The largest pool this plot can still take, for when the plot shrinks. */
+export function largestPoolThatFits(config: VillaConfig): PoolType {
+  const ordered = [...POOLS].sort((a, b) => b.length * b.width - a.length * a.width);
+  return (ordered.find((p) => poolFitsPlot(config, p.id)) ?? POOLS[0]).id;
+}
+
+/** Ground-floor area that counts towards KDB, without pricing the whole study. */
+export function footprintOf(config: VillaConfig): number {
+  const ground = buildPlans(config)[0];
+  return Math.round(ground.rooms.filter((r) => r.counts).reduce((s, r) => s + r.w * r.h, 0));
+}
+
+export function maxFootprintOf(config: VillaConfig): number {
+  return Math.round((config.landSqm * COVERAGE_LIMIT_PCT) / 100);
+}
+
+/**
+ * Shrink the rooms until the ground floor fits the plot's coverage limit.
+ *
+ * The footprint is not linear in the room areas — the hall, the bathroom wing
+ * and the service rows all hold their own — so this bisects a single scale
+ * factor applied to every room, stopping at each room's minimum. If even the
+ * smallest layout is over, it returns that: the editor keeps the warning
+ * rather than pretending the plot is bigger than it is.
+ */
+export function fitRoomsToPlot(config: VillaConfig): RoomSizes {
+  const limit = maxFootprintOf(config);
+  if (footprintOf(config) <= limit) return config.rooms;
+
+  const keys = Object.keys(config.rooms) as (keyof RoomSizes)[];
+  const scale = (k: number): RoomSizes =>
+    keys.reduce((acc, key) => {
+      const { min, max } = ROOM_LIMITS[key];
+      const v = Math.round(Math.min(max, Math.max(min, config.rooms[key] * k)) * 2) / 2;
+      return { ...acc, [key]: v };
+    }, {} as RoomSizes);
+
+  const smallest = scale(0);
+  if (footprintOf({ ...config, rooms: smallest }) > limit) return smallest;
+
+  let lo = 0;      // known to fit
+  let hi = 1;      // known to be over
+  for (let i = 0; i < 16; i++) {
+    const mid = (lo + hi) / 2;
+    if (footprintOf({ ...config, rooms: scale(mid) }) <= limit) lo = mid;
+    else hi = mid;
+  }
+  return scale(lo);
+}
 const POOL_RATE_FACTOR: Record<PoolType, number> = {
   none: 0.78,
   plunge: 0.92,

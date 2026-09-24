@@ -29,6 +29,9 @@ import {
   DEFAULT_CONFIG,
   DEFAULT_ROOMS,
   EXTRAS,
+  fitRoomsToPlot,
+  largestPoolThatFits,
+  poolFitsPlot,
   ExtraId,
   FINISHES,
   FinishLevel,
@@ -102,7 +105,13 @@ export class DesignPage {
   readonly extraOptions = EXTRAS;
   readonly presets = PRESETS;
   readonly roomLimits = ROOM_LIMITS;
-  readonly roomKeys = Object.keys(ROOM_LIMITS) as (keyof RoomSizes)[];
+  private readonly allRoomKeys = Object.keys(ROOM_LIMITS) as (keyof RoomSizes)[];
+
+  /** Only the sliders that actually change this configuration's drawing. */
+  readonly roomKeys = computed<(keyof RoomSizes)[]>(() => {
+    const c = this.config();
+    return this.allRoomKeys.filter((k) => !(k === 'bedroom' && c.bedrooms < 2));
+  });
 
   readonly config = signal<VillaConfig>({
     ...DEFAULT_CONFIG,
@@ -204,8 +213,37 @@ export class DesignPage {
 
   setStyle(style: VillaStyle): void { this.patch({ style }); }
   setFinish(finish: FinishLevel): void { this.patch({ finish }); }
-  setPool(pool: PoolType): void { this.patch({ pool }); }
+  setPool(pool: PoolType): void {
+    if (this.poolDisabled(pool)) return;
+    this.patch({ pool });
+  }
+
+  /** A pool that would push the layout past the plot boundary cannot be chosen. */
+  poolDisabled(pool: PoolType): boolean {
+    return !poolFitsPlot(this.config(), pool);
+  }
   setArea(area: AreaId): void { this.patch({ area }); }
+
+  /**
+   * Simple mode gives no room-by-room control, so a plot that no longer fits
+   * the house has to be resolved here — otherwise the only way out of the
+   * coverage warning is to switch to Advanced.
+   */
+  setLand(landSqm: number): void {
+    this.config.update((c) => {
+      let next = { ...c, landSqm };
+      if (!this.isAdvanced()) next = { ...next, rooms: fitRoomsToPlot(next) };
+      // a pool the plot can no longer take would otherwise stay selected while
+      // its own button is disabled, leaving the editor in a state you cannot fix
+      if (!poolFitsPlot(next, next.pool)) next = { ...next, pool: largestPoolThatFits(next) };
+      return next;
+    });
+  }
+
+  /** Advanced keeps its numbers, but can hand them back to the plot in one click. */
+  fitToPlot(): void {
+    this.config.update((c) => ({ ...c, rooms: fitRoomsToPlot(c) }));
+  }
   setStoreys(value: number | string): void { this.patch({ storeys: Number(value) === 2 ? 2 : 1 }); }
 
   toggleExtra(id: ExtraId): void {
@@ -353,7 +391,18 @@ export class DesignPage {
 
   roomArea(room: PlanRoom): string { return `${(room.w * room.h).toFixed(1)} m²`; }
   showLabel(room: PlanRoom): boolean { return room.w >= 1.9 && room.h >= 1.5; }
-  showArea(room: PlanRoom): boolean { return room.w >= 2.6 && room.h >= 2.4; }
+
+  /**
+   * Every room states its area — the pool and the living room included. The
+   * descriptive line only appears when there is a third line's worth of room.
+   */
+  roomLines(room: PlanRoom): { text: string; cls: string; y: number }[] {
+    const lines: { text: string; cls: string }[] = [{ text: room.label, cls: 'room-label' }];
+    if (room.w >= 2.2 && room.h >= 1.9) lines.push({ text: this.roomArea(room), cls: 'room-area' });
+    if (room.sub && room.w >= 3 && room.h >= 3.6) lines.push({ text: room.sub, cls: 'room-sub' });
+    const top = -((lines.length - 1) * 0.82) / 2;
+    return lines.map((l, i) => ({ ...l, y: top + i * 0.82 }));
+  }
 
   /** What the drawn plan actually gives a room, which can differ from the slider. */
   actualRoomArea(key: keyof RoomSizes): number {

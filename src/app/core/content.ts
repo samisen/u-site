@@ -343,7 +343,7 @@ export const INSIGHTS: Insight[] = [
     author: 'Editorial team',
     image: 'media/villa-facade.jpg',
     body: [
-      'There is no single perfect villa. There is the right villa for the right owner, location, budget and objective — and the gap between those versions is larger than most people expect.',
+      'Every owner has a different right villa, shaped by location, budget and what they want the property to do — and the gap between those versions is larger than most people expect.',
       'An owner who will spend three months a year in the property wants storage, a kitchen that works for cooking rather than photographs, and a suite that can be closed off. An owner who will visit twice a year wants bedroom parity, fast turnaround and a layout that reads well in twelve photographs.',
       'Both are legitimate. Building the second for the first owner is how people end up quietly disliking a property they spent two years making.',
     ],

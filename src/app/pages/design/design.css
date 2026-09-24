@@ -451,3 +451,26 @@
   from { opacity: 1; }
   to   { opacity: 0; }
 }
+
+/* the descriptive third line, under the room name and its area */
+.room-sub { font-size: .38px; fill: var(--ink-3); opacity: .8; dominant-baseline: middle; }
+
+/* options state the floor area they add */
+.chip-sqm { padding-inline-start: 2px; font-size: 10.5px; color: var(--ink-3); }
+.chip.is-on .chip-sqm { color: var(--brand); }
+
+/* one-click way out of a coverage warning, for when the rooms are set by hand */
+.ed-status-fix {
+  margin-inline-start: auto;
+  flex: none;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-size: 12px;
+  cursor: pointer;
+}
+.ed-status-fix:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+
+.pill:disabled { opacity: .4; cursor: not-allowed; }

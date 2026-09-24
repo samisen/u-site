@@ -10,9 +10,9 @@
       <p class="eyebrow">Tailor-made</p>
       <h1 class="display">Tell Us How You Want to Use Your Villa</h1>
       <p class="lede">
-        There is no single perfect villa — there is the right villa for the right owner, location,
-        budget and objective. Set it out below: the plan redraws and the budget recalculates with
-        every choice.
+        Every owner has a different right villa — shaped by location, budget and what you want the
+        property to do. Set it out below: the plan redraws and the budget recalculates with every
+        choice.
       </p>
     </div>
   </div>
@@ -41,7 +41,6 @@
           [nzOptions]="floorOptions()"
           [ngModel]="visibleFloor()"
           (ngModelChange)="setFloor($event)"
-          nzSize="small"
         />
       }
 
@@ -123,7 +122,7 @@
           <div class="fld">
             <label>Land <span class="fld-val mono">{{ c.landSqm }} m²</span></label>
             <nz-slider [nzMin]="250" [nzMax]="1500" [nzStep]="25"
-              [ngModel]="c.landSqm" (ngModelChange)="patch({ landSqm: $event })" />
+              [ngModel]="c.landSqm" (ngModelChange)="setLand($event)" />
           </div>
         </section>
 
@@ -136,7 +135,7 @@
             the drawing actually gives you once the two wings line up.
           </p>
 
-          @for (key of roomKeys; track key) {
+          @for (key of roomKeys(); track key) {
             <div class="fld fld-room">
               <label>
                 {{ roomLimits[key].label }}
@@ -165,7 +164,14 @@
           <h2 class="grp-title">Pool</h2>
           <div class="pills">
             @for (p of pools; track p.id) {
-              <button type="button" class="pill" [class.is-on]="c.pool === p.id" (click)="setPool(p.id)">
+              <button
+                type="button"
+                class="pill"
+                [class.is-on]="c.pool === p.id"
+                [disabled]="poolDisabled(p.id)"
+                (click)="setPool(p.id)"
+                [nz-tooltip]="poolDisabled(p.id) ? 'Larger than this plot can take' : null"
+              >
                 <span class="pill-name">{{ p.name }}</span>
                 <span class="pill-sub mono">{{ p.size }}</span>
               </button>
@@ -215,7 +221,10 @@
                 [nz-tooltip]="extraDisabled(e.id) ? 'Needs a second storey' : e.note"
               >
                 <nz-icon [nzType]="hasExtra(e.id) ? 'check' : 'plus'" />
-                {{ e.name }}
+                <span class="chip-name">{{ e.name }}</span>
+                @if (e.sqm) {
+                  <span class="chip-sqm mono">+{{ e.sqm }} m²</span>
+                }
               </button>
             }
           </div>
@@ -359,9 +368,8 @@
               @if (showLabel(room)) {
                 <!-- positioned by transform, not x/y, so the label travels with the room -->
                 <g class="room-text" [attr.transform]="'translate(' + (room.x + room.w / 2) + ' ' + (room.y + room.h / 2) + ')'">
-                  <text class="room-label" x="0" y="0" text-anchor="middle">{{ room.label }}</text>
-                  @if (showArea(room)) {
-                    <text class="room-area" x="0" y="0.95" text-anchor="middle">{{ room.sub || roomArea(room) }}</text>
+                  @for (line of roomLines(room); track line.cls) {
+                    <text [class]="line.cls" x="0" [attr.y]="line.y" text-anchor="middle">{{ line.text }}</text>
                   }
                 </g>
               }
@@ -457,6 +465,9 @@
             KDB {{ s.coverageLimitPct }}% of {{ c.landSqm }} m² — pool, deck and carport excluded
           </span>
         </div>
+        @if (s.overCoverage) {
+          <button type="button" class="ed-status-fix" (click)="fitToPlot()">Fit to the plot</button>
+        }
       </div>
     </section>
 
