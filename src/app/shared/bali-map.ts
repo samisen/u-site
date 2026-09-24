@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { I18nService, TranslatePipe } from '../core/i18n';
 import { AREA_POINTS, BALI_MAP, MAP_LANDMARKS } from '../core/bali-geo';
 import { CatalogService } from '../core/catalog.service';
 import { AreaId } from '../core/models';
@@ -21,13 +22,14 @@ interface AreaMarker {
  */
 @Component({
   selector: 'app-bali-map',
-  imports: [NzIconModule],
+  imports: [NzIconModule, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './bali-map.html',
   styleUrl: './bali-map.css',
 })
 export class BaliMapComponent {
   private readonly catalog = inject(CatalogService);
+  private readonly i18n = inject(I18nService);
 
   /** Area currently filtered in the parent, if any. */
   readonly selected = input<AreaId | null>(null);
@@ -37,19 +39,21 @@ export class BaliMapComponent {
   readonly landmarks = MAP_LANDMARKS;
   readonly hovered = signal<AreaId | null>(null);
 
-  readonly markers = computed<AreaMarker[]>(() =>
-    this.catalog.areas().map((area) => {
+  readonly markers = computed<AreaMarker[]>(() => {
+    // the marker labels are drawn as SVG text, so they are resolved here
+    this.i18n.version();
+    return this.catalog.areas().map((area) => {
       const count = this.catalog.projects().filter((p) => p.area === area.id).length;
       return {
         id: area.id,
-        name: area.name,
+        name: this.i18n.t(area.name),
         ...AREA_POINTS[area.id],
         count,
         // area of the disc tracks the count, so two projects do not look like four
         radius: count ? 13 + Math.sqrt(count) * 7 : 8,
       };
-    }),
-  );
+    });
+  });
 
   /** The area whose card is shown: hover wins, then the current selection. */
   readonly active = computed(() => this.hovered() ?? this.selected());

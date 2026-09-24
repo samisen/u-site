@@ -1,28 +1,28 @@
 <figure class="chart-figure">
   <figcaption class="chart-head">
-    <h3 class="chart-title">Broad residential gross rental yield, by market</h3>
-    <p class="chart-sub">{{ meta.period }} · {{ meta.source }}</p>
+    <h3 class="chart-title">{{ 'chart.title' | t }}</h3>
+    <p class="chart-sub">{{ meta.period | t }} · {{ meta.source | t }}</p>
   </figcaption>
 
   <div class="chart-body">
     <ol class="bars" (mouseleave)="hovered.set(null)">
-      @for (bar of bars(); track bar.market) {
+      @for (bar of bars(); track bar.id) {
         <li
           class="bar-cell"
-          [class.is-hovered]="hovered() === bar.market"
-          (mouseenter)="hovered.set(bar.market)"
-          (focusin)="hovered.set(bar.market)"
+          [class.is-hovered]="hovered() === bar.id"
+          (mouseenter)="hovered.set(bar.id)"
+          (focusin)="hovered.set(bar.id)"
           tabindex="0"
         >
           <span class="bar-value mono">{{ bar.yieldPct.toFixed(2) }}%</span>
           <div class="bar-track">
             <div class="bar" [style.height.%]="bar.height"></div>
           </div>
-          <span class="bar-label">{{ bar.market }}</span>
+          <span class="bar-label">{{ bar.market | t }}</span>
 
-          @if (hovered() === bar.market) {
+          @if (hovered() === bar.id) {
             <span class="bar-tip" role="status">
-              {{ bar.market }} · {{ bar.yieldPct.toFixed(2) }}% · {{ meta.period }}
+              {{ bar.market | t }} · {{ bar.yieldPct.toFixed(2) }}% · {{ meta.period | t }}
             </span>
           }
         </li>
@@ -30,54 +30,51 @@
     </ol>
 
     <aside class="range-card">
-      <span class="range-eyebrow">Selected Bali villa concepts</span>
+      <span class="range-eyebrow">{{ 'chart.range.eyebrow' | t }}</span>
       <span class="range-value">{{ claim.range }}<sup>*</sup></span>
-      <span class="range-measure">Indicative gross rental yield</span>
-      <p class="range-note">
-        A different measure from the bars: a short-term hospitality model rather than standard
-        long-term residential rent. Not a country average, and not a guaranteed outcome.
-      </p>
+      <span class="range-measure">{{ 'chart.range.measure' | t }}</span>
+      <p class="range-note">{{ 'chart.range.note' | t }}</p>
     </aside>
   </div>
 
   <div class="chart-foot">
     <button type="button" class="table-toggle" (click)="toggleTable()">
       <nz-icon [nzType]="showTable() ? 'up' : 'down'" />
-      {{ showTable() ? 'Hide the table' : 'View as a table' }}
+      {{ (showTable() ? 'chart.hideTable' : 'chart.showTable') | t }}
     </button>
     <a class="chart-source" [href]="meta.sourceUrl" target="_blank" rel="noopener noreferrer">
-      Source: Global Property Guide
+      {{ 'chart.source' | t }}
       <nz-icon nzType="arrow-right" />
     </a>
   </div>
 
   @if (showTable()) {
     <table class="chart-table">
-      <caption class="sr-only">Broad residential gross rental yield by market, {{ meta.period }}</caption>
+      <caption class="sr-only">{{ 'chart.tableCaption' | t: { period: i18n.t(meta.period) } }}</caption>
       <thead>
         <tr>
-          <th scope="col">Market</th>
-          <th scope="col">{{ meta.measure }}</th>
-          <th scope="col">Source period</th>
+          <th scope="col">{{ 'chart.col.market' | t }}</th>
+          <th scope="col">{{ meta.measure | t }}</th>
+          <th scope="col">{{ 'chart.col.period' | t }}</th>
         </tr>
       </thead>
       <tbody>
-        @for (bar of bars(); track bar.market) {
+        @for (bar of bars(); track bar.id) {
           <tr>
-            <th scope="row">{{ bar.market }}</th>
+            <th scope="row">{{ bar.market | t }}</th>
             <td class="mono">{{ bar.yieldPct.toFixed(2) }}%</td>
-            <td>{{ meta.period }}</td>
+            <td>{{ meta.period | t }}</td>
           </tr>
         }
         <tr class="table-range">
-          <th scope="row">Selected Bali villa concepts</th>
+          <th scope="row">{{ 'chart.range.eyebrow' | t }}</th>
           <td class="mono">{{ claim.range }}*</td>
-          <td>Indicative, project-level</td>
+          <td>{{ 'chart.range.level' | t }}</td>
         </tr>
       </tbody>
     </table>
   }
 
-  <p class="chart-caveat">{{ meta.caveat }}</p>
-  <p class="chart-caveat">{{ claim.footnote }}</p>
+  <p class="chart-caveat">{{ meta.caveat | t }}</p>
+  <p class="chart-caveat">{{ claim.footnote | t }}</p>
 </figure>

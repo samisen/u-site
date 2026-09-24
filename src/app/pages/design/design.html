@@ -7,13 +7,9 @@
 <section class="editor-page">
   <div class="container">
     <div class="ed-intro">
-      <p class="eyebrow">Tailor-made</p>
-      <h1 class="display">Tell Us How You Want to Use Your Villa</h1>
-      <p class="lede">
-        Every owner has a different right villa — shaped by location, budget and what you want the
-        property to do. Set it out below: the plan redraws and the budget recalculates with every
-        choice.
-      </p>
+      <p class="eyebrow">{{ 'design.eyebrow' | t }}</p>
+      <h1 class="display">{{ 'cta.tailorMade' | t }}</h1>
+      <p class="lede">{{ 'design.lede' | t }}</p>
     </div>
   </div>
 
@@ -24,13 +20,15 @@
     <div class="ed-bar-left">
       @if (fullscreen()) {
         <!-- the only way out of the overlay; in page the site header is right there -->
-        <button type="button" class="ed-back" (click)="leaveEditor()" aria-label="Leave the editor">
+        <button type="button" class="ed-back" (click)="leaveEditor()" [attr.aria-label]="'design.leave' | t">
           <nz-icon nzType="arrow-left" />
         </button>
       }
       <div class="ed-title">
-        <span class="ed-name">Design your villa</span>
-        <span class="ed-sub">{{ c.bedrooms }} bed · {{ s.builtSqm }} m² · {{ area().name }}</span>
+        <span class="ed-name">{{ 'nav.design' | t }}</span>
+        <span class="ed-sub">
+          {{ 'design.bar.sub' | t: { bedrooms: c.bedrooms, built: s.builtSqm, area: t(area().name) } }}
+        </span>
       </div>
     </div>
 
@@ -44,13 +42,13 @@
         />
       }
 
-      <div class="ed-zoom" role="group" aria-label="Zoom">
-        <button type="button" (click)="zoomOut()" aria-label="Zoom out"><nz-icon nzType="minus" /></button>
+      <div class="ed-zoom" role="group" [attr.aria-label]="'design.zoom' | t">
+        <button type="button" (click)="zoomOut()" [attr.aria-label]="'design.zoomOut' | t"><nz-icon nzType="minus" /></button>
         <button type="button" class="ed-zoom-val" (click)="zoomFit()">{{ (zoom() * 100).toFixed(0) }}%</button>
-        <button type="button" (click)="zoomIn()" aria-label="Zoom in"><nz-icon nzType="plus" /></button>
+        <button type="button" (click)="zoomIn()" [attr.aria-label]="'design.zoomIn' | t"><nz-icon nzType="plus" /></button>
       </div>
 
-      <button type="button" class="ed-ghost" (click)="reset()" nz-tooltip nzTooltipTitle="Start over">
+      <button type="button" class="ed-ghost" (click)="reset()" nz-tooltip [nzTooltipTitle]="'design.startOver' | t">
         <nz-icon nzType="swap" />
       </button>
 
@@ -58,7 +56,7 @@
         type="button"
         class="ed-ghost"
         (click)="toggleFullscreen()"
-        [nz-tooltip]="fullscreen() ? 'Exit full screen (Esc)' : 'Full screen'"
+        [nz-tooltip]="(fullscreen() ? 'design.exitFullscreen' : 'design.fullscreen') | t"
         [attr.aria-pressed]="fullscreen()"
       >
         <nz-icon [nzType]="fullscreen() ? 'compress' : 'expand'" />
@@ -66,39 +64,35 @@
 
       <button nz-button nzType="primary" class="ed-send" (click)="openSend()">
         <nz-icon nzType="send" />
-        <span>Send to the team</span>
+        <span>{{ 'design.send' | t }}</span>
       </button>
     </div>
   </header>
 
   <div class="ed-body">
     <!-- ============ CONFIG PANEL ============ -->
-    <aside class="ed-panel" aria-label="Villa configuration">
+    <aside class="ed-panel" [attr.aria-label]="'design.panelAria' | t">
       <div class="ed-panel-mode">
         <nz-segmented
-          [nzOptions]="modeOptions"
+          [nzOptions]="modeOptions()"
           [ngModel]="mode()"
           (ngModelChange)="setMode($event)"
           nzBlock
         />
         <p class="mode-note">
-          @if (isAdvanced()) {
-            Room-by-room areas, architectural style and options.
-          } @else {
-            The seven decisions that move the budget most.
-          }
+          {{ (isAdvanced() ? 'design.mode.advancedNote' : 'design.mode.simpleNote') | t }}
         </p>
       </div>
 
       <div class="ed-panel-scroll">
         <!-- presets -->
         <section class="grp">
-          <h2 class="grp-title">Start from</h2>
+          <h2 class="grp-title">{{ 'design.startFrom' | t }}</h2>
           <div class="presets">
             @for (p of presets; track p.id) {
               <button type="button" class="preset" (click)="applyPreset(p.id)">
-                <span class="preset-name">{{ p.name }}</span>
-                <span class="preset-note">{{ p.note }}</span>
+                <span class="preset-name">{{ p.name | t }}</span>
+                <span class="preset-note">{{ p.note | t }}</span>
               </button>
             }
           </div>
@@ -106,21 +100,21 @@
 
         <!-- size -->
         <section class="grp">
-          <h2 class="grp-title">Size</h2>
+          <h2 class="grp-title">{{ 'design.size' | t }}</h2>
 
           <div class="fld">
-            <label>Bedrooms <span class="fld-val mono">{{ c.bedrooms }}</span></label>
+            <label>{{ 'detail.bedrooms' | t }} <span class="fld-val mono">{{ c.bedrooms }}</span></label>
             <nz-slider [nzMin]="1" [nzMax]="6" [nzStep]="1" [nzMarks]="bedroomMarks"
               [ngModel]="c.bedrooms" (ngModelChange)="patch({ bedrooms: $event })" />
           </div>
 
           <div class="fld fld-tight">
-            <label>Storeys</label>
-            <nz-segmented [nzOptions]="storeyOptions" [ngModel]="c.storeys" (ngModelChange)="setStoreys($event)" nzBlock />
+            <label>{{ 'design.storeys' | t }}</label>
+            <nz-segmented [nzOptions]="storeyOptions()" [ngModel]="c.storeys" (ngModelChange)="setStoreys($event)" nzBlock />
           </div>
 
           <div class="fld">
-            <label>Land <span class="fld-val mono">{{ c.landSqm }} m²</span></label>
+            <label>{{ 'detail.land' | t }} <span class="fld-val mono">{{ c.landSqm }} m²</span></label>
             <nz-slider [nzMin]="250" [nzMax]="1500" [nzStep]="25"
               [ngModel]="c.landSqm" (ngModelChange)="setLand($event)" />
           </div>
@@ -129,16 +123,13 @@
         <!-- rooms -->
         @if (isAdvanced()) {
         <section class="grp">
-          <h2 class="grp-title">Rooms</h2>
-          <p class="grp-note">
-            Set the area you want. The plan redraws around it, and the figure on the right is what
-            the drawing actually gives you once the two wings line up.
-          </p>
+          <h2 class="grp-title">{{ 'design.rooms' | t }}</h2>
+          <p class="grp-note">{{ 'design.roomsNote' | t }}</p>
 
           @for (key of roomKeys(); track key) {
             <div class="fld fld-room">
               <label>
-                {{ roomLimits[key].label }}
+                {{ roomLimits[key].label | t }}
                 <span class="fld-val mono">
                   {{ c.rooms[key] }} m²
                   @if (actualRoomArea(key) && actualRoomArea(key) !== c.rooms[key]) {
@@ -153,7 +144,7 @@
                 [ngModel]="c.rooms[key]"
                 (ngModelChange)="setRoom(key, $event)"
               />
-              <span class="fld-hint">{{ roomLimits[key].hint }}</span>
+              <span class="fld-hint">{{ roomLimits[key].hint | t }}</span>
             </div>
           }
         </section>
@@ -161,7 +152,7 @@
 
         <!-- pool -->
         <section class="grp">
-          <h2 class="grp-title">Pool</h2>
+          <h2 class="grp-title">{{ 'villa.plan.pool' | t }}</h2>
           <div class="pills">
             @for (p of pools; track p.id) {
               <button
@@ -172,7 +163,7 @@
                 (click)="setPool(p.id)"
                 [nz-tooltip]="poolNote(p.id)"
               >
-                <span class="pill-name">{{ p.name }}</span>
+                <span class="pill-name">{{ p.name | t }}</span>
                 <span class="pill-sub mono">{{ p.size }}</span>
               </button>
             }
@@ -182,11 +173,11 @@
         <!-- style & finish -->
         <section class="grp">
           @if (isAdvanced()) {
-            <h2 class="grp-title">Style</h2>
+            <h2 class="grp-title">{{ 'design.style' | t }}</h2>
             <div class="rows">
               @for (st of styles; track st.id) {
                 <button type="button" class="row" [class.is-on]="c.style === st.id" (click)="setStyle(st.id)">
-                  <span class="row-name">{{ st.name }}</span>
+                  <span class="row-name">{{ st.name | t }}</span>
                   @if (st.multiplier > 1) {
                     <span class="row-tag mono">+{{ ((st.multiplier - 1) * 100).toFixed(0) }}%</span>
                   }
@@ -195,11 +186,11 @@
             </div>
           }
 
-          <h2 class="grp-title" [class.grp-title-sub]="isAdvanced()">Finish</h2>
+          <h2 class="grp-title" [class.grp-title-sub]="isAdvanced()">{{ 'design.finish' | t }}</h2>
           <div class="rows">
             @for (f of finishes; track f.id) {
               <button type="button" class="row" [class.is-on]="c.finish === f.id" (click)="setFinish(f.id)">
-                <span class="row-name">{{ f.name }}</span>
+                <span class="row-name">{{ f.name | t }}</span>
                 <span class="row-tag mono">&#36;{{ f.rate }}/m²</span>
               </button>
             }
@@ -209,7 +200,7 @@
         <!-- options -->
         @if (isAdvanced()) {
         <section class="grp">
-          <h2 class="grp-title">Options</h2>
+          <h2 class="grp-title">{{ 'design.options' | t }}</h2>
           <div class="chips">
             @for (e of extraOptions; track e.id) {
               <button
@@ -218,10 +209,10 @@
                 [class.is-on]="hasExtra(e.id)"
                 [disabled]="extraDisabled(e.id)"
                 (click)="toggleExtra(e.id)"
-                [nz-tooltip]="extraDisabled(e.id) ? 'Needs a second storey' : e.note"
+                [nz-tooltip]="(extraDisabled(e.id) ? 'design.needsSecondStorey' : e.note) | t"
               >
                 <nz-icon [nzType]="hasExtra(e.id) ? 'check' : 'plus'" />
-                <span class="chip-name">{{ e.name }}</span>
+                <span class="chip-name">{{ e.name | t }}</span>
                 @if (e.sqm) {
                   <span class="chip-sqm mono">+{{ e.sqm }} m²</span>
                 }
@@ -233,79 +224,79 @@
 
         <!-- location -->
         <section class="grp">
-          <h2 class="grp-title">Where</h2>
+          <h2 class="grp-title">{{ 'design.where' | t }}</h2>
           <nz-select [ngModel]="c.area" (ngModelChange)="setArea($event)" style="width: 100%">
             @for (a of areas(); track a.id) {
-              <nz-option [nzValue]="a.id" [nzLabel]="a.name + ' — ' + a.subtitle" />
+              <nz-option [nzValue]="a.id" [nzLabel]="t(a.name) + ' — ' + t(a.subtitle)" />
             }
           </nz-select>
           <p class="grp-note">
-            {{ area().tagline }} Land runs about <strong>{{ money(area().landPriceArePerYearUsd) }}</strong>
-            per are, per year.
+            {{ area().tagline | t }}
+            {{ 'design.landPrice' | t: { price: money(area().landPriceArePerYearUsd) } }}
           </p>
         </section>
 
         <!-- numbers -->
         <section class="grp grp-numbers">
-          <h2 class="grp-title">The study</h2>
+          <h2 class="grp-title">{{ 'design.study' | t }}</h2>
 
           <dl class="nums">
-            @for (line of s.lines; track line.label) {
-              <div [class.is-zero]="line.amount === 0">
+            @for (line of costLines(); track line.label) {
+              <div [class.is-zero]="line.amount === 0" [attr.title]="line.note">
                 <dt>{{ line.label }}</dt>
                 <dd class="mono">{{ money(line.amount) }}</dd>
               </div>
             }
             <div class="sub">
-              <dt>Build, all in</dt>
+              <dt>{{ 'design.buildTotal' | t }}</dt>
               <dd class="mono">{{ money(s.buildTotal) }}</dd>
             </div>
             <div>
-              <dt>Land · {{ leaseYears }} yrs</dt>
+              <dt>{{ 'design.landTotal' | t: { years: leaseYears } }}</dt>
               <dd class="mono">{{ money(s.landTotal) }}</dd>
             </div>
             <div class="tot">
-              <dt>Total investment</dt>
+              <dt>{{ 'detail.totalInvested' | t }}</dt>
               <dd class="mono">{{ money(s.total) }}</dd>
             </div>
           </dl>
 
           <div class="yield">
             <div>
-              <span class="y-label">Indicative gross yield<sup>*</sup></span>
+              <span class="y-label">{{ 'detail.indicativeGross' | t }}<sup>*</sup></span>
               <span class="y-value mono">{{ s.grossYield.toFixed(1) }}%</span>
             </div>
             <div>
-              <span class="y-label">Net, after costs</span>
+              <span class="y-label">{{ 'design.netAfterCosts' | t }}</span>
               <span class="y-value mono y-net">{{ s.netYield.toFixed(1) }}%</span>
             </div>
           </div>
 
-          <p class="foot-note">{{ claim.footnote }}</p>
+          <p class="foot-note">{{ claim.footnote | t }}</p>
         </section>
       </div>
 
       <!-- sticky action -->
       <div class="ed-panel-foot">
         <div class="foot-total">
-          <span>Total</span>
+          <span>{{ 'design.total' | t }}</span>
           <strong class="mono">{{ money(s.total, true) }}</strong>
         </div>
         <button nz-button nzType="primary" nzSize="large" (click)="openSend()">
-          Send to the team
+          {{ 'design.send' | t }}
           <nz-icon nzType="arrow-right" />
         </button>
       </div>
     </aside>
     <!-- ============ DRAWING ============ -->
-    <section class="ed-canvas" aria-label="Floor plan">
+    <section class="ed-canvas" [attr.aria-label]="'design.canvasAria' | t">
       <div class="ed-scroll" #scrollBox>
         <svg
           class="cad"
           [attr.viewBox]="sheetBox.viewBox"
           [style.width.px]="renderWidthPx() || null"
           role="img"
-          [attr.aria-label]="plan.name + ' of the configured villa'"
+          [attr.aria-label]="'design.planAria' | t: { plan: planName(plan.name) }"
         >
           <defs>
             <pattern id="cad-grid" width="1" height="1" patternUnits="userSpaceOnUse">
@@ -442,15 +433,15 @@
             <line [attr.x1]="tb.x + tb.w * 0.58" [attr.y1]="tb.y + 1.7" [attr.x2]="tb.x + tb.w * 0.58" [attr.y2]="tb.y + tb.h" />
 
             <text class="tb-brand" [attr.x]="tb.x + 0.6" [attr.y]="tb.y + 1.15">{{ brand.name }}</text>
-            <text class="tb-meta" [attr.x]="tb.x + tb.w - 0.6" [attr.y]="tb.y + 1.15" text-anchor="end">PRELIMINARY · NOT FOR CONSTRUCTION</text>
+            <text class="tb-meta" [attr.x]="tb.x + tb.w - 0.6" [attr.y]="tb.y + 1.15" text-anchor="end">{{ 'design.tb.preliminary' | t }}</text>
 
-            <text class="tb-key" [attr.x]="tb.x + 0.6" [attr.y]="tb.y + 2.9">DRAWING</text>
-            <text class="tb-val" [attr.x]="tb.x + 0.6" [attr.y]="tb.y + 3.9">{{ plan.name }}</text>
-            <text class="tb-key" [attr.x]="tb.x + 0.6" [attr.y]="tb.y + 5.1">{{ c.bedrooms }} bedrooms · {{ styleName() }}</text>
+            <text class="tb-key" [attr.x]="tb.x + 0.6" [attr.y]="tb.y + 2.9">{{ 'design.tb.drawing' | t }}</text>
+            <text class="tb-val" [attr.x]="tb.x + 0.6" [attr.y]="tb.y + 3.9">{{ plan.name | t }}</text>
+            <text class="tb-key" [attr.x]="tb.x + 0.6" [attr.y]="tb.y + 5.1">{{ 'design.tb.bedrooms' | t: { count: c.bedrooms, style: styleName() } }}</text>
 
-            <text class="tb-key" [attr.x]="tb.x + tb.w * 0.58 + 0.6" [attr.y]="tb.y + 2.9">BUILT AREA</text>
+            <text class="tb-key" [attr.x]="tb.x + tb.w * 0.58 + 0.6" [attr.y]="tb.y + 2.9">{{ 'design.tb.builtArea' | t }}</text>
             <text class="tb-val" [attr.x]="tb.x + tb.w * 0.58 + 0.6" [attr.y]="tb.y + 3.9">{{ s.builtSqm }} m²</text>
-            <text class="tb-key" [attr.x]="tb.x + tb.w * 0.58 + 0.6" [attr.y]="tb.y + 5.1">Plot {{ c.landSqm }} m² · KDB {{ s.siteCoverage }}%</text>
+            <text class="tb-key" [attr.x]="tb.x + tb.w * 0.58 + 0.6" [attr.y]="tb.y + 5.1">{{ 'design.tb.plot' | t: { land: c.landSqm, kdb: s.siteCoverage } }}</text>
           </g>
         </svg>
       </div>
@@ -459,14 +450,16 @@
       <div class="ed-status" [class.is-over]="s.overCoverage">
         <nz-icon [nzType]="s.overCoverage ? 'warning' : 'check-circle'" />
         <div>
-          <strong>{{ s.footprintSqm }} m²</strong> footprint of
-          <strong>{{ s.maxFootprintSqm }} m²</strong> allowed
+          <strong>{{ s.footprintSqm }} m²</strong>
+          {{ 'design.status.of' | t }}
+          <strong>{{ s.maxFootprintSqm }} m²</strong>
+          {{ 'design.status.allowed' | t }}
           <span class="ed-status-sub">
-            KDB {{ s.coverageLimitPct }}% of {{ c.landSqm }} m² — pool, deck and carport excluded
+            {{ 'design.status.kdb' | t: { limit: s.coverageLimitPct, land: c.landSqm } }}
           </span>
         </div>
         @if (s.overCoverage) {
-          <button type="button" class="ed-status-fix" (click)="fitToPlot()">Fit to the plot</button>
+          <button type="button" class="ed-status-fix" (click)="fitToPlot()">{{ 'design.status.fix' | t }}</button>
         }
       </div>
     </section>
@@ -481,63 +474,62 @@
   [nzVisible]="sendOpen()"
   [nzWidth]="420"
   nzPlacement="right"
-  nzTitle="Send this design to the team"
+  [nzTitle]="'design.send.title' | t"
   nzWrapClassName="send-drawer"
   (nzOnClose)="closeSend()"
 >
   <ng-container *nzDrawerContent>
     @if (!sent()) {
-      <p class="send-intro">
-        We will come back with what it would really cost on a plot that exists, and what we would
-        change about the plan.
-      </p>
+      <p class="send-intro">{{ 'design.send.intro' | t }}</p>
 
       <pre class="send-summary">{{ summaryText() }}</pre>
 
       <form nz-form nzLayout="vertical" [formGroup]="sendForm" (ngSubmit)="submitSend()">
         <nz-form-item>
-          <nz-form-label nzRequired nzFor="sn">Your name</nz-form-label>
-          <nz-form-control nzErrorTip="Please tell us your name.">
-            <input nz-input id="sn" formControlName="name" placeholder="Jane Doe" />
+          <nz-form-label nzRequired nzFor="sn">{{ 'contact.name' | t }}</nz-form-label>
+          <nz-form-control [nzErrorTip]="'contact.nameError' | t">
+            <input nz-input id="sn" formControlName="name" [attr.placeholder]="'contact.namePlaceholder' | t" />
           </nz-form-control>
         </nz-form-item>
 
         <nz-form-item>
-          <nz-form-label nzRequired nzFor="se">Email</nz-form-label>
-          <nz-form-control nzErrorTip="We need a valid email to reply to.">
+          <nz-form-label nzRequired nzFor="se">{{ 'contact.email' | t }}</nz-form-label>
+          <nz-form-control [nzErrorTip]="'contact.emailError' | t">
             <input nz-input id="se" type="email" formControlName="email" placeholder="jane@example.com" />
           </nz-form-control>
         </nz-form-item>
 
         <nz-form-item>
-          <nz-form-label nzFor="sm">Anything to add? <span class="optional">Optional</span></nz-form-label>
+          <nz-form-label nzFor="sm">
+            {{ 'design.send.note' | t }} <span class="optional">{{ 'common.optional' | t }}</span>
+          </nz-form-label>
           <nz-form-control>
-            <textarea nz-input id="sm" rows="3" formControlName="note" placeholder="A plot you have seen, a date you are working towards."></textarea>
+            <textarea nz-input id="sm" rows="3" formControlName="note" [attr.placeholder]="'design.send.notePlaceholder' | t"></textarea>
           </nz-form-control>
         </nz-form-item>
 
         <button nz-button nzType="primary" nzBlock nzSize="large" type="submit" [nzLoading]="sending()">
-          Send the design
+          {{ 'design.send.submit' | t }}
         </button>
       </form>
 
       <div class="send-or">
-        <span>or</span>
+        <span>{{ 'design.send.or' | t }}</span>
       </div>
 
       <a nz-button nzBlock nzSize="large" class="send-wa" [href]="whatsappHref()" target="_blank" rel="noopener noreferrer">
         <nz-icon nzType="whats-app" />
-        Send it on WhatsApp
+        {{ 'design.send.whatsapp' | t }}
       </a>
 
-      <p class="send-note">Demonstration site — nothing is sent or stored.</p>
+      <p class="send-note">{{ 'design.send.demo' | t }}</p>
     } @else {
       <div class="send-done">
         <nz-icon nzType="check-circle" class="done-icon" />
-        <h3>On its way</h3>
-        <p>A project lead will reply within one working day, with a costed view of this design.</p>
-        <button nz-button nzBlock (click)="closeSend()">Back to the editor</button>
-        <a nz-button nzBlock nzType="primary" routerLink="/projects">See what is open now</a>
+        <h3>{{ 'design.sent.title' | t }}</h3>
+        <p>{{ 'design.sent.text' | t }}</p>
+        <button nz-button nzBlock (click)="closeSend()">{{ 'design.sent.back' | t }}</button>
+        <a nz-button nzBlock nzType="primary" routerLink="/projects">{{ 'design.sent.open' | t }}</a>
       </div>
     }
   </ng-container>

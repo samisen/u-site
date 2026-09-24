@@ -5,34 +5,34 @@
   <section class="detail-hero">
     <div class="container">
       <nav class="crumbs" aria-label="Breadcrumb">
-        <a routerLink="/">Home</a>
+        <a routerLink="/">{{ 'nav.home' | t }}</a>
         <span>/</span>
-        <a routerLink="/projects">Projects</a>
+        <a routerLink="/projects">{{ 'nav.projects' | t }}</a>
         <span>/</span>
-        <span class="current">{{ p.name }}</span>
+        <span class="current">{{ p.name | t }}</span>
       </nav>
 
       <div class="hero-head">
         <div class="hero-copy">
           <div class="tags">
-            <nz-tag [nzColor]="statusColor()">{{ statusLabel() }}</nz-tag>
-            <nz-tag>{{ typeLabel() }}</nz-tag>
+            <nz-tag [nzColor]="statusColor()">{{ statusLabel() | t }}</nz-tag>
+            <nz-tag>{{ typeLabel() | t }}</nz-tag>
             <span class="loc">
               <nz-icon nzType="environment" />
-              {{ area()?.name }}
-              <span class="loc-sub">{{ area()?.subtitle }}</span>
+              {{ area()?.name | t }}
+              <span class="loc-sub">{{ area()?.subtitle | t }}</span>
             </span>
           </div>
 
-          <h1 class="display">{{ p.name }}</h1>
-          <p class="lede">{{ p.headline }}</p>
+          <h1 class="display">{{ p.name | t }}</h1>
+          <p class="lede">{{ p.headline | t }}</p>
         </div>
 
         <div class="hero-price">
-          <span class="hp-label">Entry price from</span>
+          <span class="hp-label">{{ 'detail.entryFrom' | t }}</span>
           <span class="hp-value mono">{{ money(p.priceFromUsd) }}</span>
           @if (p.unitsTotal > 1) {
-            <span class="hp-note">{{ p.unitsAvailable }} of {{ p.unitsTotal }} units available</span>
+            <span class="hp-note">{{ 'detail.unitsAvailable' | t: { available: p.unitsAvailable, total: p.unitsTotal } }}</span>
           }
         </div>
       </div>
@@ -45,7 +45,7 @@
       <nz-carousel [nzDots]="true" nzAutoPlay [nzAutoPlaySpeed]="6000" class="shots">
         @for (img of p.gallery; track img) {
           <div nz-carousel-content>
-            <img [src]="img" [alt]="p.name" />
+            <img [src]="img" [alt]="p.name | t" />
           </div>
         }
       </nz-carousel>
@@ -56,11 +56,11 @@
             class="tour-player"
             [src]="p.video"
             [poster]="p.videoPoster ?? p.hero"
-            [label]="'Play the ' + p.name + ' walkthrough'"
+            [label]="'video.walkthrough'"
           />
           <p class="tour-note">
             <nz-icon nzType="camera" />
-            Walkthrough filmed on site. Nothing downloads until you press play.
+            {{ 'detail.tourNote' | t }}
           </p>
         </div>
       }
@@ -71,30 +71,30 @@
   <section class="facts-bar">
     <div class="container facts-grid">
       <div class="fact">
-        <span class="f-label">Land</span>
+        <span class="f-label">{{ 'detail.land' | t }}</span>
         <span class="f-value mono">{{ p.landSqm }} m&sup2;</span>
       </div>
       @if (p.builtSqm > 0) {
         <div class="fact">
-          <span class="f-label">Built area</span>
+          <span class="f-label">{{ 'detail.builtArea' | t }}</span>
           <span class="f-value mono">{{ p.builtSqm }} m&sup2;</span>
         </div>
         <div class="fact">
-          <span class="f-label">Bedrooms</span>
+          <span class="f-label">{{ 'detail.bedrooms' | t }}</span>
           <span class="f-value mono">{{ p.bedrooms }}</span>
         </div>
       }
       <div class="fact">
-        <span class="f-label">Lease</span>
-        <span class="f-value mono">{{ p.leaseYears }} + {{ p.leaseExtensionYears }} yrs</span>
+        <span class="f-label">{{ 'projectCard.lease' | t }}</span>
+        <span class="f-value mono">{{ 'projectCard.leaseYears' | t: { years: p.leaseYears, extension: p.leaseExtensionYears } }}</span>
       </div>
       <div class="fact">
-        <span class="f-label">Handover</span>
-        <span class="f-value mono">{{ p.handover }}</span>
+        <span class="f-label">{{ 'projectCard.handover' | t }}</span>
+        <span class="f-value mono">{{ p.handover | t }}</span>
       </div>
       @if (p.projectedGrossYield > 0) {
         <div class="fact">
-          <span class="f-label">Indicative gross yield<sup>*</sup></span>
+          <span class="f-label">{{ 'detail.indicativeGross' | t }}<sup>*</sup></span>
           <span class="f-value mono accent">{{ p.projectedGrossYield }}%</span>
         </div>
       }
@@ -106,53 +106,51 @@
     <div class="container body-grid">
       <div class="body-main">
         <nz-tabs [nzAnimated]="false">
-          <nz-tab nzTitle="Overview">
+          <nz-tab [nzTitle]="'detail.tab.overview' | t">
             <div class="prose">
               @for (para of p.body; track $index) {
-                <p>{{ para }}</p>
+                <p>{{ para | t }}</p>
               }
             </div>
 
-            <h3 class="sub">What is included</h3>
+            <h3 class="sub">{{ 'detail.included' | t }}</h3>
             <ul class="features">
               @for (f of p.features; track f) {
-                <li><nz-icon nzType="check" /> {{ f }}</li>
+                <li><nz-icon nzType="check" /> {{ f | t }}</li>
               }
             </ul>
 
             @if (area(); as a) {
               <div class="area-note">
-                <h3 class="sub">Why {{ a.name }}</h3>
-                <p>{{ a.description }}</p>
+                <h3 class="sub">{{ 'detail.whyArea' | t: { area: i18n.t(a.name) } }}</h3>
+                <p>{{ a.description | t }}</p>
                 <div class="area-metrics">
                   <div>
-                    <span class="am-label">Average nightly rate</span>
+                    <span class="am-label">{{ 'detail.avgNightly' | t }}</span>
                     <span class="am-value mono">&#36;{{ a.avgNightlyRateUsd }}</span>
                   </div>
                   <div>
-                    <span class="am-label">Area occupancy</span>
+                    <span class="am-label">{{ 'detail.areaOccupancy' | t }}</span>
                     <span class="am-value mono">{{ (a.occupancy * 100).toFixed(0) }}%</span>
                   </div>
                   <div>
-                    <span class="am-label">Airport drive</span>
-                    <span class="am-value mono">{{ a.driveToAirportMin }} min</span>
+                    <span class="am-label">{{ 'detail.airportDrive' | t }}</span>
+                    <span class="am-value mono">{{ 'unit.minutes' | t: { n: a.driveToAirportMin } }}</span>
                   </div>
                 </div>
                 <a class="area-link" routerLink="/areas" [fragment]="a.id">
-                  Read the area guide
+                  {{ 'detail.areaGuide' | t }}
                   <nz-icon nzType="arrow-right" />
                 </a>
               </div>
             }
           </nz-tab>
 
-          <nz-tab nzTitle="Construction">
+          <nz-tab [nzTitle]="'detail.tab.construction' | t">
             <div class="progress-head">
               <div>
-                <h3 class="sub no-top">Build progress</h3>
-                <p class="muted small">
-                  Updated weekly by the site manager. Owners receive the full photo set every Friday.
-                </p>
+                <h3 class="sub no-top">{{ 'detail.buildProgress' | t }}</h3>
+                <p class="muted small">{{ 'detail.buildProgressNote' | t }}</p>
               </div>
               <nz-progress
                 [nzPercent]="p.progress"
@@ -166,9 +164,9 @@
               @for (t of p.timeline; track t.date) {
                 <nz-timeline-item [nzColor]="t.progress <= p.progress ? 'green' : 'gray'">
                   <div class="tl-item">
-                    <span class="tl-date mono">{{ t.date }}</span>
-                    <h4>{{ t.title }}</h4>
-                    <p>{{ t.note }}</p>
+                    <span class="tl-date mono">{{ t.date | t }}</span>
+                    <h4>{{ t.title | t }}</h4>
+                    <p>{{ t.note | t }}</p>
                   </div>
                 </nz-timeline-item>
               }
@@ -176,17 +174,14 @@
           </nz-tab>
 
           @if (modelled()) {
-            <nz-tab nzTitle="The numbers">
-              <p class="muted small model-intro">
-                Move the sliders. This is the same model we underwrite with — no hidden uplift, and
-                the cost assumptions are stated rather than buried.
-              </p>
+            <nz-tab [nzTitle]="'detail.tab.numbers' | t">
+              <p class="muted small model-intro">{{ 'detail.modelIntro' | t }}</p>
 
               <div class="model">
                 <div class="model-inputs">
                   <div class="mi">
                     <label>
-                      Average nightly rate
+                      {{ 'detail.avgNightly' | t }}
                       <span class="mono strong">&#36;{{ nightly() }}</span>
                     </label>
                     <nz-slider
@@ -200,7 +195,7 @@
 
                   <div class="mi">
                     <label>
-                      Occupancy
+                      {{ 'map.occupancy' | t }}
                       <span class="mono strong">{{ occupancy() }}%</span>
                     </label>
                     <nz-slider
@@ -213,7 +208,7 @@
 
                   <div class="mi">
                     <label>
-                      Total invested
+                      {{ 'detail.totalInvested' | t }}
                       <span class="mono strong">{{ money(investment()) }}</span>
                     </label>
                     <nz-slider
@@ -227,25 +222,25 @@
 
                   <button nz-button nzSize="small" (click)="resetModel()">
                     <nz-icon nzType="swap" />
-                    Reset to our assumptions
+                    {{ 'detail.resetModel' | t }}
                   </button>
                 </div>
 
                 <div class="model-output">
                   <div class="mo-headline">
-                    <span class="mo-label">Indicative gross yield<sup>*</sup></span>
+                    <span class="mo-label">{{ 'detail.indicativeGross' | t }}<sup>*</sup></span>
                     <span class="mo-value mono">{{ grossYield().toFixed(1) }}%</span>
                   </div>
 
                   <dl class="mo-rows">
                     <div>
-                      <dt>Gross rental revenue</dt>
+                      <dt>{{ 'detail.grossRevenue' | t }}</dt>
                       <dd class="mono">{{ money(grossAnnual()) }}</dd>
                     </div>
                     <div>
                       <dt>
-                        Management &amp; channel fees
-                        <span nz-tooltip nzTooltipTitle="Listing commissions, dynamic pricing, guest handling and owner reporting.">
+                        {{ 'detail.managementFees' | t }}
+                        <span nz-tooltip [nzTooltipTitle]="'detail.managementFeesTip' | t">
                           <nz-icon nzType="bulb" />
                         </span>
                       </dt>
@@ -253,35 +248,35 @@
                     </div>
                     <div>
                       <dt>
-                        Operating costs
-                        <span nz-tooltip nzTooltipTitle="Staff, utilities, pool and garden, consumables, repairs and the sinking fund.">
+                        {{ 'detail.operatingCosts' | t }}
+                        <span nz-tooltip [nzTooltipTitle]="'detail.operatingCostsTip' | t">
                           <nz-icon nzType="bulb" />
                         </span>
                       </dt>
                       <dd class="mono neg">&minus;{{ money(opexAnnual()) }} <span class="pct">({{ opexPct }}%)</span></dd>
                     </div>
                     <div class="total">
-                      <dt>Net income, per year</dt>
+                      <dt>{{ 'detail.netIncome' | t }}</dt>
                       <dd class="mono">{{ money(netAnnual()) }}</dd>
                     </div>
                     <div class="total">
-                      <dt>Net yield, after costs</dt>
+                      <dt>{{ 'detail.netYield' | t }}</dt>
                       <dd class="mono">{{ netYield().toFixed(1) }}%</dd>
                     </div>
                   </dl>
 
                   <div class="mo-foot">
                     <div>
-                      <span class="mof-label">Payback</span>
-                      <span class="mof-value mono">{{ payback().toFixed(1) }} yrs</span>
+                      <span class="mof-label">{{ 'detail.payback' | t }}</span>
+                      <span class="mof-value mono">{{ 'unit.years' | t: { n: payback().toFixed(1) } }}</span>
                     </div>
                     <div>
-                      <span class="mof-label">Net over the lease term</span>
+                      <span class="mof-label">{{ 'detail.overLease' | t }}</span>
                       <span class="mof-value mono">{{ money(overLease(), true) }}</span>
                     </div>
                   </div>
 
-                  <p class="disclaimer">{{ claim.footnote }}</p>
+                  <p class="disclaimer">{{ claim.footnote | t }}</p>
                 </div>
               </div>
             </nz-tab>
@@ -293,46 +288,43 @@
       <aside class="body-aside">
         <div class="aside-sticky">
           <div class="quote-card">
-            <span class="qc-label">Entry price from</span>
+            <span class="qc-label">{{ 'detail.entryFrom' | t }}</span>
             <span class="qc-price mono">{{ money(p.priceFromUsd) }}</span>
 
             <dl class="qc-rows">
               @if (p.projectedGrossYield > 0) {
                 <div>
-                  <dt>Indicative gross yield<sup>*</sup></dt>
+                  <dt>{{ 'detail.indicativeGross' | t }}<sup>*</sup></dt>
                   <dd class="mono">{{ p.projectedGrossYield }}%</dd>
                 </div>
                 <div>
-                  <dt>Modelled net, after costs</dt>
+                  <dt>{{ 'detail.modelledNet' | t }}</dt>
                   <dd class="mono">{{ p.projectedNetYield }}%</dd>
                 </div>
               }
               <div>
-                <dt>Handover</dt>
-                <dd class="mono">{{ p.handover }}</dd>
+                <dt>{{ 'projectCard.handover' | t }}</dt>
+                <dd class="mono">{{ p.handover | t }}</dd>
               </div>
               <div>
-                <dt>Lease term</dt>
-                <dd class="mono">{{ p.leaseYears }} + {{ p.leaseExtensionYears }} years</dd>
+                <dt>{{ 'detail.leaseTerm' | t }}</dt>
+                <dd class="mono">{{ 'projectCard.leaseYears' | t: { years: p.leaseYears, extension: p.leaseExtensionYears } }}</dd>
               </div>
               <div>
-                <dt>Status</dt>
-                <dd>{{ statusLabel() }}</dd>
+                <dt>{{ 'projects.filter.status' | t }}</dt>
+                <dd>{{ statusLabel() | t }}</dd>
               </div>
             </dl>
 
             <a nz-button nzType="primary" nzBlock nzSize="large" routerLink="/contact">
-              Request the project pack
+              {{ 'detail.requestPack' | t }}
             </a>
             <a nz-button nzBlock routerLink="/contact" class="qc-secondary">
-              Book a call with the project lead
+              {{ 'detail.bookCall' | t }}
             </a>
 
-            <p class="qc-note qc-footnote">{{ claim.footnote }}</p>
-            <p class="qc-note">
-              The pack includes the floor plans, the bill of quantities summary, the legal structure
-              and the twelve-month operating statement of a comparable delivered property.
-            </p>
+            <p class="qc-note qc-footnote">{{ claim.footnote | t }}</p>
+            <p class="qc-note">{{ 'detail.packNote' | t }}</p>
           </div>
         </div>
       </aside>
@@ -343,9 +335,9 @@
   <section class="section section-sand">
     <div class="container">
       <div class="rel-head" appReveal>
-        <h2 class="title-md">Other projects worth a look</h2>
+        <h2 class="title-md">{{ 'detail.related' | t }}</h2>
         <a class="rel-link" routerLink="/projects">
-          All projects
+          {{ 'common.allProjects' | t }}
           <nz-icon nzType="arrow-right" />
         </a>
       </div>
@@ -362,9 +354,9 @@
   <!-- ---------- mobile action bar ---------- -->
   <div class="mobile-bar">
     <div class="mb-price">
-      <span class="mb-label">From</span>
+      <span class="mb-label">{{ 'projectCard.from' | t }}</span>
       <span class="mb-value mono">{{ money(p.priceFromUsd, true) }}</span>
     </div>
-    <a nz-button nzType="primary" nzSize="large" routerLink="/contact">Request the pack</a>
+    <a nz-button nzType="primary" nzSize="large" routerLink="/contact">{{ 'detail.requestPackShort' | t }}</a>
   </div>
 }

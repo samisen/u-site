@@ -1,7 +1,7 @@
 <app-page-hero
-  eyebrow="The portfolio"
-  heading="Projects, open and delivered."
-  lede="Nine projects across eight areas. Start from the map if you know where you want to be, or from the filters if you know what you want to build."
+  eyebrow="projects.hero.eyebrow"
+  heading="projects.hero.heading"
+  lede="projects.hero.lede"
 />
 
 <section class="map-section">
@@ -15,7 +15,7 @@
   <div class="pop-fields">
     <div class="filter">
       <label>
-        Maximum entry price
+        {{ 'projects.filter.maxPrice' | t }}
         <span class="filter-value mono">{{ priceLabel(filters().maxPrice ?? priceMax) }}</span>
       </label>
       <nz-slider
@@ -30,7 +30,7 @@
 
     <div class="filter">
       <label>
-        Minimum gross yield
+        {{ 'projects.filter.minYield' | t }}
         <span class="filter-value mono">{{ filters().minYield ?? 0 }}%</span>
       </label>
       <nz-slider
@@ -51,8 +51,8 @@
         <input
           type="text"
           nz-input
-          placeholder="Name, area or keyword"
-          aria-label="Search projects"
+          [attr.placeholder]="'projects.filter.searchPlaceholder' | t"
+          [attr.aria-label]="'projects.filter.searchAria' | t"
           [ngModel]="filters().search"
           (ngModelChange)="onSearch($event)"
         />
@@ -62,7 +62,7 @@
       <nz-select
         class="f-select"
         nzMode="multiple"
-        nzPlaceHolder="Anywhere in Bali"
+        [nzPlaceHolder]="'projects.filter.anywhere' | t"
         [ngModel]="filters().areas"
         (ngModelChange)="onAreas($event)"
         [nzMaxTagCount]="1"
@@ -75,12 +75,12 @@
       <nz-select
         class="f-select"
         nzMode="multiple"
-        nzPlaceHolder="Any type"
+        [nzPlaceHolder]="'projects.filter.anyType' | t"
         [ngModel]="filters().types"
         (ngModelChange)="onTypes($event)"
         [nzMaxTagCount]="1"
       >
-        @for (o of typeOptions; track o.value) {
+        @for (o of typeOptions(); track o.value) {
           <nz-option [nzValue]="o.value" [nzLabel]="o.label" />
         }
       </nz-select>
@@ -88,12 +88,12 @@
       <nz-select
         class="f-select"
         nzMode="multiple"
-        nzPlaceHolder="Any status"
+        [nzPlaceHolder]="'projects.filter.anyStatus' | t"
         [ngModel]="filters().statuses"
         (ngModelChange)="onStatuses($event)"
         [nzMaxTagCount]="1"
       >
-        @for (o of statusOptions; track o.value) {
+        @for (o of statusOptions(); track o.value) {
           <nz-option [nzValue]="o.value" [nzLabel]="o.label" />
         }
       </nz-select>
@@ -106,14 +106,14 @@
         nzPopoverTrigger="click"
         nzPopoverPlacement="bottomRight"
       >
-        Price &amp; yield
+        {{ 'projects.filter.priceYield' | t }}
         <nz-icon nzType="down" />
       </button>
     </div>
 
     <button class="filter-trigger" nz-button (click)="drawerOpen.set(true)">
       <nz-icon nzType="filter" />
-      <span>Filters</span>
+      <span>{{ 'projects.filter.filters' | t }}</span>
       @if (activeCount() > 0) {
         <span class="fcount">{{ activeCount() }}</span>
       }
@@ -121,10 +121,10 @@
 
     <div class="bar-right">
       @if (activeCount() > 0) {
-        <button class="linkish" (click)="reset()">Clear filters</button>
+        <button class="linkish" (click)="reset()">{{ 'projects.filter.clear' | t }}</button>
       }
       <nz-select class="sort" [ngModel]="filters().sort" (ngModelChange)="onSort($event)" nzBorderless>
-        @for (o of sortOptions; track o.value) {
+        @for (o of sortOptions(); track o.value) {
           <nz-option [nzValue]="o.value" [nzLabel]="o.label" />
         }
       </nz-select>
@@ -137,7 +137,7 @@
   <div class="container">
     <p class="result-count">
       <strong>{{ results().length }}</strong>
-      {{ results().length === 1 ? 'project' : 'projects' }}
+      {{ (results().length === 1 ? 'projects.countOne' : 'projects.countMany') | t }}
     </p>
 
     @if (results().length) {
@@ -151,21 +151,21 @@
     } @else {
       <nz-empty class="empty" nzNotFoundImage="simple" [nzNotFoundContent]="emptyTpl">
         <ng-template #emptyTpl>
-          <p>Widen the filters to see more — or tell us your brief and we will source it.</p>
-          <button nz-button nzType="primary" (click)="reset()">Show all projects</button>
+          <p>{{ 'projects.empty' | t }}</p>
+          <button nz-button nzType="primary" (click)="reset()">{{ 'projects.showAll' | t }}</button>
         </ng-template>
       </nz-empty>
     }
   </div>
 </section>
 
-<div class="container"><p class="listing-footnote">{{ claim.footnote }}</p></div>
+<div class="container"><p class="listing-footnote">{{ claim.footnote | t }}</p></div>
 
 <!-- ============ MOBILE FILTER DRAWER ============ -->
 <nz-drawer
   [nzVisible]="drawerOpen()"
   nzPlacement="bottom"
-  nzTitle="Filter projects"
+  [nzTitle]="'projects.filter.drawerTitle' | t"
   [nzHeight]="'88%'"
   nzWrapClassName="filter-drawer"
   (nzOnClose)="drawerOpen.set(false)"
@@ -173,13 +173,13 @@
   <ng-container *nzDrawerContent>
     <div class="filters">
       <div class="filter">
-        <label for="d-search">Search</label>
+        <label for="d-search">{{ 'projects.filter.search' | t }}</label>
         <nz-input-group [nzPrefix]="searchIcon2">
           <input
             id="d-search"
             type="text"
             nz-input
-            placeholder="Name, area or keyword"
+            [attr.placeholder]="'projects.filter.searchPlaceholder' | t"
             [ngModel]="filters().search"
             (ngModelChange)="onSearch($event)"
           />
@@ -188,11 +188,11 @@
       </div>
 
       <div class="filter">
-        <label for="d-area">Area</label>
+        <label for="d-area">{{ 'projects.filter.area' | t }}</label>
         <nz-select
           id="d-area"
           nzMode="multiple"
-          nzPlaceHolder="Anywhere in Bali"
+          [nzPlaceHolder]="'projects.filter.anywhere' | t"
           [ngModel]="filters().areas"
           (ngModelChange)="onAreas($event)"
           style="width: 100%"
@@ -204,32 +204,32 @@
       </div>
 
       <div class="filter">
-        <label for="d-type">Property type</label>
+        <label for="d-type">{{ 'projects.filter.type' | t }}</label>
         <nz-select
           id="d-type"
           nzMode="multiple"
-          nzPlaceHolder="Any type"
+          [nzPlaceHolder]="'projects.filter.anyType' | t"
           [ngModel]="filters().types"
           (ngModelChange)="onTypes($event)"
           style="width: 100%"
         >
-          @for (o of typeOptions; track o.value) {
+          @for (o of typeOptions(); track o.value) {
             <nz-option [nzValue]="o.value" [nzLabel]="o.label" />
           }
         </nz-select>
       </div>
 
       <div class="filter">
-        <label for="d-status">Status</label>
+        <label for="d-status">{{ 'projects.filter.status' | t }}</label>
         <nz-select
           id="d-status"
           nzMode="multiple"
-          nzPlaceHolder="Any status"
+          [nzPlaceHolder]="'projects.filter.anyStatus' | t"
           [ngModel]="filters().statuses"
           (ngModelChange)="onStatuses($event)"
           style="width: 100%"
         >
-          @for (o of statusOptions; track o.value) {
+          @for (o of statusOptions(); track o.value) {
             <nz-option [nzValue]="o.value" [nzLabel]="o.label" />
           }
         </nz-select>
@@ -239,19 +239,19 @@
 
       <button nz-button nzBlock (click)="reset()" [disabled]="activeCount() === 0">
         <nz-icon nzType="close" />
-        Clear filters
+        {{ 'projects.filter.clear' | t }}
       </button>
     </div>
 
     <button nz-button nzType="primary" nzBlock nzSize="large" class="drawer-apply" (click)="drawerOpen.set(false)">
-      Show {{ results().length }} {{ results().length === 1 ? 'project' : 'projects' }}
+      {{ (results().length === 1 ? 'map.showOne' : 'map.showMany') | t: { count: results().length } }}
     </button>
   </ng-container>
 </nz-drawer>
 
 <app-cta-band
-  eyebrow="Not seeing it?"
-  heading="Tell us what you are looking for."
-  lede="Around a third of what we build never appears on this page — it is matched to a brief before we finish the due diligence. Send us yours and we will tell you what is coming."
-  primaryLabel="Send us a brief"
+  eyebrow="projects.cta.eyebrow"
+  heading="projects.cta.heading"
+  lede="projects.cta.lede"
+  primaryLabel="projects.cta.primary"
 />

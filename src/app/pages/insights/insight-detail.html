@@ -5,49 +5,46 @@
     <header class="article-head">
       <div class="container container-narrow">
         <nav class="crumbs" aria-label="Breadcrumb">
-          <a routerLink="/">Home</a>
+          <a routerLink="/">{{ 'nav.home' | t }}</a>
           <span>/</span>
-          <a routerLink="/insights">Insights</a>
+          <a routerLink="/insights">{{ 'nav.insights' | t }}</a>
         </nav>
 
         <p class="meta">
-          <span class="cat">{{ a.category }}</span>
+          <span class="cat">{{ categoryKey(a.category) | t }}</span>
           <span class="dot">·</span>
-          {{ a.date }}
+          {{ a.date | t }}
           <span class="dot">·</span>
-          {{ a.readMinutes }} min read
+          {{ 'insights.readTime' | t: { n: a.readMinutes } }}
         </p>
 
-        <h1 class="display">{{ a.title }}</h1>
-        <p class="lede">{{ a.excerpt }}</p>
-        <p class="byline">{{ a.author }}</p>
+        <h1 class="display">{{ a.title | t }}</h1>
+        <p class="lede">{{ a.excerpt | t }}</p>
+        <p class="byline">{{ a.author | t }}</p>
       </div>
     </header>
 
     <figure class="article-media">
       <div class="container">
-        <img [src]="a.image" [alt]="a.title" />
+        <img [src]="a.image" [alt]="a.title | t" />
       </div>
     </figure>
 
     <div class="container container-narrow prose">
       @for (para of a.body; track $index) {
-        <p>{{ para }}</p>
+        <p>{{ para | t }}</p>
       }
 
-      <aside class="disclosure">
-        This article is general information written for people considering property in Bali. It is
-        not financial, legal or tax advice, and it does not describe a specific project.
-      </aside>
+      <aside class="disclosure">{{ 'insights.disclosure' | t }}</aside>
     </div>
   </article>
 
   <section class="section section-sand">
     <div class="container">
       <div class="rel-head" appReveal>
-        <h2 class="title-md">Keep reading</h2>
+        <h2 class="title-md">{{ 'common.keepReading' | t }}</h2>
         <a class="rel-link" routerLink="/insights">
-          All insights
+          {{ 'common.allInsights' | t }}
           <nz-icon nzType="arrow-right" />
         </a>
       </div>
@@ -56,15 +53,15 @@
         @for (r of related(); track r.slug; let i = $index) {
           <a class="card" [routerLink]="['/insights', r.slug]" [appReveal]="i * 70">
             <div class="card-media">
-              <img [src]="r.image" [alt]="r.title" loading="lazy" />
+              <img [src]="r.image" [alt]="r.title | t" loading="lazy" />
             </div>
             <div class="card-body">
               <p class="meta">
-                <span class="cat">{{ r.category }}</span>
+                <span class="cat">{{ categoryKey(r.category) | t }}</span>
                 <span class="dot">·</span>
-                {{ r.readMinutes }} min
+                {{ 'unit.minutes' | t: { n: r.readMinutes } }}
               </p>
-              <h3>{{ r.title }}</h3>
+              <h3>{{ r.title | t }}</h3>
             </div>
           </a>
         }

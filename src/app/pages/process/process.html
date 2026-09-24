@@ -1,14 +1,14 @@
 <app-page-hero
-  eyebrow="How we build"
-  heading="From Idea to Turnkey Villa"
-  lede="Land, concept, design, construction, setup, operations. Six steps, one team, and roughly twenty to twenty-four months from the first conversation to the first guest."
+  eyebrow="nav.process"
+  heading="process.hero.heading"
+  lede="process.hero.lede"
   image="media/villa-facade.jpg"
 />
 
 <!-- ============ THE SIX STEPS ============ -->
 <section class="section">
   <div class="container">
-    <p class="stages-intro" appReveal>{{ role }}</p>
+    <p class="stages-intro" appReveal>{{ role | t }}</p>
 
     <ol class="stages">
       @for (s of steps; track s.index; let i = $index) {
@@ -22,9 +22,9 @@
             <div class="stage-top">
               <nz-icon [nzType]="s.icon" class="stage-icon" />
             </div>
-            <h2>{{ s.name }}</h2>
-            <p class="stage-line-text">{{ s.line }}</p>
-            <p>{{ s.detail }}</p>
+            <h2>{{ s.name | t }}</h2>
+            <p class="stage-line-text">{{ s.line | t }}</p>
+            <p>{{ s.detail | t }}</p>
           </div>
         </li>
       }
@@ -36,24 +36,20 @@
 <section class="section section-sand">
   <div class="container">
     <div class="head" appReveal>
-      <p class="eyebrow">Where the money goes</p>
-      <h2 class="display">A typical villa budget, opened up.</h2>
-      <p class="lede">
-        Rough shares of an all-in budget for a three-bedroom villa on a 350 m&sup2; plot. Your
-        project will differ — a cliff plot spends more on engineering, a rice-field plot more on
-        access — but nothing outside this list gets billed.
-      </p>
+      <p class="eyebrow">{{ 'process.costs.eyebrow' | t }}</p>
+      <h2 class="display">{{ 'process.costs.title' | t }}</h2>
+      <p class="lede">{{ 'process.costs.lede' | t }}</p>
     </div>
 
     <div class="costs">
       @for (c of costs; track c.label; let i = $index) {
         <div class="cost" [appReveal]="i * 50">
           <div class="cost-head">
-            <span class="cost-label">{{ c.label }}</span>
+            <span class="cost-label">{{ c.label | t }}</span>
             <span class="cost-share mono">{{ c.share }}%</span>
           </div>
           <div class="cost-bar"><span [style.width.%]="c.share"></span></div>
-          <p class="cost-note">{{ c.note }}</p>
+          <p class="cost-note">{{ c.note | t }}</p>
         </div>
       }
     </div>
@@ -64,46 +60,40 @@
 <section class="section">
   <div class="container">
     <div class="head" appReveal>
-      <p class="eyebrow">Step six, in detail</p>
-      <h2 class="display">Handover is where the asset starts working.</h2>
-      <p class="lede">
-        The team that designed and built the villa is the team that runs it — which is why a blocked
-        pump is a phone call rather than an investigation.
-      </p>
+      <p class="eyebrow">{{ 'process.services.eyebrow' | t }}</p>
+      <h2 class="display">{{ 'process.services.title' | t }}</h2>
+      <p class="lede">{{ 'process.services.lede' | t }}</p>
     </div>
 
     <div class="grid grid-3">
       @for (s of services; track s.title; let i = $index) {
         <article class="service" [appReveal]="(i % 3) * 60">
           <nz-icon [nzType]="s.icon" class="service-icon" />
-          <h3>{{ s.title }}</h3>
-          <p>{{ s.text }}</p>
+          <h3>{{ s.title | t }}</h3>
+          <p>{{ s.text | t }}</p>
         </article>
       }
     </div>
 
     <div class="statement-grid">
       <div class="statement-copy" appReveal>
-        <h3 class="title-md">One page. Every line.</h3>
-        <p class="lede">
-          A real statement shape, from a three-bedroom villa in Pererenan in a shoulder month.
-          Twenty-nine nights let, one pool repair, and the balance transferred on the fifth.
-        </p>
+        <h3 class="title-md">{{ 'process.statement.title' | t }}</h3>
+        <p class="lede">{{ 'process.statement.lede' | t }}</p>
       </div>
 
       <div class="statement-card" appReveal="90">
         <div class="sc-head">
           <div>
-            <span class="sc-title">Owner statement</span>
-            <span class="sc-sub">Pererenan · September</span>
+            <span class="sc-title">{{ 'process.statement.card' | t }}</span>
+            <span class="sc-sub">{{ 'process.statement.period' | t }}</span>
           </div>
-          <span class="sc-badge">Transferred</span>
+          <span class="sc-badge">{{ 'process.statement.badge' | t }}</span>
         </div>
 
         <ul class="sc-lines">
           @for (l of statement; track l.label) {
             <li [class.is-total]="l.kind === 'total'">
-              <span class="sc-label">{{ l.label }}</span>
+              <span class="sc-label">{{ l.label | t }}</span>
               <span class="sc-amount mono" [class.neg]="l.kind === 'out'">
                 @if (l.kind === 'out') { &minus; }
                 &#36;{{ abs(l.amount).toLocaleString('en-US') }}
@@ -112,7 +102,7 @@
           }
         </ul>
 
-        <p class="sc-foot">Supplier invoices and the full booking ledger are attached every month.</p>
+        <p class="sc-foot">{{ 'process.statement.foot' | t }}</p>
       </div>
     </div>
   </div>
@@ -122,17 +112,17 @@
 <section class="section section-sand">
   <div class="container">
     <div class="head" appReveal>
-      <p class="eyebrow">How we work</p>
-      <h2 class="display">{{ belief }}</h2>
-      <p class="lede">{{ tailorMade }}</p>
+      <p class="eyebrow">{{ 'process.principles.eyebrow' | t }}</p>
+      <h2 class="display">{{ belief | t }}</h2>
+      <p class="lede">{{ tailorMade | t }}</p>
     </div>
 
     <div class="grid grid-4">
       @for (p of principles; track p.title; let i = $index) {
         <article class="principle" [appReveal]="i * 60">
           <nz-icon [nzType]="p.icon" class="principle-icon" />
-          <h3>{{ p.title }}</h3>
-          <p>{{ p.text }}</p>
+          <h3>{{ p.title | t }}</h3>
+          <p>{{ p.text | t }}</p>
         </article>
       }
     </div>
@@ -143,20 +133,17 @@
 <section class="section">
   <div class="container">
     <div class="head" appReveal>
-      <p class="eyebrow">What we take care of</p>
-      <h2 class="display">Four things handled before you have to ask.</h2>
-      <p class="lede">
-        These four decide how a Bali project turns out, and each one has a specific answer built
-        into the way we work. Ask us about any of them.
-      </p>
+      <p class="eyebrow">{{ 'process.safeguards.eyebrow' | t }}</p>
+      <h2 class="display">{{ 'process.safeguards.title' | t }}</h2>
+      <p class="lede">{{ 'process.safeguards.lede' | t }}</p>
     </div>
 
     <div class="grid grid-2">
       @for (s of safeguards; track s.title; let i = $index) {
         <article class="safeguard" [appReveal]="i * 60">
           <nz-icon [nzType]="s.icon" class="safeguard-icon" />
-          <h3>{{ s.title }}</h3>
-          <p>{{ s.text }}</p>
+          <h3>{{ s.title | t }}</h3>
+          <p>{{ s.text | t }}</p>
         </article>
       }
     </div>
@@ -167,30 +154,30 @@
 <section class="section section-sand">
   <div class="container container-narrow">
     <div class="head" appReveal>
-      <p class="eyebrow">Questions</p>
-      <h2 class="display">How we arrive at a number — and the rest.</h2>
+      <p class="eyebrow">{{ 'process.faq.eyebrow' | t }}</p>
+      <h2 class="display">{{ 'process.faq.title' | t }}</h2>
     </div>
 
     <nz-collapse nzGhost nzExpandIconPosition="end" class="faq" appReveal>
       @for (m of methodology; track m.title) {
-        <nz-collapse-panel [nzHeader]="m.title">
-          <p class="faq-answer">{{ m.text }}</p>
+        <nz-collapse-panel [nzHeader]="m.title | t">
+          <p class="faq-answer">{{ m.text | t: m.params }}</p>
         </nz-collapse-panel>
       }
       @for (f of faqs; track f.question) {
-        <nz-collapse-panel [nzHeader]="f.question">
-          <p class="faq-answer">{{ f.answer }}</p>
+        <nz-collapse-panel [nzHeader]="f.question | t">
+          <p class="faq-answer">{{ f.answer | t }}</p>
         </nz-collapse-panel>
       }
     </nz-collapse>
 
-    <p class="faq-footnote">{{ claim.footnote }}</p>
+    <p class="faq-footnote">{{ claim.footnote | t }}</p>
   </div>
 </section>
 
 <app-cta-band
-  eyebrow="Start"
-  heading="Step one takes about twenty minutes."
-  lede="A call, a few questions about how you want to use the villa, and an honest answer about whether we are the right people to build it. No fee, nothing to sign."
-  primaryLabel="Start a Conversation"
+  eyebrow="process.cta.eyebrow"
+  heading="process.cta.heading"
+  lede="process.cta.lede"
+  primaryLabel="cta.primary"
 />

@@ -10,7 +10,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { CatalogService, ProjectFilters } from '../../core/catalog.service';
-import { usd } from '../../core/format';
+import { STATUS_LABEL, TYPE_LABEL, usd } from '../../core/format';
 import { YIELD_CLAIM } from '../../core/brand';
 import { AreaId, ProjectStatus, ProjectType } from '../../core/models';
 import { BaliMapComponent } from '../../shared/bali-map';
@@ -18,6 +18,7 @@ import { CtaBandComponent } from '../../shared/cta-band';
 import { PageHeroComponent } from '../../shared/page-hero';
 import { ProjectCardComponent } from '../../shared/project-card';
 import { RevealDirective } from '../../shared/reveal.directive';
+import { I18nService, TranslatePipe } from '../../core/i18n';
 
 @Component({
   selector: 'app-projects',
@@ -37,6 +38,7 @@ import { RevealDirective } from '../../shared/reveal.directive';
     ProjectCardComponent,
     CtaBandComponent,
     RevealDirective,
+    TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './projects.html',
@@ -44,6 +46,7 @@ import { RevealDirective } from '../../shared/reveal.directive';
 })
 export class ProjectsPage {
   readonly catalog = inject(CatalogService);
+  private readonly i18n = inject(I18nService);
   readonly results = this.catalog.filtered;
   readonly filters = this.catalog.filters;
   readonly activeCount = this.catalog.activeFilterCount;
@@ -58,31 +61,30 @@ export class ProjectsPage {
   });
 
   readonly areaOptions = computed(() =>
-    this.catalog.areas().map((a) => ({ label: a.name, value: a.id })),
+    this.catalog.areas().map((a) => ({ label: this.i18n.t(a.name), value: a.id })),
   );
 
-  readonly typeOptions: { label: string; value: ProjectType }[] = [
-    { label: 'Villa', value: 'villa' },
-    { label: 'Townhouse', value: 'townhouse' },
-    { label: 'Apartment', value: 'apartment' },
-    { label: 'Commercial', value: 'commercial' },
-    { label: 'Land', value: 'land' },
-  ];
+  // ng-zorro's select takes finished strings, so these resolve here rather
+  // than through the pipe — and re-resolve when the language changes
+  readonly typeOptions = computed<{ label: string; value: ProjectType }[]>(() =>
+    (['villa', 'townhouse', 'apartment', 'commercial', 'land'] as ProjectType[]).map((value) => ({
+      value,
+      label: this.i18n.t(TYPE_LABEL[value]),
+    })),
+  );
 
-  readonly statusOptions: { label: string; value: ProjectStatus }[] = [
-    { label: 'Available', value: 'available' },
-    { label: 'Under construction', value: 'construction' },
-    { label: 'Coming soon', value: 'coming-soon' },
-    { label: 'Delivered', value: 'delivered' },
-  ];
+  readonly statusOptions = computed<{ label: string; value: ProjectStatus }[]>(() =>
+    (['available', 'construction', 'coming-soon', 'delivered'] as ProjectStatus[]).map((value) => ({
+      value,
+      label: this.i18n.t(STATUS_LABEL[value]),
+    })),
+  );
 
-  readonly sortOptions: { label: string; value: ProjectFilters['sort'] }[] = [
-    { label: 'Featured', value: 'featured' },
-    { label: 'Price: low to high', value: 'price-asc' },
-    { label: 'Price: high to low', value: 'price-desc' },
-    { label: 'Highest gross yield', value: 'yield-desc' },
-    { label: 'Soonest handover', value: 'handover-asc' },
-  ];
+  readonly sortOptions = computed<{ label: string; value: ProjectFilters['sort'] }[]>(() =>
+    (
+      ['featured', 'price-asc', 'price-desc', 'yield-desc', 'handover-asc'] as ProjectFilters['sort'][]
+    ).map((value) => ({ value, label: this.i18n.t(`projects.sort.${value}`) })),
+  );
 
   readonly priceMax = 900000;
   readonly priceMin = 150000;

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -11,6 +11,8 @@ import { NzResultModule } from 'ng-zorro-antd/result';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { BRAND } from '../../core/brand';
 import { PageHeroComponent } from '../../shared/page-hero';
+import { I18nService, TranslatePipe } from '../../core/i18n';
+import { WhatsappService } from '../../core/whatsapp.service';
 
 @Component({
   selector: 'app-contact',
@@ -25,6 +27,7 @@ import { PageHeroComponent } from '../../shared/page-hero';
     NzResultModule,
     NzSelectModule,
     PageHeroComponent,
+    TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './contact.html',
@@ -33,7 +36,9 @@ import { PageHeroComponent } from '../../shared/page-hero';
 export class ContactPage {
   private readonly fb = inject(FormBuilder);
   private readonly message = inject(NzMessageService);
+  private readonly i18n = inject(I18nService);
 
+  readonly whatsapp = inject(WhatsappService);
   readonly brand = BRAND;
   readonly submitting = signal(false);
   readonly sent = signal(false);
@@ -56,29 +61,28 @@ export class ContactPage {
     consent: [false, [Validators.requiredTrue]],
   });
 
-  readonly intendedUses = [
-    { value: 'lifestyle', label: 'Lifestyle — mostly my own use' },
-    { value: 'investment', label: 'Investment — mostly let' },
-    { value: 'hybrid', label: 'Hybrid — both, deliberately' },
-    { value: 'unsure', label: 'Not sure yet' },
-  ];
+  // nz-select renders finished strings, so these resolve here and follow the
+  // switcher through the service's version signal
+  readonly intendedUses = computed(() =>
+    ['lifestyle', 'investment', 'hybrid', 'unsure'].map((value) => ({
+      value,
+      label: this.i18n.t(`contact.use.${value}`),
+    })),
+  );
 
-  readonly budgets = [
-    { value: '<250', label: 'Under $250,000' },
-    { value: '250-450', label: '$250,000 – $450,000' },
-    { value: '450-700', label: '$450,000 – $700,000' },
-    { value: '700-1000', label: '$700,000 – $1,000,000' },
-    { value: '1000+', label: 'Above $1,000,000' },
-    { value: 'unsure', label: 'Still working it out' },
-  ];
+  readonly budgets = computed(() =>
+    ['<250', '250-450', '450-700', '700-1000', '1000+', 'unsure'].map((value, i) => ({
+      value,
+      label: this.i18n.t(`contact.budget${i + 1}`),
+    })),
+  );
 
-  readonly timelines = [
-    { value: '0-3', label: 'Within 3 months' },
-    { value: '3-6', label: '3 – 6 months' },
-    { value: '6-12', label: '6 – 12 months' },
-    { value: '12+', label: 'More than a year away' },
-    { value: 'exploring', label: 'Just exploring' },
-  ];
+  readonly timelines = computed(() =>
+    ['0-3', '3-6', '6-12', '12+', 'exploring'].map((value, i) => ({
+      value,
+      label: this.i18n.t(`contact.timeline${i + 1}`),
+    })),
+  );
 
   submit(): void {
     if (this.form.invalid) {
@@ -86,7 +90,7 @@ export class ContactPage {
         c.markAsDirty();
         c.updateValueAndValidity({ onlySelf: true });
       });
-      this.message.error('A few fields still need attention.');
+      this.message.error(this.i18n.t('contact.error'));
       return;
     }
 
@@ -96,7 +100,7 @@ export class ContactPage {
     setTimeout(() => {
       this.submitting.set(false);
       this.sent.set(true);
-      this.message.success('Message sent. We will reply within one working day.');
+      this.message.success(this.i18n.t('contact.success'));
     }, 900);
   }
 

@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { RouterLink } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { TranslatePipe } from '../core/i18n';
 import { CatalogService } from '../core/catalog.service';
 import { STATUS_COLOR, STATUS_LABEL, TYPE_LABEL, usd } from '../core/format';
 import { Project } from '../core/models';
 
 @Component({
   selector: 'app-project-card',
-  imports: [RouterLink, NzIconModule, NzTagModule],
+  imports: [RouterLink, NzIconModule, NzTagModule, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-card.html',
   styleUrl: './project-card.css',

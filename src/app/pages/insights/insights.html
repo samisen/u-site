@@ -1,29 +1,29 @@
 <app-page-hero
-  eyebrow="Insights"
-  heading="Written to be useful."
-  lede="How villa revenue actually works, what sits behind a gross yield, and what owning in Bali involves in practice. Every piece here is written to be useful on its own."
+  eyebrow="nav.insights"
+  heading="insights.hero.heading"
+  lede="insights.hero.lede"
 />
 
 <section class="section listing">
   <div class="container">
     <!-- lead article -->
-    @if (active() === 'All') {
+    @if (active() === 'all') {
       <a class="lead-card" [routerLink]="['/insights', lead.slug]" appReveal>
         <div class="lead-media">
-          <img [src]="lead.image" [alt]="lead.title" />
+          <img [src]="lead.image" [alt]="lead.title | t" />
         </div>
         <div class="lead-body">
           <p class="meta">
-            <span class="cat">{{ lead.category }}</span>
+            <span class="cat">{{ categoryKey(lead.category) | t }}</span>
             <span class="dot">·</span>
-            {{ lead.date }}
+            {{ lead.date | t }}
             <span class="dot">·</span>
-            {{ lead.readMinutes }} min read
+            {{ 'insights.readTime' | t: { n: lead.readMinutes } }}
           </p>
-          <h2 class="title-md">{{ lead.title }}</h2>
-          <p class="excerpt">{{ lead.excerpt }}</p>
+          <h2 class="title-md">{{ lead.title | t }}</h2>
+          <p class="excerpt">{{ lead.excerpt | t }}</p>
           <span class="go">
-            Read the article
+            {{ 'insights.readArticle' | t }}
             <nz-icon nzType="arrow-right" />
           </span>
         </div>
@@ -40,7 +40,7 @@
           (click)="active.set(c)"
           [attr.aria-pressed]="active() === c"
         >
-          {{ c }}
+          {{ categoryKey(c) | t }}
         </button>
       }
     </div>
@@ -50,17 +50,17 @@
       @for (a of rest(); track a.slug; let i = $index) {
         <a class="card" [routerLink]="['/insights', a.slug]" [appReveal]="(i % 3) * 70">
           <div class="card-media">
-            <img [src]="a.image" [alt]="a.title" loading="lazy" />
+            <img [src]="a.image" [alt]="a.title | t" loading="lazy" />
           </div>
           <div class="card-body">
             <p class="meta">
-              <span class="cat">{{ a.category }}</span>
+              <span class="cat">{{ categoryKey(a.category) | t }}</span>
               <span class="dot">·</span>
-              {{ a.readMinutes }} min
+              {{ 'unit.minutes' | t: { n: a.readMinutes } }}
             </p>
-            <h3>{{ a.title }}</h3>
-            <p class="excerpt">{{ a.excerpt }}</p>
-            <span class="card-date">{{ a.date }}</span>
+            <h3>{{ a.title | t }}</h3>
+            <p class="excerpt">{{ a.excerpt | t }}</p>
+            <span class="card-date">{{ a.date | t }}</span>
           </div>
         </a>
       }
@@ -69,7 +69,7 @@
 </section>
 
 <app-cta-band
-  eyebrow="Still have a question"
-  heading="Ask us the one the articles did not answer."
-  lede="We would rather send you a straight answer than a follow-up sequence. Write to us with the specific thing you are trying to work out."
+  eyebrow="insights.cta.eyebrow"
+  heading="insights.cta.heading"
+  lede="insights.cta.lede"
 />

@@ -25,6 +25,7 @@ import { STATUS_COLOR, STATUS_LABEL, TYPE_LABEL, usd } from '../../core/format';
 import { ProjectCardComponent } from '../../shared/project-card';
 import { VideoPlayerComponent } from '../../shared/video-player';
 import { RevealDirective } from '../../shared/reveal.directive';
+import { I18nService, TranslatePipe } from '../../core/i18n';
 
 
 
@@ -45,6 +46,7 @@ import { RevealDirective } from '../../shared/reveal.directive';
     ProjectCardComponent,
     VideoPlayerComponent,
     RevealDirective,
+    TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './project-detail.html',
@@ -55,6 +57,7 @@ export class ProjectDetailPage {
 
   private readonly catalog = inject(CatalogService);
   private readonly router = inject(Router);
+  readonly i18n = inject(I18nService);
 
   readonly project = computed(() => this.catalog.bySlug(this.slug()));
   readonly area = computed(() => {

@@ -226,3 +226,61 @@
   font-size: 14px;
   cursor: pointer;
 }
+
+/* ---------- language ---------- */
+
+.lang {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  background: color-mix(in srgb, currentColor 7%, transparent);
+}
+/* below this the bar has no room for it — the drawer carries it instead */
+@media (min-width: 560px) { .lang { display: inline-flex; } }
+
+.lang-btn {
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  line-height: 1;
+  padding: 7px 9px;
+  border-radius: 999px;
+  opacity: .62;
+  transition: background-color .2s ease, opacity .2s ease;
+}
+.lang-btn:hover { opacity: 1; background: color-mix(in srgb, currentColor 12%, transparent); }
+.lang-btn.is-on {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 18%, transparent);
+}
+
+/* ---------- language, in the drawer ---------- */
+
+.lang-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.lang-row-label {
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.lang-row .lang {
+  display: flex;
+  width: 100%;
+  color: var(--ink);
+  border-color: var(--line);
+  background: var(--surface-2);
+}
+.lang-row .lang-btn { flex: 1; padding: 10px 4px; font-size: 13px; letter-spacing: 0; }
+.lang-row .lang-btn.is-on { background: var(--brand); color: #fff; }

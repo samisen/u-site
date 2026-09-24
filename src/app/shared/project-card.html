@@ -1,15 +1,15 @@
 <a class="card" [routerLink]="['/projects', project().slug]">
   <div class="media">
-    <img [src]="project().hero" [alt]="project().name" loading="lazy" decoding="async" />
+    <img [src]="project().hero" [alt]="project().name | t" loading="lazy" decoding="async" />
     <div class="media-top">
-      <nz-tag [nzColor]="statusColor()">{{ statusLabel() }}</nz-tag>
+      <nz-tag [nzColor]="statusColor()">{{ statusLabel() | t }}</nz-tag>
       @if (project().unitsAvailable > 0 && project().unitsTotal > 1) {
-        <span class="units">{{ project().unitsAvailable }} of {{ project().unitsTotal }} left</span>
+        <span class="units">{{ 'projectCard.unitsLeft' | t: { available: project().unitsAvailable, total: project().unitsTotal } }}</span>
       }
     </div>
     @if (project().progress > 0 && project().progress < 100) {
       <div class="progress" [style.--p.%]="project().progress">
-        <span class="progress-label">{{ project().progress }}% built</span>
+        <span class="progress-label">{{ 'projectCard.built' | t: { percent: project().progress } }}</span>
       </div>
     }
   </div>
@@ -17,37 +17,37 @@
   <div class="body">
     <p class="meta">
       <nz-icon nzType="environment" />
-      {{ areaName() }}
+      {{ areaName() | t }}
       <span class="dot">·</span>
-      {{ typeLabel() }}
+      {{ typeLabel() | t }}
     </p>
 
-    <h3 class="name">{{ project().name }}</h3>
-    <p class="headline">{{ project().headline }}</p>
+    <h3 class="name">{{ project().name | t }}</h3>
+    <p class="headline">{{ project().headline | t }}</p>
 
     <dl class="facts">
       <div>
-        <dt>From</dt>
+        <dt>{{ 'projectCard.from' | t }}</dt>
         <dd class="mono strong">{{ price() }}</dd>
       </div>
       @if (project().projectedGrossYield > 0) {
         <div>
-          <dt>Gross yield<sup>*</sup></dt>
+          <dt>{{ 'projectCard.grossYield' | t }}<sup>*</sup></dt>
           <dd class="mono strong accent">{{ project().projectedGrossYield }}%</dd>
         </div>
       }
       <div>
-        <dt>Lease</dt>
-        <dd class="mono">{{ project().leaseYears }}+{{ project().leaseExtensionYears }} yrs</dd>
+        <dt>{{ 'projectCard.lease' | t }}</dt>
+        <dd class="mono">{{ 'projectCard.leaseYears' | t: { years: project().leaseYears, extension: project().leaseExtensionYears } }}</dd>
       </div>
       <div>
-        <dt>Handover</dt>
-        <dd class="mono">{{ project().handover }}</dd>
+        <dt>{{ 'projectCard.handover' | t }}</dt>
+        <dd class="mono">{{ project().handover | t }}</dd>
       </div>
     </dl>
 
     <span class="go">
-      View project
+      {{ 'projectCard.view' | t }}
       <nz-icon nzType="arrow-right" />
     </span>
   </div>

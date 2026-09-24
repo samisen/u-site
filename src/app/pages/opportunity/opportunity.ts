@@ -10,6 +10,7 @@ import { MarketYieldChartComponent } from '../../shared/market-yield-chart';
 import { PageHeroComponent } from '../../shared/page-hero';
 import { ProjectCardComponent } from '../../shared/project-card';
 import { RevealDirective } from '../../shared/reveal.directive';
+import { TranslatePipe } from '../../core/i18n';
 
 @Component({
   selector: 'app-opportunity',
@@ -22,6 +23,7 @@ import { RevealDirective } from '../../shared/reveal.directive';
     MarketYieldChartComponent,
     ProjectCardComponent,
     RevealDirective,
+    TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './opportunity.html',
@@ -35,6 +37,6 @@ export class OpportunityPage {
   readonly brand = BRAND;
   readonly featured = this.catalog.featured;
 
-  readonly reading = INSIGHTS.filter((a) => a.category === 'Investment').slice(0, 3);
+  readonly reading = INSIGHTS.filter((a) => a.category === 'investment').slice(0, 3);
 
 }

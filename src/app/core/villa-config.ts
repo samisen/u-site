@@ -1,3 +1,4 @@
+import { TranslateParams } from './i18n/locale';
 import { AreaId } from './models';
 import { grossAnnualRevenue, grossYieldPct, netAnnualIncome, netYieldPct } from './yield-model';
 
@@ -5,6 +6,10 @@ import { grossAnnualRevenue, grossYieldPct, netAnnualIncome, netYieldPct } from 
    The villa configurator's domain: a configuration in, a floor plan and a
    costed study out. Kept free of Angular so the numbers can be reasoned about
    (and later tested) on their own.
+
+   Every label here is a translation key. Dimensions, areas and money are not:
+   "8.0 × 3.5 m" reads the same in all three languages, so it travels as a
+   parameter rather than as words.
    ========================================================================== */
 
 export type VillaStyle = 'tropical' | 'joglo' | 'cliff';
@@ -47,19 +52,19 @@ export const DEFAULT_ROOMS: RoomSizes = {
 
 /** Bounds the editor's sliders respect, in m². */
 export const ROOM_LIMITS: Record<keyof RoomSizes, { min: number; max: number; label: string; hint: string }> = {
-  master: { min: 14, max: 42, label: 'Master bedroom', hint: 'Bedroom only — the ensuite is separate' },
-  bedroom: { min: 10, max: 30, label: 'Other bedrooms', hint: 'Each remaining bedroom' },
-  ensuite: { min: 3.5, max: 14, label: 'Bathrooms', hint: 'One per bedroom' },
-  living: { min: 20, max: 80, label: 'Living', hint: 'Opens to the pool deck' },
-  kitchen: { min: 12, max: 50, label: 'Kitchen & dining', hint: 'Single open space' },
+  master: { min: 14, max: 42, label: 'villa.room.master.label', hint: 'villa.room.master.hint' },
+  bedroom: { min: 10, max: 30, label: 'villa.room.bedroom.label', hint: 'villa.room.bedroom.hint' },
+  ensuite: { min: 3.5, max: 14, label: 'villa.room.ensuite.label', hint: 'villa.room.ensuite.hint' },
+  living: { min: 20, max: 80, label: 'villa.room.living.label', hint: 'villa.room.living.hint' },
+  kitchen: { min: 12, max: 50, label: 'villa.room.kitchen.label', hint: 'villa.room.kitchen.hint' },
 };
 
 /** Starting points that match the three owner profiles. */
 export const PRESETS: { id: string; name: string; note: string; patch: Partial<VillaConfig> }[] = [
   {
     id: 'lifestyle',
-    name: 'Lifestyle home',
-    note: 'Bigger living, generous master, fewer keys',
+    name: 'villa.preset.lifestyle.name',
+    note: 'villa.preset.lifestyle.note',
     patch: {
       bedrooms: 3,
       finish: 'prestige',
@@ -69,8 +74,8 @@ export const PRESETS: { id: string; name: string; note: string; patch: Partial<V
   },
   {
     id: 'income',
-    name: 'Income-focused',
-    note: 'Bedroom parity, efficient to turn around',
+    name: 'villa.preset.income.name',
+    note: 'villa.preset.income.note',
     patch: {
       bedrooms: 4,
       finish: 'essential',
@@ -80,8 +85,8 @@ export const PRESETS: { id: string; name: string; note: string; patch: Partial<V
   },
   {
     id: 'hybrid',
-    name: 'Hybrid',
-    note: 'A master that locks, the rest lets',
+    name: 'villa.preset.hybrid.name',
+    note: 'villa.preset.hybrid.note',
     patch: {
       bedrooms: 3,
       finish: 'essential',
@@ -110,20 +115,20 @@ export const DEFAULT_CONFIG: VillaConfig = {
 export const STYLES: { id: VillaStyle; name: string; blurb: string; multiplier: number }[] = [
   {
     id: 'tropical',
-    name: 'Modern tropical',
-    blurb: 'Flat roofs, deep overhangs, full-height glazing onto the pool. The format that photographs best and builds fastest.',
+    name: 'villa.style.tropical.name',
+    blurb: 'villa.style.tropical.blurb',
     multiplier: 1,
   },
   {
     id: 'joglo',
-    name: 'Balinese joglo',
-    blurb: 'Exposed bengkirai frame, high alang-alang ridge over a membrane, paras stone. Slower to build, and the one guests remember.',
+    name: 'villa.style.joglo.name',
+    blurb: 'villa.style.joglo.blurb',
     multiplier: 1.12,
   },
   {
     id: 'cliff',
-    name: 'Cliff minimal',
-    blurb: 'Board-formed concrete, cantilevers, engineered retaining. For a plot with a drop — and the budget the engineering needs.',
+    name: 'villa.style.cliff.name',
+    blurb: 'villa.style.cliff.blurb',
     multiplier: 1.2,
   },
 ];
@@ -133,15 +138,15 @@ export const FINISHES: {
 }[] = [
   {
     id: 'essential',
-    name: 'Essential',
-    blurb: 'Everything a turnkey rental needs: local hardwood joinery, porcelain tile, split-system air conditioning, standard sanitaryware.',
+    name: 'villa.finish.essential.name',
+    blurb: 'villa.finish.essential.blurb',
     rate: 790,
     furniture: 190,
   },
   {
     id: 'prestige',
-    name: 'Prestige',
-    blurb: 'Imported stone, bespoke joinery, ducted air conditioning, designer sanitaryware, integrated lighting and audio.',
+    name: 'villa.finish.prestige.name',
+    blurb: 'villa.finish.prestige.blurb',
     rate: 1180,
     furniture: 340,
   },
@@ -149,49 +154,49 @@ export const FINISHES: {
 
 /** `length` runs along the villa's facade; `width` is the reach away from it. */
 export const POOLS: { id: PoolType; name: string; size: string; cost: number; length: number; width: number }[] = [
-  { id: 'none', name: 'No pool', size: '—', cost: 0, length: 0, width: 0 },
-  { id: 'plunge', name: 'Plunge', size: '4.0 × 3.0 m', cost: 16000, length: 4, width: 3 },
-  { id: 'standard', name: 'Standard', size: '8.0 × 3.5 m', cost: 34000, length: 8, width: 3.5 },
-  { id: 'infinity', name: 'Infinity edge', size: '11.0 × 4.0 m', cost: 62000, length: 11, width: 4 },
+  { id: 'none', name: 'villa.pool.none', size: '—', cost: 0, length: 0, width: 0 },
+  { id: 'plunge', name: 'villa.pool.plunge', size: '4.0 × 3.0 m', cost: 16000, length: 4, width: 3 },
+  { id: 'standard', name: 'villa.pool.standard', size: '8.0 × 3.5 m', cost: 34000, length: 8, width: 3.5 },
+  { id: 'infinity', name: 'villa.pool.infinity', size: '11.0 × 4.0 m', cost: 62000, length: 11, width: 4 },
 ];
 
 export const EXTRAS: { id: ExtraId; name: string; note: string; cost: number; sqm: number }[] = [
-  { id: 'rooftop', name: 'Rooftop terrace', note: 'Needs the second storey', cost: 22000, sqm: 32 },
-  { id: 'study', name: 'Office / workspace', note: 'Enclosed, air conditioned', cost: 14000, sqm: 16 },
-  { id: 'gym', name: 'Gym', note: 'Ground floor, off the living zone', cost: 16000, sqm: 22 },
-  { id: 'yoga', name: 'Yoga shala', note: 'Open-sided, timber floor', cost: 19000, sqm: 20 },
-  { id: 'massage', name: 'Massage room', note: 'Treatment room off the garden', cost: 12000, sqm: 15 },
-  { id: 'outdoor-kitchen', name: 'Outdoor kitchen', note: 'Poolside, with bar', cost: 11000, sqm: 10 },
-  { id: 'jacuzzi', name: 'Jacuzzi', note: 'Heated, set into the garden deck', cost: 9500, sqm: 6 },
-  { id: 'sauna', name: 'Sauna', note: 'Cedar cabin, four person', cost: 13000, sqm: 6 },
-  { id: 'ice-bath', name: 'Ice bath', note: 'Chilled plunge, beside the sauna', cost: 6000, sqm: 3 },
-  { id: 'pickleball', name: 'Pickleball court', note: 'Regulation 13.4 × 6.1 m', cost: 28000, sqm: 82 },
-  { id: 'padel', name: 'Padel court', note: 'Regulation 20 × 10 m, glazed', cost: 85000, sqm: 200 },
-  { id: 'carport', name: 'Carport', note: 'Two bays, covered', cost: 9000, sqm: 17 },
-  { id: 'staff', name: 'Staff quarters', note: 'Detached, with bathroom', cost: 18000, sqm: 13 },
-  { id: 'solar', name: 'Solar hot water', note: 'Cuts the power bill', cost: 6500, sqm: 0 },
-  { id: 'generator', name: 'Backup generator', note: 'Auto transfer switch', cost: 8500, sqm: 0 },
+  { id: 'rooftop', name: 'villa.extra.rooftop.name', note: 'villa.extra.rooftop.note', cost: 22000, sqm: 32 },
+  { id: 'study', name: 'villa.extra.study.name', note: 'villa.extra.study.note', cost: 14000, sqm: 16 },
+  { id: 'gym', name: 'villa.extra.gym.name', note: 'villa.extra.gym.note', cost: 16000, sqm: 22 },
+  { id: 'yoga', name: 'villa.extra.yoga.name', note: 'villa.extra.yoga.note', cost: 19000, sqm: 20 },
+  { id: 'massage', name: 'villa.extra.massage.name', note: 'villa.extra.massage.note', cost: 12000, sqm: 15 },
+  { id: 'outdoor-kitchen', name: 'villa.extra.outdoor-kitchen.name', note: 'villa.extra.outdoor-kitchen.note', cost: 11000, sqm: 10 },
+  { id: 'jacuzzi', name: 'villa.extra.jacuzzi.name', note: 'villa.extra.jacuzzi.note', cost: 9500, sqm: 6 },
+  { id: 'sauna', name: 'villa.extra.sauna.name', note: 'villa.extra.sauna.note', cost: 13000, sqm: 6 },
+  { id: 'ice-bath', name: 'villa.extra.ice-bath.name', note: 'villa.extra.ice-bath.note', cost: 6000, sqm: 3 },
+  { id: 'pickleball', name: 'villa.extra.pickleball.name', note: 'villa.extra.pickleball.note', cost: 28000, sqm: 82 },
+  { id: 'padel', name: 'villa.extra.padel.name', note: 'villa.extra.padel.note', cost: 85000, sqm: 200 },
+  { id: 'carport', name: 'villa.extra.carport.name', note: 'villa.extra.carport.note', cost: 9000, sqm: 17 },
+  { id: 'staff', name: 'villa.extra.staff.name', note: 'villa.extra.staff.note', cost: 18000, sqm: 13 },
+  { id: 'solar', name: 'villa.extra.solar.name', note: 'villa.extra.solar.note', cost: 6500, sqm: 0 },
+  { id: 'generator', name: 'villa.extra.generator.name', note: 'villa.extra.generator.note', cost: 8500, sqm: 0 },
 ];
 
 /** Options that take a strip of the living-side column. Depth = area / column width. */
 const INDOOR_EXTRAS: { id: ExtraId; label: string }[] = [
-  { id: 'study', label: 'Study / office' },
-  { id: 'gym', label: 'Gym' },
-  { id: 'yoga', label: 'Yoga shala' },
-  { id: 'massage', label: 'Massage room' },
+  { id: 'study', label: 'villa.extra.study.name' },
+  { id: 'gym', label: 'villa.extra.gym.name' },
+  { id: 'yoga', label: 'villa.extra.yoga.name' },
+  { id: 'massage', label: 'villa.extra.massage.name' },
 ];
 
 /** Small wet options, drawn in a column in the garden beyond the pool. */
 const WET_EXTRAS: { id: ExtraId; label: string; w: number; h: number; kind: RoomKind }[] = [
-  { id: 'jacuzzi', label: 'Jacuzzi', w: 2.4, h: 2.4, kind: 'pool' },
-  { id: 'sauna', label: 'Sauna', w: 2.6, h: 2.2, kind: 'service' },
-  { id: 'ice-bath', label: 'Ice bath', w: 1.6, h: 1.6, kind: 'pool' },
+  { id: 'jacuzzi', label: 'villa.extra.jacuzzi.name', w: 2.4, h: 2.4, kind: 'pool' },
+  { id: 'sauna', label: 'villa.extra.sauna.name', w: 2.6, h: 2.2, kind: 'service' },
+  { id: 'ice-bath', label: 'villa.extra.ice-bath.name', w: 1.6, h: 1.6, kind: 'pool' },
 ];
 
 /** Courts, at their regulation footprint — which is the point of drawing them. */
 const COURT_EXTRAS: { id: ExtraId; label: string; w: number; h: number }[] = [
-  { id: 'pickleball', label: 'Pickleball court', w: 6.1, h: 13.4 },
-  { id: 'padel', label: 'Padel court', w: 10, h: 20 },
+  { id: 'pickleball', label: 'villa.extra.pickleball.name', w: 6.1, h: 13.4 },
+  { id: 'padel', label: 'villa.extra.padel.name', w: 10, h: 20 },
 ];
 
 function extraSqm(id: ExtraId): number {
@@ -200,13 +205,48 @@ function extraSqm(id: ExtraId): number {
 
 /* ------------------------------------------------------------------ plan -- */
 
+/**
+ * Every word the drawing puts on the sheet, in one place. `actualRoomArea` in
+ * the editor matches rooms against these, so they have to be the same strings
+ * the plan was built with — which is exactly what a key is good for.
+ */
+export const PLAN_LABELS = {
+  master: 'villa.plan.master',
+  bedroom: 'villa.plan.bedroom',
+  ensuite: 'villa.plan.ensuite',
+  bath: 'villa.plan.bath',
+  living: 'villa.plan.living',
+  livingSub: 'villa.plan.livingSub',
+  kitchen: 'villa.plan.kitchen',
+  hall: 'villa.plan.hall',
+  deck: 'villa.plan.deck',
+  pool: 'villa.plan.pool',
+  entryPowder: 'villa.plan.entryPowder',
+  laundryStore: 'villa.plan.laundryStore',
+  entryStore: 'villa.plan.entryStore',
+  upperLounge: 'villa.plan.upperLounge',
+  upperLoungeSub: 'villa.plan.upperLoungeSub',
+  roofTerrace: 'villa.plan.roofTerrace',
+  balcony: 'villa.plan.balcony',
+  uncovered: 'villa.plan.uncovered',
+  landing: 'villa.plan.landing',
+  floorPlan: 'villa.plan.floorPlan',
+  groundFloor: 'villa.plan.groundFloor',
+  firstFloor: 'villa.plan.firstFloor',
+} as const;
+
 export type RoomKind = 'living' | 'bed' | 'bath' | 'service' | 'hall' | 'pool' | 'deck' | 'outdoor';
 
 export interface PlanRoom {
   /** Stable across rebuilds, so the drawing can tell a moved room from a new one. */
   id: string;
+  /** Translation key. */
   label: string;
+  labelParams?: TranslateParams;
+  /** Translation key for the second line. */
   sub?: string;
+  /** A dimension line instead — already final, nothing to translate. */
+  subText?: string;
   x: number;
   y: number;
   w: number;
@@ -216,6 +256,7 @@ export interface PlanRoom {
 }
 
 export interface FloorPlan {
+  /** Translation key. */
   name: string;
   rooms: PlanRoom[];
   minX: number;
@@ -285,7 +326,8 @@ function bedroomRows(
     const h = heights[i];
     rooms.push({
       id: `bed-${n}`,
-      label: master ? 'Master bedroom' : `Bedroom ${n + 1}`,
+      label: master ? PLAN_LABELS.master : PLAN_LABELS.bedroom,
+      labelParams: master ? undefined : { n: n + 1 },
       x,
       y,
       w: BED_DEPTH,
@@ -295,7 +337,7 @@ function bedroomRows(
     });
     rooms.push({
       id: `bath-${n}`,
-      label: master ? 'Ensuite' : 'Bath',
+      label: master ? PLAN_LABELS.ensuite : PLAN_LABELS.bath,
       x: x + BED_DEPTH,
       y,
       w: bathW,
@@ -313,7 +355,10 @@ function serviceRows(config: VillaConfig, fromY: number, toY: number): PlanRoom[
   const available = toY - fromY;
   if (available < 1.8) return [];
   const w = BED_DEPTH + ensuiteWidth(config);
-  const labels = available >= 5 ? ['Entry & powder', 'Laundry & store'] : ['Entry & store'];
+  const labels =
+    available >= 5
+      ? [PLAN_LABELS.entryPowder, PLAN_LABELS.laundryStore]
+      : [PLAN_LABELS.entryStore];
   const h = available / labels.length;
   return labels.map((label, i) => ({
     id: `service-${i}`,
@@ -350,8 +395,8 @@ export function buildPlans(config: VillaConfig): FloorPlan[] {
   const livingActual = livingH + Math.max(0, groundH - leftStack);
 
   const ground: PlanRoom[] = [
-    { id: 'living', label: 'Living', sub: 'open to the pool', x: 0, y: 0, w: LEFT_W, h: livingActual, kind: 'living', counts: true },
-    { id: 'kitchen', label: 'Kitchen & dining', x: 0, y: livingActual, w: LEFT_W, h: kitchenH, kind: 'living', counts: true },
+    { id: 'living', label: PLAN_LABELS.living, sub: PLAN_LABELS.livingSub, x: 0, y: 0, w: LEFT_W, h: livingActual, kind: 'living', counts: true },
+    { id: 'kitchen', label: PLAN_LABELS.kitchen, x: 0, y: livingActual, w: LEFT_W, h: kitchenH, kind: 'living', counts: true },
   ];
   let ly = livingActual + kitchenH;
   for (const e of indoorExtras) {
@@ -359,20 +404,20 @@ export function buildPlans(config: VillaConfig): FloorPlan[] {
     ly += e.h;
   }
 
-  ground.push({ id: 'hall', label: 'Hall', x: LEFT_W, y: 0, w: HALL_W, h: groundH, kind: 'hall', counts: true });
+  ground.push({ id: 'hall', label: PLAN_LABELS.hall, x: LEFT_W, y: 0, w: HALL_W, h: groundH, kind: 'hall', counts: true });
   ground.push(...bedroomRows(config, gBeds, 0, gHeights));
   ground.push(...serviceRows(config, rightStack, groundH));
 
   // outdoor
-  ground.push({ id: 'deck', label: 'Deck', x: -DECK_D, y: 0, w: DECK_D, h: groundH, kind: 'deck', counts: false });
+  ground.push({ id: 'deck', label: PLAN_LABELS.deck, x: -DECK_D, y: 0, w: DECK_D, h: groundH, kind: 'deck', counts: false });
 
   const pool = POOLS.find((p) => p.id === config.pool)!;
   if (pool.length > 0) {
     // the pool runs alongside the villa, parallel to the deck — not out from it
     ground.push({
       id: 'pool',
-      label: 'Pool',
-      sub: pool.size,
+      label: PLAN_LABELS.pool,
+      subText: pool.size,
       x: -DECK_D - pool.width,
       y: Math.max(0, (groundH - pool.length) / 2),
       w: pool.width,
@@ -406,17 +451,21 @@ export function buildPlans(config: VillaConfig): FloorPlan[] {
   const buildingW = LEFT_W + HALL_W + BED_DEPTH + ensuiteWidth(config);
 
   if (config.extras.includes('outdoor-kitchen')) {
-    ground.push({ id: 'outdoor-kitchen', label: 'Outdoor kitchen', x: -DECK_D, y: groundH - 3, w: DECK_D, h: 3, kind: 'outdoor', counts: false });
+    ground.push({ id: 'outdoor-kitchen', label: 'villa.extra.outdoor-kitchen.name', x: -DECK_D, y: groundH - 3, w: DECK_D, h: 3, kind: 'outdoor', counts: false });
   }
   if (config.extras.includes('staff')) {
-    ground.push({ id: 'staff', label: 'Staff quarters', x: buildingW + 1.4, y: 0, w: 4.2, h: 3.2, kind: 'service', counts: true });
+    ground.push({ id: 'staff', label: 'villa.extra.staff.name', x: buildingW + 1.4, y: 0, w: 4.2, h: 3.2, kind: 'service', counts: true });
   }
   if (config.extras.includes('carport')) {
-    ground.push({ id: 'carport', label: 'Carport', x: buildingW + 1.4, y: groundH - 3.2, w: 5.4, h: 3.2, kind: 'outdoor', counts: false });
+    ground.push({ id: 'carport', label: 'villa.extra.carport.name', x: buildingW + 1.4, y: groundH - 3.2, w: 5.4, h: 3.2, kind: 'outdoor', counts: false });
   }
 
   const plans: FloorPlan[] = [
-    { name: config.storeys === 1 ? 'Floor plan' : 'Ground floor', rooms: ground, ...bounds(ground) },
+    {
+      name: config.storeys === 1 ? PLAN_LABELS.floorPlan : PLAN_LABELS.groundFloor,
+      rooms: ground,
+      ...bounds(ground),
+    },
   ];
 
   /* ---------- upper floor ---------- */
@@ -430,13 +479,13 @@ export function buildPlans(config: VillaConfig): FloorPlan[] {
     const loungeH = Math.max(upperH - terraceH, 3);
 
     const upper: PlanRoom[] = [
-      { id: 'upper-lounge', label: 'Upper lounge', sub: 'over the pool', x: 0, y: 0, w: LEFT_W, h: loungeH, kind: 'living', counts: true },
-      { id: 'terrace', label: rooftop ? 'Roof terrace' : 'Balcony', sub: 'uncovered', x: 0, y: loungeH, w: LEFT_W, h: terraceH, kind: 'deck', counts: false },
-      { id: 'landing', label: 'Landing', x: LEFT_W, y: 0, w: HALL_W, h: upperH, kind: 'hall', counts: true },
+      { id: 'upper-lounge', label: PLAN_LABELS.upperLounge, sub: PLAN_LABELS.upperLoungeSub, x: 0, y: 0, w: LEFT_W, h: loungeH, kind: 'living', counts: true },
+      { id: 'terrace', label: rooftop ? PLAN_LABELS.roofTerrace : PLAN_LABELS.balcony, sub: PLAN_LABELS.uncovered, x: 0, y: loungeH, w: LEFT_W, h: terraceH, kind: 'deck', counts: false },
+      { id: 'landing', label: PLAN_LABELS.landing, x: LEFT_W, y: 0, w: HALL_W, h: upperH, kind: 'hall', counts: true },
       ...bedroomRows(config, uBeds, gBeds, uHeights),
     ];
 
-    plans.push({ name: 'First floor', rooms: upper, ...bounds(upper) });
+    plans.push({ name: PLAN_LABELS.firstFloor, rooms: upper, ...bounds(upper) });
   }
 
   return plans;
@@ -447,9 +496,14 @@ export const PLAN_METRICS = { wall: WALL, hallWidth: HALL_W, bedDepth: BED_DEPTH
 /* ------------------------------------------------------------------ cost -- */
 
 export interface CostLine {
+  /** Translation key. */
   label: string;
   amount: number;
+  /** Translation key for the line under it. */
   note?: string;
+  noteParams?: TranslateParams;
+  /** A key whose own translation is substituted into the note as `{name}`. */
+  noteNameKey?: string;
 }
 
 export interface VillaStudy {
@@ -621,13 +675,34 @@ export function buildStudy(
   const permits = Math.round(17500 + construction * 0.02);
 
   const lines: CostLine[] = [
-    { label: 'Construction', amount: construction, note: `${builtSqm} m² × $${finish.rate}/m² · ${style.name}` },
-    { label: 'Pool', amount: pool.cost, note: pool.id === 'none' ? 'Not included' : pool.size },
-    { label: 'Options', amount: extrasCost, note: `${config.extras.length} selected` },
-    { label: 'Furniture & fit-out', amount: furniture, note: `${finish.name} package` },
-    { label: 'Landscaping & external works', amount: landscaping, note: 'Garden, walls, driveway' },
-    { label: 'Design & engineering', amount: design, note: '7% of construction' },
-    { label: 'Permits, notary & PT PMA', amount: permits, note: 'PBG, company, due diligence' },
+    {
+      label: 'villa.cost.construction',
+      amount: construction,
+      note: 'villa.cost.construction.note',
+      noteParams: { sqm: builtSqm, rate: finish.rate },
+      noteNameKey: style.name,
+    },
+    {
+      label: 'villa.cost.pool',
+      amount: pool.cost,
+      note: pool.id === 'none' ? 'villa.cost.pool.none' : 'villa.cost.pool.note',
+      noteParams: { size: pool.size },
+    },
+    {
+      label: 'villa.cost.options',
+      amount: extrasCost,
+      note: 'villa.cost.options.note',
+      noteParams: { count: config.extras.length },
+    },
+    {
+      label: 'villa.cost.furniture',
+      amount: furniture,
+      note: 'villa.cost.furniture.note',
+      noteNameKey: finish.name,
+    },
+    { label: 'villa.cost.landscaping', amount: landscaping, note: 'villa.cost.landscaping.note' },
+    { label: 'villa.cost.design', amount: design, note: 'villa.cost.design.note' },
+    { label: 'villa.cost.permits', amount: permits, note: 'villa.cost.permits.note' },
   ];
 
   const buildTotal = lines.reduce((s, l) => s + l.amount, 0);

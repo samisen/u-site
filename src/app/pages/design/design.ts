@@ -21,7 +21,9 @@ import { NzSegmentedModule, NzSegmentedOption } from 'ng-zorro-antd/segmented';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
-import { BRAND, YIELD_CLAIM, whatsappLink } from '../../core/brand';
+import { BRAND, YIELD_CLAIM } from '../../core/brand';
+import { I18nService, TranslatePipe, TranslateParams } from '../../core/i18n';
+import { WhatsappService } from '../../core/whatsapp.service';
 import { CatalogService } from '../../core/catalog.service';
 import { usd } from '../../core/format';
 import { AreaId } from '../../core/models';
@@ -39,6 +41,7 @@ import {
   LEASE_TERM_YEARS,
   PLAN_METRICS,
   POOLS,
+  PLAN_LABELS,
   PRESETS,
   PlanRoom,
   PoolType,
@@ -81,6 +84,7 @@ interface Door {
     NzSelectModule,
     NzSliderModule,
     NzTooltipModule,
+    TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './design.html',
@@ -92,6 +96,8 @@ export class DesignPage {
   private readonly message = inject(NzMessageService);
   private readonly doc = inject(DOCUMENT);
   private readonly router = inject(Router);
+  private readonly i18n = inject(I18nService);
+  private readonly whatsapp = inject(WhatsappService);
   private readonly editorEl = viewChild<ElementRef<HTMLElement>>('editorEl');
 
   readonly brand = BRAND;
@@ -124,10 +130,12 @@ export class DesignPage {
 
   /** Simple keeps it to seven decisions; advanced opens room areas, style and options. */
   readonly mode = signal<'simple' | 'advanced'>('simple');
-  readonly modeOptions: NzSegmentedOption[] = [
-    { label: 'Simple', value: 'simple' },
-    { label: 'Advanced', value: 'advanced' },
-  ];
+
+  // nz-segmented takes finished labels, so these resolve through the service
+  readonly modeOptions = computed<NzSegmentedOption[]>(() => [
+    { label: this.i18n.t('design.mode.simple'), value: 'simple' },
+    { label: this.i18n.t('design.mode.advanced'), value: 'advanced' },
+  ]);
   readonly isAdvanced = computed(() => this.mode() === 'advanced');
 
   setMode(value: string | number): void {
@@ -179,10 +187,10 @@ export class DesignPage {
     });
   }
 
-  readonly storeyOptions: NzSegmentedOption[] = [
-    { label: 'One storey', value: 1 },
-    { label: 'Two storeys', value: 2 },
-  ];
+  readonly storeyOptions = computed<NzSegmentedOption[]>(() => [
+    { label: this.i18n.t('design.storey.one'), value: 1 },
+    { label: this.i18n.t('design.storey.two'), value: 2 },
+  ]);
 
   readonly bedroomMarks: Record<number, string> = { 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' };
 
@@ -224,7 +232,7 @@ export class DesignPage {
   }
 
   poolNote(pool: PoolType): string | null {
-    return this.poolDisabled(pool) ? 'This plot has no room left for it' : null;
+    return this.poolDisabled(pool) ? this.i18n.t('design.poolTooBig') : null;
   }
   setArea(area: AreaId): void { this.patch({ area }); }
 
@@ -271,7 +279,21 @@ export class DesignPage {
   /* ---------------------------------------------------------------- view -- */
 
   readonly floorOptions = computed<NzSegmentedOption[]>(() =>
-    this.study().plans.map((p, i) => ({ label: p.name, value: i })),
+    this.study().plans.map((p, i) => ({ label: this.i18n.t(p.name), value: i })),
+  );
+
+  /** The cost table, with every label and note already in the visitor's language. */
+  readonly costLines = computed(() =>
+    this.study().lines.map((line) => ({
+      amount: line.amount,
+      label: this.i18n.t(line.label),
+      note: line.note
+        ? this.i18n.t(line.note, {
+            ...line.noteParams,
+            ...(line.noteNameKey ? { name: this.i18n.t(line.noteNameKey) } : {}),
+          })
+        : '',
+    })),
   );
   readonly visibleFloor = computed(() => Math.min(this.floor(), this.study().plans.length - 1));
   readonly visiblePlan = computed<FloorPlan>(() => this.study().plans[this.visibleFloor()]);
@@ -394,6 +416,9 @@ export class DesignPage {
   });
 
   roomArea(room: PlanRoom): string { return `${(room.w * room.h).toFixed(1)} m²`; }
+
+  /** The drawing's own name for a plan, for the title block and the label. */
+  planName(name: string): string { return this.i18n.t(name); }
   showLabel(room: PlanRoom): boolean { return room.w >= 1.9 && room.h >= 1.5; }
 
   /**
@@ -401,9 +426,12 @@ export class DesignPage {
    * descriptive line only appears when there is a third line's worth of room.
    */
   roomLines(room: PlanRoom): { text: string; cls: string; y: number }[] {
-    const lines: { text: string; cls: string }[] = [{ text: room.label, cls: 'room-label' }];
+    const lines: { text: string; cls: string }[] = [
+      { text: this.i18n.t(room.label, room.labelParams), cls: 'room-label' },
+    ];
     if (room.w >= 2.2 && room.h >= 1.9) lines.push({ text: this.roomArea(room), cls: 'room-area' });
-    if (room.sub && room.w >= 3 && room.h >= 3.6) lines.push({ text: room.sub, cls: 'room-sub' });
+    const sub = room.sub ? this.i18n.t(room.sub) : room.subText;
+    if (sub && room.w >= 3 && room.h >= 3.6) lines.push({ text: sub, cls: 'room-sub' });
     const top = -((lines.length - 1) * 0.82) / 2;
     return lines.map((l, i) => ({ ...l, y: top + i * 0.82 }));
   }
@@ -412,11 +440,11 @@ export class DesignPage {
   actualRoomArea(key: keyof RoomSizes): number {
     const rooms = this.study().plans.flatMap((p) => p.rooms);
     const match: Record<keyof RoomSizes, (r: PlanRoom) => boolean> = {
-      master: (r) => r.label === 'Master bedroom',
-      bedroom: (r) => r.kind === 'bed' && r.label !== 'Master bedroom',
-      ensuite: (r) => r.kind === 'bath' && r.label !== 'Ensuite',
-      living: (r) => r.label === 'Living',
-      kitchen: (r) => r.label === 'Kitchen & dining',
+      master: (r) => r.label === PLAN_LABELS.master,
+      bedroom: (r) => r.kind === 'bed' && r.label !== PLAN_LABELS.master,
+      ensuite: (r) => r.kind === 'bath' && r.label !== PLAN_LABELS.ensuite,
+      living: (r) => r.label === PLAN_LABELS.living,
+      kitchen: (r) => r.label === PLAN_LABELS.kitchen,
     };
     const found = rooms.find(match[key]);
     return found ? Math.round(found.w * found.h * 10) / 10 : 0;
@@ -425,31 +453,44 @@ export class DesignPage {
   /* -------------------------------------------------------------- format -- */
 
   money(v: number, compact = false): string { return usd(v, { compact }); }
-  styleName(): string { return STYLES.find((s) => s.id === this.config().style)!.name; }
-  finishName(): string { return FINISHES.find((f) => f.id === this.config().finish)!.name; }
-  poolName(): string { return POOLS.find((p) => p.id === this.config().pool)!.name; }
+  t(key: string, params?: TranslateParams): string { return this.i18n.t(key, params); }
+  styleName(): string { return this.i18n.t(STYLES.find((s) => s.id === this.config().style)!.name); }
+  finishName(): string { return this.i18n.t(FINISHES.find((f) => f.id === this.config().finish)!.name); }
+  poolName(): string { return this.i18n.t(POOLS.find((p) => p.id === this.config().pool)!.name); }
   extraNames(): string {
     const chosen = this.config().extras;
-    if (!chosen.length) return 'None';
-    return EXTRAS.filter((e) => chosen.includes(e.id)).map((e) => e.name).join(', ');
+    if (!chosen.length) return this.i18n.t('design.noOptions');
+    return EXTRAS.filter((e) => chosen.includes(e.id))
+      .map((e) => this.i18n.t(e.name))
+      .join(', ');
   }
 
   /** One-line brief, used by both the form and the WhatsApp hand-off. */
   readonly summaryText = computed(() => {
     const c = this.config();
     const s = this.study();
+    this.i18n.version();
     return [
-      `${c.bedrooms}-bedroom ${this.styleName().toLowerCase()} villa, ${c.storeys} storey${c.storeys > 1 ? 's' : ''}`,
-      `${s.builtSqm} m² built on a ${c.landSqm} m² plot in ${this.area().name}`,
-      `${this.poolName()} pool · ${this.finishName()} finish`,
-      `Options: ${this.extraNames()}`,
-      `Estimated total ${this.money(s.total)} · indicative gross yield ${s.grossYield.toFixed(1)}%`,
+      this.i18n.t('design.summary.line1', {
+        bedrooms: c.bedrooms,
+        style: this.styleName().toLowerCase(),
+        storeys: c.storeys,
+      }),
+      this.i18n.t('design.summary.line2', {
+        built: s.builtSqm,
+        land: c.landSqm,
+        area: this.i18n.t(this.area().name),
+      }),
+      this.i18n.t('design.summary.line3', { pool: this.poolName(), finish: this.finishName() }),
+      this.i18n.t('design.summary.line4', { options: this.extraNames() }),
+      this.i18n.t('design.summary.line5', {
+        total: this.money(s.total),
+        yield: s.grossYield.toFixed(1),
+      }),
     ].join('\n');
   });
 
-  readonly whatsappHref = computed(() =>
-    whatsappLink(`Hello ${BRAND.name}, here is the villa I configured:\n\n${this.summaryText()}`),
-  );
+  readonly whatsappHref = computed(() => this.whatsapp.linkWith(this.summaryText()));
 
   /* ---------------------------------------------------------------- send -- */
 
@@ -470,7 +511,7 @@ export class DesignPage {
         c.markAsDirty();
         c.updateValueAndValidity({ onlySelf: true });
       });
-      this.message.error('A name and a valid email is all we need.');
+      this.message.error(this.i18n.t('design.send.error'));
       return;
     }
     this.sending.set(true);
@@ -478,7 +519,7 @@ export class DesignPage {
     setTimeout(() => {
       this.sending.set(false);
       this.sent.set(true);
-      this.message.success('Sent. A project lead will reply within one working day.');
+      this.message.success(this.i18n.t('design.send.success'));
     }, 800);
   }
 

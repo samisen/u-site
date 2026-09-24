@@ -1,13 +1,18 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import {
+  ApplicationConfig,
+  inject,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
+} from '@angular/core';
+import {
+  TitleStrategy,
   provideRouter,
   withComponentInputBinding,
   withInMemoryScrolling,
 } from '@angular/router';
 import { provideNzI18n, en_US } from 'ng-zorro-antd/i18n';
 import { provideNzIcons } from 'ng-zorro-antd/icon';
-import { registerLocaleData } from '@angular/common';
-import en from '@angular/common/locales/en';
+import { I18nService, LocalisedTitleStrategy } from './core/i18n';
 
 import {
   ApartmentOutline, ArrowLeftOutline, ArrowRightOutline, AuditOutline, BankOutline,
@@ -23,8 +28,6 @@ import {
 } from '@ant-design/icons-angular/icons';
 
 import { routes } from './app.routes';
-
-registerLocaleData(en);
 
 const icons = [
   ApartmentOutline, ArrowLeftOutline, ArrowRightOutline, AuditOutline, BankOutline,
@@ -49,5 +52,9 @@ export const appConfig: ApplicationConfig = {
     ),
     provideNzI18n(en_US),
     provideNzIcons(icons),
+    { provide: TitleStrategy, useClass: LocalisedTitleStrategy },
+    // the copy has to be in hand before the first view renders, otherwise the
+    // visitor sees a frame of translation keys
+    provideAppInitializer(() => inject(I18nService).init()),
   ],
 };

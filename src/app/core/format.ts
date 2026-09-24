@@ -15,12 +15,13 @@ export function usd(value: number, opts: { compact?: boolean } = {}): string {
   }).format(value);
 }
 
+/** Translation keys — pipe the result through `t`. */
 export const STATUS_LABEL: Record<string, string> = {
-  available: 'Available',
-  construction: 'Under construction',
-  reserved: 'Reserved',
-  delivered: 'Delivered',
-  'coming-soon': 'Coming soon',
+  available: 'status.available',
+  construction: 'status.construction',
+  reserved: 'status.reserved',
+  delivered: 'status.delivered',
+  'coming-soon': 'status.comingSoon',
 };
 
 export const STATUS_COLOR: Record<string, string> = {
@@ -31,10 +32,11 @@ export const STATUS_COLOR: Record<string, string> = {
   'coming-soon': 'purple',
 };
 
+/** Translation keys — pipe the result through `t`. */
 export const TYPE_LABEL: Record<string, string> = {
-  villa: 'Villa',
-  townhouse: 'Townhouse',
-  apartment: 'Apartment',
-  commercial: 'Commercial',
-  land: 'Land',
+  villa: 'type.villa',
+  townhouse: 'type.townhouse',
+  apartment: 'type.apartment',
+  commercial: 'type.commercial',
+  land: 'type.land',
 };

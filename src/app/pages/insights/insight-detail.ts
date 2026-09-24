@@ -1,19 +1,21 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { INSIGHTS } from '../../core/content';
+import { INSIGHTS, insightCategoryKey } from '../../core/content';
+import { TranslatePipe } from '../../core/i18n';
 import { CtaBandComponent } from '../../shared/cta-band';
 import { RevealDirective } from '../../shared/reveal.directive';
 
 @Component({
   selector: 'app-insight-detail',
-  imports: [RouterLink, NzIconModule, CtaBandComponent, RevealDirective],
+  imports: [RouterLink, NzIconModule, CtaBandComponent, RevealDirective, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './insight-detail.html',
   styleUrl: './insight-detail.css',
 })
 export class InsightDetailPage {
   readonly slug = input<string>('');
+  readonly categoryKey = insightCategoryKey;
   private readonly router = inject(Router);
 
   readonly article = computed(() => INSIGHTS.find((a) => a.slug === this.slug()));
