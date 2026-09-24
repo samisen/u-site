@@ -20,6 +20,9 @@
       var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       var theme = stored === 'dark' || stored === 'light' ? stored : (prefersDark ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', theme);
+      // applied here too, so the UA paints its own surfaces in the right
+      // scheme from the very first frame, before styles.css is parsed
+      document.documentElement.style.colorScheme = theme;
       // `media` rather than `disabled`: Safari does not reliably honour
       // link.disabled, and a stylesheet that stays active alongside the other
       // theme leaves every Ant Design component styled twice.

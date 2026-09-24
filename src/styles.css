@@ -4,6 +4,12 @@
    ========================================================================== */
 
 :root {
+  /* Tells the engine which scheme the UA-painted surfaces belong to: form
+     controls, scrollbars, the canvas behind the page, caret and autofill.
+     WebKit keeps those light without it, however dark the authored CSS is,
+     which is why dark mode looked half-applied in Safari but fine in Chrome. */
+  color-scheme: light;
+
   /* brand */
   --brand: #0f7b6c;
   --brand-strong: #0a5d51;
@@ -53,6 +59,7 @@
 }
 
 html[data-theme='dark'] {
+  color-scheme: dark;
   --brand: #2fa894;
   --brand-strong: #46c3ad;
   --brand-soft: #10302b;

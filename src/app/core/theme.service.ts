@@ -32,6 +32,9 @@ export class ThemeService {
   private apply(mode: ThemeMode, persist: boolean): void {
     this.mode.set(mode);
     this.doc.documentElement.setAttribute('data-theme', mode);
+    // keep the inline-script value in step, so form controls, scrollbars and
+    // autofill follow the toggle in WebKit as well
+    this.doc.documentElement.style.colorScheme = mode;
 
     // toggled through `media`, not `disabled` — see the note in index.html
     const light = this.doc.getElementById('theme-light') as HTMLLinkElement | null;
