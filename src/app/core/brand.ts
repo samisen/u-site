@@ -5,7 +5,7 @@
  * brand reference on the site reads from here: change these values and the
  * name, wordmark, contact details and legal footer change everywhere.
  */
-export const BRAND = {
+const BRAND_BASE = {
   name: 'Turta Escape',
   wordmarkLead: 'Turta',
   wordmarkTail: 'Escape',
@@ -17,11 +17,9 @@ export const BRAND = {
   email: 'hello@turtaescape.com',
   phone: '+62 361 000 000',
   phoneHref: 'tel:+62361000000',
-  whatsapp: '+62 812 0000 0000',
-  /** Placeholder number — swap for the real one before launch. */
-  whatsappUrl:
-    'https://wa.me/6281200000000?text=' +
-    encodeURIComponent("Hello Turta Escape, I'd like to talk about a villa project in Bali."),
+  whatsapp: '+90 533 399 46 48',
+  /** Digits only, international, no leading zero — the form wa.me accepts. */
+  whatsappDigits: '905333994648',
   address: ['Jl. Pantai Pererenan No. 88', 'Mengwi, Badung, Bali 80351', 'Indonesia'],
   hours: 'Mon–Sat, 09:00–18:00 WITA (UTC+8)',
 
@@ -35,6 +33,20 @@ export const BRAND = {
     insights: 'Read the Insights',
   },
 } as const;
+
+/** Builds a wa.me link with a prefilled message, from the one number above. */
+export function whatsappLink(text: string): string {
+  return `https://wa.me/${BRAND_BASE.whatsappDigits}?text=${encodeURIComponent(text)}`;
+}
+
+export const BRAND = {
+  ...BRAND_BASE,
+  /** Derived, never authored — see whatsappLink above. */
+  whatsappUrl: whatsappLink(
+    `Hello ${BRAND_BASE.name}, I'd like to talk about a villa project in Bali.`,
+  ),
+} as const;
+
 
 /** The yield claim and its mandatory qualifier. Never show one without the other. */
 export const YIELD_CLAIM = {

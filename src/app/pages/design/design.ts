@@ -21,7 +21,7 @@ import { NzSegmentedModule, NzSegmentedOption } from 'ng-zorro-antd/segmented';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
-import { BRAND, YIELD_CLAIM } from '../../core/brand';
+import { BRAND, YIELD_CLAIM, whatsappLink } from '../../core/brand';
 import { CatalogService } from '../../core/catalog.service';
 import { usd } from '../../core/format';
 import { AreaId } from '../../core/models';
@@ -447,11 +447,8 @@ export class DesignPage {
     ].join('\n');
   });
 
-  readonly whatsappHref = computed(
-    () =>
-      `https://wa.me/6281200000000?text=${encodeURIComponent(
-        `Hello ${BRAND.name}, here is the villa I configured:\n\n${this.summaryText()}`,
-      )}`,
+  readonly whatsappHref = computed(() =>
+    whatsappLink(`Hello ${BRAND.name}, here is the villa I configured:\n\n${this.summaryText()}`),
   );
 
   /* ---------------------------------------------------------------- send -- */
