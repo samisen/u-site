@@ -1,0 +1,123 @@
+<app-page-hero
+  eyebrow="The opportunity"
+  heading="Your Property Can Do More"
+  lede="A villa in Bali is usually run closer to a small hotel than to a rental flat. That changes what drives revenue — and it means design decisions and operating decisions are the same decision."
+  image="/media/villa-facade.jpg"
+/>
+
+<!-- ============ THE NUMBER ============ -->
+<section class="section section-deep yield-section">
+  <div class="container">
+    <div class="yield-grid">
+      <div appReveal>
+        <p class="eyebrow">Indicative performance</p>
+        <p class="yield-headline">{{ claim.range }}<sup>*</sup></p>
+        <p class="yield-measure">Indicative Gross Rental Yield</p>
+        <p class="yield-sub">{{ claim.subline }}</p>
+      </div>
+
+      <div class="yield-aside" appReveal="100">
+        <p class="yield-note">{{ claim.footnote }}</p>
+        <div class="yield-actions">
+          <a nz-button nzSize="large" nzGhost routerLink="/contact">
+            {{ brand.cta.overview }}
+            <nz-icon nzType="arrow-right" />
+          </a>
+          <a class="yield-link" routerLink="/how-we-build">
+            How we arrive at the number
+            <nz-icon nzType="arrow-right" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE MODEL ============ -->
+<section class="section section-lg">
+  <div class="container container-narrow">
+    <div class="head" appReveal>
+      <p class="eyebrow">The model</p>
+      <h2 class="display">{{ copy.lead }}</h2>
+      @for (para of copy.paragraphs; track $index) {
+        <p class="lede">{{ para }}</p>
+      }
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="grid grid-4">
+      @for (d of copy.drivers; track d.title; let i = $index) {
+        <article class="driver" [appReveal]="i * 60">
+          <nz-icon [nzType]="d.icon" class="driver-icon" />
+          <h3>{{ d.title }}</h3>
+          <p>{{ d.text }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARISON ============ -->
+<section class="section section-lg section-sand">
+  <div class="container">
+    <div class="head" appReveal>
+      <p class="eyebrow">Global comparison</p>
+      <h2 class="display">Put the Numbers in Perspective</h2>
+      <p class="lede">
+        Context, not an apples-to-apples claim. The bars are broad country-level residential gross
+        rental yields for standard long-term rent. The Bali range beside them is a different
+        measure, from a different operating model — which is exactly why it is not a seventh bar.
+      </p>
+    </div>
+
+    <div appReveal>
+      <app-market-yield-chart />
+    </div>
+  </div>
+</section>
+
+<!-- ============ IN PRACTICE ============ -->
+<section class="section section-lg section-sand">
+  <div class="container">
+    <div class="head head-split" appReveal>
+      <div>
+        <p class="eyebrow">In practice</p>
+        <h2 class="display">The assumptions, applied.</h2>
+        <p class="lede">
+          Each project page shows the gross yield, the net after our modelled costs, and the inputs
+          both come from — so you can argue with them.
+        </p>
+      </div>
+      <a class="head-link" routerLink="/projects">
+        All projects
+        <nz-icon nzType="arrow-right" />
+      </a>
+    </div>
+
+    <div class="grid grid-3">
+      @for (p of featured(); track p.id; let i = $index) {
+        <div [appReveal]="i * 70">
+          <app-project-card [project]="p" />
+        </div>
+      }
+    </div>
+
+    <div class="reading-row" appReveal>
+      <span class="reading-label">Related reading</span>
+      @for (a of reading; track a.slug) {
+        <a [routerLink]="['/insights', a.slug]">
+          {{ a.title }}
+          <nz-icon nzType="arrow-right" />
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<app-cta-band
+  eyebrow="Go deeper"
+  heading="Ask us for the investment overview."
+  lede="The full document sets out the operating model, the cost assumptions, a worked example and the questions we think you should be asking any developer in Bali — including us."
+  primaryLabel="Request the Investment Overview"
+/>

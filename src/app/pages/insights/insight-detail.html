@@ -1,0 +1,76 @@
+@let a = article();
+
+@if (a) {
+  <article class="article">
+    <header class="article-head">
+      <div class="container container-narrow">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a routerLink="/">Home</a>
+          <span>/</span>
+          <a routerLink="/insights">Insights</a>
+        </nav>
+
+        <p class="meta">
+          <span class="cat">{{ a.category }}</span>
+          <span class="dot">·</span>
+          {{ a.date }}
+          <span class="dot">·</span>
+          {{ a.readMinutes }} min read
+        </p>
+
+        <h1 class="display">{{ a.title }}</h1>
+        <p class="lede">{{ a.excerpt }}</p>
+        <p class="byline">{{ a.author }}</p>
+      </div>
+    </header>
+
+    <figure class="article-media">
+      <div class="container">
+        <img [src]="a.image" [alt]="a.title" />
+      </div>
+    </figure>
+
+    <div class="container container-narrow prose">
+      @for (para of a.body; track $index) {
+        <p>{{ para }}</p>
+      }
+
+      <aside class="disclosure">
+        This article is general information written for people considering property in Bali. It is
+        not financial, legal or tax advice, and it does not describe a specific project.
+      </aside>
+    </div>
+  </article>
+
+  <section class="section section-sand">
+    <div class="container">
+      <div class="rel-head" appReveal>
+        <h2 class="title-md">Keep reading</h2>
+        <a class="rel-link" routerLink="/insights">
+          All insights
+          <nz-icon nzType="arrow-right" />
+        </a>
+      </div>
+
+      <div class="grid grid-3">
+        @for (r of related(); track r.slug; let i = $index) {
+          <a class="card" [routerLink]="['/insights', r.slug]" [appReveal]="i * 70">
+            <div class="card-media">
+              <img [src]="r.image" [alt]="r.title" loading="lazy" />
+            </div>
+            <div class="card-body">
+              <p class="meta">
+                <span class="cat">{{ r.category }}</span>
+                <span class="dot">·</span>
+                {{ r.readMinutes }} min
+              </p>
+              <h3>{{ r.title }}</h3>
+            </div>
+          </a>
+        }
+      </div>
+    </div>
+  </section>
+
+  <app-cta-band />
+}

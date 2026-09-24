@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <title>Turta Escape — Tailor-made villas in Bali</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Tailor-made villas in Bali, created around how you want to live, stay and invest. Own the lifestyle, enjoy the experience, and let your property work for you.">
+  <meta name="theme-color" content="#0f7b6c">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link id="theme-light" rel="stylesheet" href="theme-light.css" media="all">
+  <link id="theme-dark" rel="stylesheet" href="theme-dark.css" media="not all">
+  <script>
+    (function () {
+      var stored = null;
+      try { stored = localStorage.getItem('tirta-theme'); } catch (e) {}
+      var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = stored === 'dark' || stored === 'light' ? stored : (prefersDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+      // `media` rather than `disabled`: Safari does not reliably honour
+      // link.disabled, and a stylesheet that stays active alongside the other
+      // theme leaves every Ant Design component styled twice.
+      var l = document.getElementById('theme-light');
+      var d = document.getElementById('theme-dark');
+      if (l) l.media = theme === 'dark' ? 'not all' : 'all';
+      if (d) d.media = theme === 'dark' ? 'all' : 'not all';
+    })();
+  </script>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>

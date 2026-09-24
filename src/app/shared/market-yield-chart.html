@@ -1,0 +1,83 @@
+<figure class="chart-figure">
+  <figcaption class="chart-head">
+    <h3 class="chart-title">Broad residential gross rental yield, by market</h3>
+    <p class="chart-sub">{{ meta.period }} · {{ meta.source }}</p>
+  </figcaption>
+
+  <div class="chart-body">
+    <ol class="bars" (mouseleave)="hovered.set(null)">
+      @for (bar of bars(); track bar.market) {
+        <li
+          class="bar-cell"
+          [class.is-hovered]="hovered() === bar.market"
+          (mouseenter)="hovered.set(bar.market)"
+          (focusin)="hovered.set(bar.market)"
+          tabindex="0"
+        >
+          <span class="bar-value mono">{{ bar.yieldPct.toFixed(2) }}%</span>
+          <div class="bar-track">
+            <div class="bar" [style.height.%]="bar.height"></div>
+          </div>
+          <span class="bar-label">{{ bar.market }}</span>
+
+          @if (hovered() === bar.market) {
+            <span class="bar-tip" role="status">
+              {{ bar.market }} · {{ bar.yieldPct.toFixed(2) }}% · {{ meta.period }}
+            </span>
+          }
+        </li>
+      }
+    </ol>
+
+    <aside class="range-card">
+      <span class="range-eyebrow">Selected Bali villa concepts</span>
+      <span class="range-value">{{ claim.range }}<sup>*</sup></span>
+      <span class="range-measure">Indicative gross rental yield</span>
+      <p class="range-note">
+        A different measure from the bars: a short-term hospitality model rather than standard
+        long-term residential rent. Not a country average, and not a guaranteed outcome.
+      </p>
+    </aside>
+  </div>
+
+  <div class="chart-foot">
+    <button type="button" class="table-toggle" (click)="toggleTable()">
+      <nz-icon [nzType]="showTable() ? 'up' : 'down'" />
+      {{ showTable() ? 'Hide the table' : 'View as a table' }}
+    </button>
+    <a class="chart-source" [href]="meta.sourceUrl" target="_blank" rel="noopener noreferrer">
+      Source: Global Property Guide
+      <nz-icon nzType="arrow-right" />
+    </a>
+  </div>
+
+  @if (showTable()) {
+    <table class="chart-table">
+      <caption class="sr-only">Broad residential gross rental yield by market, {{ meta.period }}</caption>
+      <thead>
+        <tr>
+          <th scope="col">Market</th>
+          <th scope="col">{{ meta.measure }}</th>
+          <th scope="col">Source period</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (bar of bars(); track bar.market) {
+          <tr>
+            <th scope="row">{{ bar.market }}</th>
+            <td class="mono">{{ bar.yieldPct.toFixed(2) }}%</td>
+            <td>{{ meta.period }}</td>
+          </tr>
+        }
+        <tr class="table-range">
+          <th scope="row">Selected Bali villa concepts</th>
+          <td class="mono">{{ claim.range }}*</td>
+          <td>Indicative, project-level</td>
+        </tr>
+      </tbody>
+    </table>
+  }
+
+  <p class="chart-caveat">{{ meta.caveat }}</p>
+  <p class="chart-caveat">{{ claim.footnote }}</p>
+</figure>

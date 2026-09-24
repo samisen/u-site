@@ -1,0 +1,165 @@
+<!-- ============ 01. HERO ============ -->
+<section class="hero">
+  <img class="hero-bg" [src]="hero.poster" alt="" aria-hidden="true" />
+  <span class="hero-veil"></span>
+
+  <div class="container hero-inner">
+    <p class="hero-kicker">{{ brand.coreIdea }}</p>
+
+    <h1 class="display hero-title">
+      A Place to Live.<br />
+      A Property to Enjoy.<br />
+      <em>An Investment Designed to Perform.</em>
+    </h1>
+
+    <p class="hero-support">{{ hero.support }}</p>
+
+    <div class="hero-actions">
+      <a nz-button nzType="primary" nzSize="large" routerLink="/design-your-villa">
+        {{ brand.cta.tailorMade }}
+        <nz-icon nzType="arrow-right" />
+      </a>
+      <a nz-button nzSize="large" nzGhost routerLink="/projects">See the projects</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02. TWO THINGS. ONE PROPERTY. ============ -->
+<section class="section section-lg">
+  <div class="container">
+    <div class="head" appReveal>
+      <p class="eyebrow">Two things. One property.</p>
+      <h2 class="display">A villa you use, and an asset that works when you are not there.</h2>
+      <p class="lede">{{ mission }}</p>
+    </div>
+
+    <div class="values">
+      @for (v of values; track v.key; let i = $index) {
+        <article class="value" [appReveal]="i * 90">
+          <div class="value-media">
+            @if (v.key === 'lifestyle') {
+              <app-video-player
+                class="value-player"
+                [src]="hero.video"
+                [poster]="v.image"
+                label="Play the villa film"
+              />
+            } @else {
+              <img [src]="v.image" [alt]="v.title" loading="lazy" />
+            }
+          </div>
+
+          <div class="value-body">
+            <p class="eyebrow">{{ v.eyebrow }}</p>
+            <h3 class="title-md">{{ v.title }}</h3>
+            <p class="value-lead">{{ v.lead }}</p>
+            <p class="value-text">{{ v.body }}</p>
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03. TWO DOORS ============ -->
+<section class="section section-lg section-sand doors">
+  <div class="container">
+    <div class="door-grid">
+      <a class="door" routerLink="/why-bali" appReveal>
+        <img class="door-bg" src="/img/uluwatu-cliffs.jpg" alt="" aria-hidden="true" loading="lazy" />
+        <span class="door-veil"></span>
+        <span class="door-body">
+          <span class="door-eyebrow">Why Bali</span>
+          <span class="door-title">Own a Piece of the Lifestyle</span>
+          <span class="door-text">
+            {{ tourism.baliArrivalsShort }} direct foreign arrivals in 2025, up
+            {{ tourism.baliGrowthPct }}% on the year before. What sits underneath that number, and
+            what it means for a property here.
+          </span>
+          <span class="door-go">Read the story <nz-icon nzType="arrow-right" /></span>
+        </span>
+      </a>
+
+      <a class="door" routerLink="/opportunity" appReveal="90">
+        <img class="door-bg" src="/media/villa-pool-aerial.jpg" alt="" aria-hidden="true" loading="lazy" />
+        <span class="door-veil"></span>
+        <span class="door-body">
+          <span class="door-eyebrow">The opportunity</span>
+          <span class="door-title">Your Property Can Do More</span>
+          <span class="door-text">
+            A short-term hospitality model rather than a residential tenancy — and an indicative
+            gross rental yield of {{ claim.range }} for selected villa concepts.<sup>*</sup>
+          </span>
+          <span class="door-go">See the numbers <nz-icon nzType="arrow-right" /></span>
+        </span>
+      </a>
+    </div>
+    <p class="doors-foot">{{ claim.footnote }}</p>
+  </div>
+</section>
+
+<!-- ============ 05. WHERE WE BUILD ============ -->
+<section class="section section-lg">
+  <div class="container">
+    <div class="head head-split" appReveal>
+      <div>
+        <p class="eyebrow">Where we build</p>
+        <h2 class="display">Bali is eight markets, not one.</h2>
+        <p class="lede">
+          Nightly rates on the Bukit are roughly double what the north-west coast achieves, and Ubud
+          fills in the season when the west coast empties. Pick an area to see its numbers.
+        </p>
+      </div>
+      <a class="head-link" routerLink="/projects">
+        All projects
+        <nz-icon nzType="arrow-right" />
+      </a>
+    </div>
+
+    <div appReveal>
+      <app-bali-map [selected]="mapArea()" (selectArea)="onMapSelect($event)" />
+    </div>
+
+    <div class="grid grid-3 map-projects">
+      @for (p of featured(); track p.id; let i = $index) {
+        <div [appReveal]="i * 70">
+          <app-project-card [project]="p" />
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06. DESIGN YOUR VILLA ============ -->
+<section class="section section-lg section-sand design-teaser">
+  <div class="container design-grid">
+    <div appReveal>
+      <p class="eyebrow">Tailor-made, not one-size-fits-all</p>
+      <h2 class="display">Draw it before you commit to it.</h2>
+      <p class="lede">
+        Choose the style, the bedrooms, the pool and the options. A floor plan redraws with every
+        decision and the budget recalculates beside it — land, build, furniture and the yield the
+        result should produce.
+      </p>
+      <div class="design-actions">
+        <a nz-button nzType="primary" nzSize="large" routerLink="/design-your-villa">
+          {{ brand.cta.tailorMade }}
+          <nz-icon nzType="arrow-right" />
+        </a>
+        <a nz-button nzSize="large" routerLink="/how-we-build">{{ brand.cta.process }}</a>
+      </div>
+    </div>
+
+    <figure class="design-shot" appReveal="100">
+      <img src="/media/villa-pool-lounge.jpg" alt="A delivered villa pool and lounge in Pererenan" loading="lazy" />
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 07. FINAL CTA ============ -->
+<app-cta-band
+  eyebrow="Your piece of Bali"
+  heading="Your Piece of Bali Starts Here."
+  lede="Tell us how you want to use it, roughly when, and what you are unsure about. You will get a straight answer, and nothing to sign."
+  primaryLabel="Start a Conversation"
+/>

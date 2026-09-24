@@ -1,0 +1,370 @@
+@let p = project();
+
+@if (p) {
+  <!-- ============ HERO ============ -->
+  <section class="detail-hero">
+    <div class="container">
+      <nav class="crumbs" aria-label="Breadcrumb">
+        <a routerLink="/">Home</a>
+        <span>/</span>
+        <a routerLink="/projects">Projects</a>
+        <span>/</span>
+        <span class="current">{{ p.name }}</span>
+      </nav>
+
+      <div class="hero-head">
+        <div class="hero-copy">
+          <div class="tags">
+            <nz-tag [nzColor]="statusColor()">{{ statusLabel() }}</nz-tag>
+            <nz-tag>{{ typeLabel() }}</nz-tag>
+            <span class="loc">
+              <nz-icon nzType="environment" />
+              {{ area()?.name }}
+              <span class="loc-sub">{{ area()?.subtitle }}</span>
+            </span>
+          </div>
+
+          <h1 class="display">{{ p.name }}</h1>
+          <p class="lede">{{ p.headline }}</p>
+        </div>
+
+        <div class="hero-price">
+          <span class="hp-label">Entry price from</span>
+          <span class="hp-value mono">{{ money(p.priceFromUsd) }}</span>
+          @if (p.unitsTotal > 1) {
+            <span class="hp-note">{{ p.unitsAvailable }} of {{ p.unitsTotal }} units available</span>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GALLERY ============ -->
+  <section class="gallery">
+    <div class="container">
+      <nz-carousel [nzDots]="true" nzAutoPlay [nzAutoPlaySpeed]="6000" class="shots">
+        @for (img of p.gallery; track img) {
+          <div nz-carousel-content>
+            <img [src]="img" [alt]="p.name" />
+          </div>
+        }
+      </nz-carousel>
+
+      @if (p.video) {
+        <div class="tour">
+          <app-video-player
+            class="tour-player"
+            [src]="p.video"
+            [poster]="p.videoPoster ?? p.hero"
+            [label]="'Play the ' + p.name + ' walkthrough'"
+          />
+          <p class="tour-note">
+            <nz-icon nzType="camera" />
+            Walkthrough filmed on site. Nothing downloads until you press play.
+          </p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ============ KEY FACTS ============ -->
+  <section class="facts-bar">
+    <div class="container facts-grid">
+      <div class="fact">
+        <span class="f-label">Land</span>
+        <span class="f-value mono">{{ p.landSqm }} m&sup2;</span>
+      </div>
+      @if (p.builtSqm > 0) {
+        <div class="fact">
+          <span class="f-label">Built area</span>
+          <span class="f-value mono">{{ p.builtSqm }} m&sup2;</span>
+        </div>
+        <div class="fact">
+          <span class="f-label">Bedrooms</span>
+          <span class="f-value mono">{{ p.bedrooms }}</span>
+        </div>
+      }
+      <div class="fact">
+        <span class="f-label">Lease</span>
+        <span class="f-value mono">{{ p.leaseYears }} + {{ p.leaseExtensionYears }} yrs</span>
+      </div>
+      <div class="fact">
+        <span class="f-label">Handover</span>
+        <span class="f-value mono">{{ p.handover }}</span>
+      </div>
+      @if (p.projectedGrossYield > 0) {
+        <div class="fact">
+          <span class="f-label">Indicative gross yield<sup>*</sup></span>
+          <span class="f-value mono accent">{{ p.projectedGrossYield }}%</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ============ BODY ============ -->
+  <section class="section body-section">
+    <div class="container body-grid">
+      <div class="body-main">
+        <nz-tabs [nzAnimated]="false">
+          <nz-tab nzTitle="Overview">
+            <div class="prose">
+              @for (para of p.body; track $index) {
+                <p>{{ para }}</p>
+              }
+            </div>
+
+            <h3 class="sub">What is included</h3>
+            <ul class="features">
+              @for (f of p.features; track f) {
+                <li><nz-icon nzType="check" /> {{ f }}</li>
+              }
+            </ul>
+
+            @if (area(); as a) {
+              <div class="area-note">
+                <h3 class="sub">Why {{ a.name }}</h3>
+                <p>{{ a.description }}</p>
+                <div class="area-metrics">
+                  <div>
+                    <span class="am-label">Average nightly rate</span>
+                    <span class="am-value mono">&#36;{{ a.avgNightlyRateUsd }}</span>
+                  </div>
+                  <div>
+                    <span class="am-label">Area occupancy</span>
+                    <span class="am-value mono">{{ (a.occupancy * 100).toFixed(0) }}%</span>
+                  </div>
+                  <div>
+                    <span class="am-label">Airport drive</span>
+                    <span class="am-value mono">{{ a.driveToAirportMin }} min</span>
+                  </div>
+                </div>
+                <a class="area-link" routerLink="/areas" [fragment]="a.id">
+                  Read the area guide
+                  <nz-icon nzType="arrow-right" />
+                </a>
+              </div>
+            }
+          </nz-tab>
+
+          <nz-tab nzTitle="Construction">
+            <div class="progress-head">
+              <div>
+                <h3 class="sub no-top">Build progress</h3>
+                <p class="muted small">
+                  Updated weekly by the site manager. Owners receive the full photo set every Friday.
+                </p>
+              </div>
+              <nz-progress
+                [nzPercent]="p.progress"
+                nzType="circle"
+                [nzWidth]="88"
+                [nzStrokeWidth]="7"
+              />
+            </div>
+
+            <nz-timeline class="tl">
+              @for (t of p.timeline; track t.date) {
+                <nz-timeline-item [nzColor]="t.progress <= p.progress ? 'green' : 'gray'">
+                  <div class="tl-item">
+                    <span class="tl-date mono">{{ t.date }}</span>
+                    <h4>{{ t.title }}</h4>
+                    <p>{{ t.note }}</p>
+                  </div>
+                </nz-timeline-item>
+              }
+            </nz-timeline>
+          </nz-tab>
+
+          @if (modelled()) {
+            <nz-tab nzTitle="The numbers">
+              <p class="muted small model-intro">
+                Move the sliders. This is the same model we underwrite with — no hidden uplift, and
+                the cost assumptions are stated rather than buried.
+              </p>
+
+              <div class="model">
+                <div class="model-inputs">
+                  <div class="mi">
+                    <label>
+                      Average nightly rate
+                      <span class="mono strong">&#36;{{ nightly() }}</span>
+                    </label>
+                    <nz-slider
+                      [nzMin]="80"
+                      [nzMax]="900"
+                      [nzStep]="5"
+                      [ngModel]="nightly()"
+                      (ngModelChange)="nightly.set($event)"
+                    />
+                  </div>
+
+                  <div class="mi">
+                    <label>
+                      Occupancy
+                      <span class="mono strong">{{ occupancy() }}%</span>
+                    </label>
+                    <nz-slider
+                      [nzMin]="30"
+                      [nzMax]="95"
+                      [ngModel]="occupancy()"
+                      (ngModelChange)="occupancy.set($event)"
+                    />
+                  </div>
+
+                  <div class="mi">
+                    <label>
+                      Total invested
+                      <span class="mono strong">{{ money(investment()) }}</span>
+                    </label>
+                    <nz-slider
+                      [nzMin]="150000"
+                      [nzMax]="1200000"
+                      [nzStep]="5000"
+                      [ngModel]="investment()"
+                      (ngModelChange)="investment.set($event)"
+                    />
+                  </div>
+
+                  <button nz-button nzSize="small" (click)="resetModel()">
+                    <nz-icon nzType="swap" />
+                    Reset to our assumptions
+                  </button>
+                </div>
+
+                <div class="model-output">
+                  <div class="mo-headline">
+                    <span class="mo-label">Indicative gross yield<sup>*</sup></span>
+                    <span class="mo-value mono">{{ grossYield().toFixed(1) }}%</span>
+                  </div>
+
+                  <dl class="mo-rows">
+                    <div>
+                      <dt>Gross rental revenue</dt>
+                      <dd class="mono">{{ money(grossAnnual()) }}</dd>
+                    </div>
+                    <div>
+                      <dt>
+                        Management &amp; channel fees
+                        <span nz-tooltip nzTooltipTitle="Listing commissions, dynamic pricing, guest handling and owner reporting.">
+                          <nz-icon nzType="bulb" />
+                        </span>
+                      </dt>
+                      <dd class="mono neg">&minus;{{ money(feeAnnual()) }} <span class="pct">({{ feePct }}%)</span></dd>
+                    </div>
+                    <div>
+                      <dt>
+                        Operating costs
+                        <span nz-tooltip nzTooltipTitle="Staff, utilities, pool and garden, consumables, repairs and the sinking fund.">
+                          <nz-icon nzType="bulb" />
+                        </span>
+                      </dt>
+                      <dd class="mono neg">&minus;{{ money(opexAnnual()) }} <span class="pct">({{ opexPct }}%)</span></dd>
+                    </div>
+                    <div class="total">
+                      <dt>Net income, per year</dt>
+                      <dd class="mono">{{ money(netAnnual()) }}</dd>
+                    </div>
+                    <div class="total">
+                      <dt>Net yield, after costs</dt>
+                      <dd class="mono">{{ netYield().toFixed(1) }}%</dd>
+                    </div>
+                  </dl>
+
+                  <div class="mo-foot">
+                    <div>
+                      <span class="mof-label">Payback</span>
+                      <span class="mof-value mono">{{ payback().toFixed(1) }} yrs</span>
+                    </div>
+                    <div>
+                      <span class="mof-label">Net over the lease term</span>
+                      <span class="mof-value mono">{{ money(overLease(), true) }}</span>
+                    </div>
+                  </div>
+
+                  <p class="disclaimer">{{ claim.footnote }}</p>
+                </div>
+              </div>
+            </nz-tab>
+          }
+        </nz-tabs>
+      </div>
+
+      <!-- ---------- sticky aside ---------- -->
+      <aside class="body-aside">
+        <div class="aside-sticky">
+          <div class="quote-card">
+            <span class="qc-label">Entry price from</span>
+            <span class="qc-price mono">{{ money(p.priceFromUsd) }}</span>
+
+            <dl class="qc-rows">
+              @if (p.projectedGrossYield > 0) {
+                <div>
+                  <dt>Indicative gross yield<sup>*</sup></dt>
+                  <dd class="mono">{{ p.projectedGrossYield }}%</dd>
+                </div>
+                <div>
+                  <dt>Modelled net, after costs</dt>
+                  <dd class="mono">{{ p.projectedNetYield }}%</dd>
+                </div>
+              }
+              <div>
+                <dt>Handover</dt>
+                <dd class="mono">{{ p.handover }}</dd>
+              </div>
+              <div>
+                <dt>Lease term</dt>
+                <dd class="mono">{{ p.leaseYears }} + {{ p.leaseExtensionYears }} years</dd>
+              </div>
+              <div>
+                <dt>Status</dt>
+                <dd>{{ statusLabel() }}</dd>
+              </div>
+            </dl>
+
+            <a nz-button nzType="primary" nzBlock nzSize="large" routerLink="/contact">
+              Request the project pack
+            </a>
+            <a nz-button nzBlock routerLink="/contact" class="qc-secondary">
+              Book a call with the project lead
+            </a>
+
+            <p class="qc-note qc-footnote">{{ claim.footnote }}</p>
+            <p class="qc-note">
+              The pack includes the floor plans, the bill of quantities summary, the legal structure
+              and the twelve-month operating statement of a comparable delivered property.
+            </p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ RELATED ============ -->
+  <section class="section section-sand">
+    <div class="container">
+      <div class="rel-head" appReveal>
+        <h2 class="title-md">Other projects worth a look</h2>
+        <a class="rel-link" routerLink="/projects">
+          All projects
+          <nz-icon nzType="arrow-right" />
+        </a>
+      </div>
+      <div class="grid grid-3">
+        @for (r of related(); track r.id; let i = $index) {
+          <div [appReveal]="i * 80">
+            <app-project-card [project]="r" />
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- mobile action bar ---------- -->
+  <div class="mobile-bar">
+    <div class="mb-price">
+      <span class="mb-label">From</span>
+      <span class="mb-value mono">{{ money(p.priceFromUsd, true) }}</span>
+    </div>
+    <a nz-button nzType="primary" nzSize="large" routerLink="/contact">Request the pack</a>
+  </div>
+}

@@ -1,0 +1,75 @@
+<app-page-hero
+  eyebrow="Insights"
+  heading="Written to be useful."
+  lede="How villa revenue actually works, what gross yield leaves out, and what owning in Bali involves in practice. If an article reads like a brochure, it does not belong here."
+/>
+
+<section class="section listing">
+  <div class="container">
+    <!-- lead article -->
+    @if (active() === 'All') {
+      <a class="lead-card" [routerLink]="['/insights', lead.slug]" appReveal>
+        <div class="lead-media">
+          <img [src]="lead.image" [alt]="lead.title" />
+        </div>
+        <div class="lead-body">
+          <p class="meta">
+            <span class="cat">{{ lead.category }}</span>
+            <span class="dot">·</span>
+            {{ lead.date }}
+            <span class="dot">·</span>
+            {{ lead.readMinutes }} min read
+          </p>
+          <h2 class="title-md">{{ lead.title }}</h2>
+          <p class="excerpt">{{ lead.excerpt }}</p>
+          <span class="go">
+            Read the article
+            <nz-icon nzType="arrow-right" />
+          </span>
+        </div>
+      </a>
+    }
+
+    <!-- category filter -->
+    <div class="filters" appReveal>
+      @for (c of categories; track c) {
+        <button
+          type="button"
+          class="filter"
+          [class.is-on]="active() === c"
+          (click)="active.set(c)"
+          [attr.aria-pressed]="active() === c"
+        >
+          {{ c }}
+        </button>
+      }
+    </div>
+
+    <!-- article grid -->
+    <div class="grid grid-3">
+      @for (a of rest(); track a.slug; let i = $index) {
+        <a class="card" [routerLink]="['/insights', a.slug]" [appReveal]="(i % 3) * 70">
+          <div class="card-media">
+            <img [src]="a.image" [alt]="a.title" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <p class="meta">
+              <span class="cat">{{ a.category }}</span>
+              <span class="dot">·</span>
+              {{ a.readMinutes }} min
+            </p>
+            <h3>{{ a.title }}</h3>
+            <p class="excerpt">{{ a.excerpt }}</p>
+            <span class="card-date">{{ a.date }}</span>
+          </div>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<app-cta-band
+  eyebrow="Still have a question"
+  heading="Ask us the one the articles did not answer."
+  lede="We would rather send you a straight answer than a follow-up sequence. Write to us with the specific thing you are trying to work out."
+/>

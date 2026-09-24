@@ -1,0 +1,257 @@
+<app-page-hero
+  eyebrow="The portfolio"
+  heading="Projects, open and delivered."
+  lede="Nine projects across eight areas. Start from the map if you know where you want to be, or from the filters if you know what you want to build."
+/>
+
+<section class="map-section">
+  <div class="container">
+    <app-bali-map [selected]="mapSelection()" (selectArea)="onMapSelect($event)" />
+  </div>
+</section>
+
+<!-- ============ FILTER BAR ============ -->
+<ng-template #priceYield>
+  <div class="pop-fields">
+    <div class="filter">
+      <label>
+        Maximum entry price
+        <span class="filter-value mono">{{ priceLabel(filters().maxPrice ?? priceMax) }}</span>
+      </label>
+      <nz-slider
+        [nzMin]="priceMin"
+        [nzMax]="priceMax"
+        [nzStep]="10000"
+        [nzTipFormatter]="priceLabel"
+        [ngModel]="filters().maxPrice ?? priceMax"
+        (ngModelChange)="onMaxPrice($event)"
+      />
+    </div>
+
+    <div class="filter">
+      <label>
+        Minimum gross yield
+        <span class="filter-value mono">{{ filters().minYield ?? 0 }}%</span>
+      </label>
+      <nz-slider
+        [nzMin]="0"
+        [nzMax]="24"
+        [nzStep]="0.5"
+        [ngModel]="filters().minYield ?? 0"
+        (ngModelChange)="onMinYield($event)"
+      />
+    </div>
+  </div>
+</ng-template>
+
+<section class="filter-bar" id="results">
+  <div class="container bar-inner">
+    <div class="bar-fields">
+      <nz-input-group class="f-search" [nzPrefix]="searchIcon">
+        <input
+          type="text"
+          nz-input
+          placeholder="Name, area or keyword"
+          aria-label="Search projects"
+          [ngModel]="filters().search"
+          (ngModelChange)="onSearch($event)"
+        />
+      </nz-input-group>
+      <ng-template #searchIcon><nz-icon nzType="search" /></ng-template>
+
+      <nz-select
+        class="f-select"
+        nzMode="multiple"
+        nzPlaceHolder="Anywhere in Bali"
+        [ngModel]="filters().areas"
+        (ngModelChange)="onAreas($event)"
+        [nzMaxTagCount]="1"
+      >
+        @for (o of areaOptions(); track o.value) {
+          <nz-option [nzValue]="o.value" [nzLabel]="o.label" />
+        }
+      </nz-select>
+
+      <nz-select
+        class="f-select"
+        nzMode="multiple"
+        nzPlaceHolder="Any type"
+        [ngModel]="filters().types"
+        (ngModelChange)="onTypes($event)"
+        [nzMaxTagCount]="1"
+      >
+        @for (o of typeOptions; track o.value) {
+          <nz-option [nzValue]="o.value" [nzLabel]="o.label" />
+        }
+      </nz-select>
+
+      <nz-select
+        class="f-select"
+        nzMode="multiple"
+        nzPlaceHolder="Any status"
+        [ngModel]="filters().statuses"
+        (ngModelChange)="onStatuses($event)"
+        [nzMaxTagCount]="1"
+      >
+        @for (o of statusOptions; track o.value) {
+          <nz-option [nzValue]="o.value" [nzLabel]="o.label" />
+        }
+      </nz-select>
+
+      <button
+        class="f-more"
+        nz-button
+        nz-popover
+        [nzPopoverContent]="priceYield"
+        nzPopoverTrigger="click"
+        nzPopoverPlacement="bottomRight"
+      >
+        Price &amp; yield
+        <nz-icon nzType="down" />
+      </button>
+    </div>
+
+    <button class="filter-trigger" nz-button (click)="drawerOpen.set(true)">
+      <nz-icon nzType="filter" />
+      <span>Filters</span>
+      @if (activeCount() > 0) {
+        <span class="fcount">{{ activeCount() }}</span>
+      }
+    </button>
+
+    <div class="bar-right">
+      @if (activeCount() > 0) {
+        <button class="linkish" (click)="reset()">Clear filters</button>
+      }
+      <nz-select class="sort" [ngModel]="filters().sort" (ngModelChange)="onSort($event)" nzBorderless>
+        @for (o of sortOptions; track o.value) {
+          <nz-option [nzValue]="o.value" [nzLabel]="o.label" />
+        }
+      </nz-select>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="section listing">
+  <div class="container">
+    <p class="result-count">
+      <strong>{{ results().length }}</strong>
+      {{ results().length === 1 ? 'project' : 'projects' }}
+    </p>
+
+    @if (results().length) {
+      <div class="cards">
+        @for (p of results(); track p.id; let i = $index) {
+          <div [appReveal]="(i % 3) * 70">
+            <app-project-card [project]="p" />
+          </div>
+        }
+      </div>
+    } @else {
+      <nz-empty class="empty" nzNotFoundImage="simple" [nzNotFoundContent]="emptyTpl">
+        <ng-template #emptyTpl>
+          <p>Nothing matches those filters.</p>
+          <button nz-button nzType="primary" (click)="reset()">Clear filters</button>
+        </ng-template>
+      </nz-empty>
+    }
+  </div>
+</section>
+
+<div class="container"><p class="listing-footnote">{{ claim.footnote }}</p></div>
+
+<!-- ============ MOBILE FILTER DRAWER ============ -->
+<nz-drawer
+  [nzVisible]="drawerOpen()"
+  nzPlacement="bottom"
+  nzTitle="Filter projects"
+  [nzHeight]="'88%'"
+  nzWrapClassName="filter-drawer"
+  (nzOnClose)="drawerOpen.set(false)"
+>
+  <ng-container *nzDrawerContent>
+    <div class="filters">
+      <div class="filter">
+        <label for="d-search">Search</label>
+        <nz-input-group [nzPrefix]="searchIcon2">
+          <input
+            id="d-search"
+            type="text"
+            nz-input
+            placeholder="Name, area or keyword"
+            [ngModel]="filters().search"
+            (ngModelChange)="onSearch($event)"
+          />
+        </nz-input-group>
+        <ng-template #searchIcon2><nz-icon nzType="search" /></ng-template>
+      </div>
+
+      <div class="filter">
+        <label for="d-area">Area</label>
+        <nz-select
+          id="d-area"
+          nzMode="multiple"
+          nzPlaceHolder="Anywhere in Bali"
+          [ngModel]="filters().areas"
+          (ngModelChange)="onAreas($event)"
+          style="width: 100%"
+        >
+          @for (o of areaOptions(); track o.value) {
+            <nz-option [nzValue]="o.value" [nzLabel]="o.label" />
+          }
+        </nz-select>
+      </div>
+
+      <div class="filter">
+        <label for="d-type">Property type</label>
+        <nz-select
+          id="d-type"
+          nzMode="multiple"
+          nzPlaceHolder="Any type"
+          [ngModel]="filters().types"
+          (ngModelChange)="onTypes($event)"
+          style="width: 100%"
+        >
+          @for (o of typeOptions; track o.value) {
+            <nz-option [nzValue]="o.value" [nzLabel]="o.label" />
+          }
+        </nz-select>
+      </div>
+
+      <div class="filter">
+        <label for="d-status">Status</label>
+        <nz-select
+          id="d-status"
+          nzMode="multiple"
+          nzPlaceHolder="Any status"
+          [ngModel]="filters().statuses"
+          (ngModelChange)="onStatuses($event)"
+          style="width: 100%"
+        >
+          @for (o of statusOptions; track o.value) {
+            <nz-option [nzValue]="o.value" [nzLabel]="o.label" />
+          }
+        </nz-select>
+      </div>
+
+      <ng-container *ngTemplateOutlet="priceYield" />
+
+      <button nz-button nzBlock (click)="reset()" [disabled]="activeCount() === 0">
+        <nz-icon nzType="close" />
+        Clear filters
+      </button>
+    </div>
+
+    <button nz-button nzType="primary" nzBlock nzSize="large" class="drawer-apply" (click)="drawerOpen.set(false)">
+      Show {{ results().length }} {{ results().length === 1 ? 'project' : 'projects' }}
+    </button>
+  </ng-container>
+</nz-drawer>
+
+<app-cta-band
+  eyebrow="Not seeing it?"
+  heading="Tell us what you are looking for."
+  lede="Around a third of what we build never appears on this page — it is matched to a brief before we finish the due diligence. Send us yours and we will tell you what is coming."
+  primaryLabel="Send us a brief"
+/>

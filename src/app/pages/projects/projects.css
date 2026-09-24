@@ -1,0 +1,130 @@
+:host { display: block; }
+
+.map-section { padding-block: 32px 24px; }
+@media (min-width: 768px) { .map-section { padding-block: 48px 28px; } }
+
+/* ============ filter bar ============ */
+
+.filter-bar {
+  position: sticky;
+  top: var(--header-h);
+  /* under the site header and the WhatsApp button, over the page content */
+  z-index: 50;
+  border-block: 1px solid var(--line);
+  background: var(--surface);
+  scroll-margin-top: var(--header-h);
+}
+
+.bar-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding-block: 14px;
+}
+
+/* the inline field row is the desktop affordance; a phone gets the drawer */
+.bar-fields { display: none; }
+@media (min-width: 1040px) {
+  .bar-fields {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.f-search { flex: 1 1 200px; min-width: 0; max-width: 300px; }
+.f-select { flex: 0 1 172px; min-width: 132px; }
+.f-more { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+
+.filter-trigger { display: inline-flex; align-items: center; gap: 8px; }
+@media (min-width: 1040px) { .filter-trigger { display: none; } }
+
+.fcount {
+  min-width: 19px;
+  height: 19px;
+  padding-inline: 5px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.bar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-inline-start: auto;
+}
+
+.result-count {
+  margin: 0 0 20px;
+  font-size: 14px;
+  color: var(--ink-3);
+}
+.result-count strong { color: var(--ink); font-size: 17px; font-weight: 600; }
+
+.linkish {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--brand);
+  font-size: 13px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.sort { min-width: 152px; }
+
+/* price & yield popover, and the drawer, share these */
+.pop-fields { display: grid; gap: 18px; min-width: 260px; }
+
+.filter label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+  margin-bottom: 8px;
+}
+.filter-value { color: var(--ink); font-weight: 600; }
+.filter nz-slider { margin: 0 4px; }
+
+.filters { display: grid; gap: 20px; }
+
+/* ============ results ============ */
+
+.listing { padding-block: 28px 56px; }
+@media (min-width: 768px) { .listing { padding-block: 40px 80px; } }
+
+.cards {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+@media (min-width: 680px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; } }
+@media (min-width: 1040px) { .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; } }
+
+.empty { padding: 60px 0; }
+.empty p { margin-bottom: 16px; color: var(--ink-3); }
+
+.drawer-apply { margin-top: 26px; }
+
+.listing-footnote {
+  display: block;
+  margin: 0 0 56px;
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--ink-3);
+  max-width: 96ch;
+}

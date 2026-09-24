@@ -1,0 +1,54 @@
+<a class="card" [routerLink]="['/projects', project().slug]">
+  <div class="media">
+    <img [src]="project().hero" [alt]="project().name" loading="lazy" decoding="async" />
+    <div class="media-top">
+      <nz-tag [nzColor]="statusColor()">{{ statusLabel() }}</nz-tag>
+      @if (project().unitsAvailable > 0 && project().unitsTotal > 1) {
+        <span class="units">{{ project().unitsAvailable }} of {{ project().unitsTotal }} left</span>
+      }
+    </div>
+    @if (project().progress > 0 && project().progress < 100) {
+      <div class="progress" [style.--p.%]="project().progress">
+        <span class="progress-label">{{ project().progress }}% built</span>
+      </div>
+    }
+  </div>
+
+  <div class="body">
+    <p class="meta">
+      <nz-icon nzType="environment" />
+      {{ areaName() }}
+      <span class="dot">·</span>
+      {{ typeLabel() }}
+    </p>
+
+    <h3 class="name">{{ project().name }}</h3>
+    <p class="headline">{{ project().headline }}</p>
+
+    <dl class="facts">
+      <div>
+        <dt>From</dt>
+        <dd class="mono strong">{{ price() }}</dd>
+      </div>
+      @if (project().projectedGrossYield > 0) {
+        <div>
+          <dt>Gross yield<sup>*</sup></dt>
+          <dd class="mono strong accent">{{ project().projectedGrossYield }}%</dd>
+        </div>
+      }
+      <div>
+        <dt>Lease</dt>
+        <dd class="mono">{{ project().leaseYears }}+{{ project().leaseExtensionYears }} yrs</dd>
+      </div>
+      <div>
+        <dt>Handover</dt>
+        <dd class="mono">{{ project().handover }}</dd>
+      </div>
+    </dl>
+
+    <span class="go">
+      View project
+      <nz-icon nzType="arrow-right" />
+    </span>
+  </div>
+</a>

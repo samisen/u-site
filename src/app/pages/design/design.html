@@ -1,0 +1,510 @@
+@let c = config();
+@let s = study();
+@let sheetBox = sheet();
+@let plan = visiblePlan();
+@let box = buildingBox();
+
+<section class="editor-page">
+  <div class="container">
+    <div class="ed-intro">
+      <p class="eyebrow">Tailor-made</p>
+      <h1 class="display">Tell Us How You Want to Use Your Villa</h1>
+      <p class="lede">
+        There is no single perfect villa — there is the right villa for the right owner, location,
+        budget and objective. Set it out below: the plan redraws and the budget recalculates with
+        every choice.
+      </p>
+    </div>
+  </div>
+
+  <div class="container ed-holder">
+<div class="editor" #editorEl [class.is-fullscreen]="fullscreen()">
+  <!-- ============ TOOLBAR ============ -->
+  <header class="ed-bar">
+    <div class="ed-bar-left">
+      @if (fullscreen()) {
+        <!-- the only way out of the overlay; in page the site header is right there -->
+        <button type="button" class="ed-back" (click)="leaveEditor()" aria-label="Leave the editor">
+          <nz-icon nzType="arrow-left" />
+        </button>
+      }
+      <div class="ed-title">
+        <span class="ed-name">Design your villa</span>
+        <span class="ed-sub">{{ c.bedrooms }} bed · {{ s.builtSqm }} m² · {{ area().name }}</span>
+      </div>
+    </div>
+
+    <div class="ed-bar-right">
+      @if (floorOptions().length > 1) {
+        <nz-segmented
+          class="ed-floor"
+          [nzOptions]="floorOptions()"
+          [ngModel]="visibleFloor()"
+          (ngModelChange)="setFloor($event)"
+          nzSize="small"
+        />
+      }
+
+      <div class="ed-zoom" role="group" aria-label="Zoom">
+        <button type="button" (click)="zoomOut()" aria-label="Zoom out"><nz-icon nzType="minus" /></button>
+        <button type="button" class="ed-zoom-val" (click)="zoomFit()">{{ (zoom() * 100).toFixed(0) }}%</button>
+        <button type="button" (click)="zoomIn()" aria-label="Zoom in"><nz-icon nzType="plus" /></button>
+      </div>
+
+      <button type="button" class="ed-ghost" (click)="reset()" nz-tooltip nzTooltipTitle="Start over">
+        <nz-icon nzType="swap" />
+      </button>
+
+      <button
+        type="button"
+        class="ed-ghost"
+        (click)="toggleFullscreen()"
+        [nz-tooltip]="fullscreen() ? 'Exit full screen (Esc)' : 'Full screen'"
+        [attr.aria-pressed]="fullscreen()"
+      >
+        <nz-icon [nzType]="fullscreen() ? 'compress' : 'expand'" />
+      </button>
+
+      <button nz-button nzType="primary" class="ed-send" (click)="openSend()">
+        <nz-icon nzType="send" />
+        <span>Send to the team</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="ed-body">
+    <!-- ============ CONFIG PANEL ============ -->
+    <aside class="ed-panel" aria-label="Villa configuration">
+      <div class="ed-panel-mode">
+        <nz-segmented
+          [nzOptions]="modeOptions"
+          [ngModel]="mode()"
+          (ngModelChange)="setMode($event)"
+          nzBlock
+        />
+        <p class="mode-note">
+          @if (isAdvanced()) {
+            Room-by-room areas, architectural style and options.
+          } @else {
+            The seven decisions that move the budget most.
+          }
+        </p>
+      </div>
+
+      <div class="ed-panel-scroll">
+        <!-- presets -->
+        <section class="grp">
+          <h2 class="grp-title">Start from</h2>
+          <div class="presets">
+            @for (p of presets; track p.id) {
+              <button type="button" class="preset" (click)="applyPreset(p.id)">
+                <span class="preset-name">{{ p.name }}</span>
+                <span class="preset-note">{{ p.note }}</span>
+              </button>
+            }
+          </div>
+        </section>
+
+        <!-- size -->
+        <section class="grp">
+          <h2 class="grp-title">Size</h2>
+
+          <div class="fld">
+            <label>Bedrooms <span class="fld-val mono">{{ c.bedrooms }}</span></label>
+            <nz-slider [nzMin]="1" [nzMax]="6" [nzStep]="1" [nzMarks]="bedroomMarks"
+              [ngModel]="c.bedrooms" (ngModelChange)="patch({ bedrooms: $event })" />
+          </div>
+
+          <div class="fld fld-tight">
+            <label>Storeys</label>
+            <nz-segmented [nzOptions]="storeyOptions" [ngModel]="c.storeys" (ngModelChange)="setStoreys($event)" nzBlock />
+          </div>
+
+          <div class="fld">
+            <label>Land <span class="fld-val mono">{{ c.landSqm }} m²</span></label>
+            <nz-slider [nzMin]="250" [nzMax]="1500" [nzStep]="25"
+              [ngModel]="c.landSqm" (ngModelChange)="patch({ landSqm: $event })" />
+          </div>
+        </section>
+
+        <!-- rooms -->
+        @if (isAdvanced()) {
+        <section class="grp">
+          <h2 class="grp-title">Rooms</h2>
+          <p class="grp-note">
+            Set the area you want. The plan redraws around it, and the figure on the right is what
+            the drawing actually gives you once the two wings line up.
+          </p>
+
+          @for (key of roomKeys; track key) {
+            <div class="fld fld-room">
+              <label>
+                {{ roomLimits[key].label }}
+                <span class="fld-val mono">
+                  {{ c.rooms[key] }} m²
+                  @if (actualRoomArea(key) && actualRoomArea(key) !== c.rooms[key]) {
+                    <span class="fld-actual">→ {{ actualRoomArea(key) }}</span>
+                  }
+                </span>
+              </label>
+              <nz-slider
+                [nzMin]="roomLimits[key].min"
+                [nzMax]="roomLimits[key].max"
+                [nzStep]="0.5"
+                [ngModel]="c.rooms[key]"
+                (ngModelChange)="setRoom(key, $event)"
+              />
+              <span class="fld-hint">{{ roomLimits[key].hint }}</span>
+            </div>
+          }
+        </section>
+        }
+
+        <!-- pool -->
+        <section class="grp">
+          <h2 class="grp-title">Pool</h2>
+          <div class="pills">
+            @for (p of pools; track p.id) {
+              <button type="button" class="pill" [class.is-on]="c.pool === p.id" (click)="setPool(p.id)">
+                <span class="pill-name">{{ p.name }}</span>
+                <span class="pill-sub mono">{{ p.size }}</span>
+              </button>
+            }
+          </div>
+        </section>
+
+        <!-- style & finish -->
+        <section class="grp">
+          @if (isAdvanced()) {
+            <h2 class="grp-title">Style</h2>
+            <div class="rows">
+              @for (st of styles; track st.id) {
+                <button type="button" class="row" [class.is-on]="c.style === st.id" (click)="setStyle(st.id)">
+                  <span class="row-name">{{ st.name }}</span>
+                  @if (st.multiplier > 1) {
+                    <span class="row-tag mono">+{{ ((st.multiplier - 1) * 100).toFixed(0) }}%</span>
+                  }
+                </button>
+              }
+            </div>
+          }
+
+          <h2 class="grp-title" [class.grp-title-sub]="isAdvanced()">Finish</h2>
+          <div class="rows">
+            @for (f of finishes; track f.id) {
+              <button type="button" class="row" [class.is-on]="c.finish === f.id" (click)="setFinish(f.id)">
+                <span class="row-name">{{ f.name }}</span>
+                <span class="row-tag mono">&#36;{{ f.rate }}/m²</span>
+              </button>
+            }
+          </div>
+        </section>
+
+        <!-- options -->
+        @if (isAdvanced()) {
+        <section class="grp">
+          <h2 class="grp-title">Options</h2>
+          <div class="chips">
+            @for (e of extraOptions; track e.id) {
+              <button
+                type="button"
+                class="chip"
+                [class.is-on]="hasExtra(e.id)"
+                [disabled]="extraDisabled(e.id)"
+                (click)="toggleExtra(e.id)"
+                [nz-tooltip]="extraDisabled(e.id) ? 'Needs a second storey' : e.note"
+              >
+                <nz-icon [nzType]="hasExtra(e.id) ? 'check' : 'plus'" />
+                {{ e.name }}
+              </button>
+            }
+          </div>
+        </section>
+        }
+
+        <!-- location -->
+        <section class="grp">
+          <h2 class="grp-title">Where</h2>
+          <nz-select [ngModel]="c.area" (ngModelChange)="setArea($event)" style="width: 100%">
+            @for (a of areas(); track a.id) {
+              <nz-option [nzValue]="a.id" [nzLabel]="a.name + ' — ' + a.subtitle" />
+            }
+          </nz-select>
+          <p class="grp-note">
+            {{ area().tagline }} Land runs about <strong>{{ money(area().landPriceArePerYearUsd) }}</strong>
+            per are, per year.
+          </p>
+        </section>
+
+        <!-- numbers -->
+        <section class="grp grp-numbers">
+          <h2 class="grp-title">The study</h2>
+
+          <dl class="nums">
+            @for (line of s.lines; track line.label) {
+              <div [class.is-zero]="line.amount === 0">
+                <dt>{{ line.label }}</dt>
+                <dd class="mono">{{ money(line.amount) }}</dd>
+              </div>
+            }
+            <div class="sub">
+              <dt>Build, all in</dt>
+              <dd class="mono">{{ money(s.buildTotal) }}</dd>
+            </div>
+            <div>
+              <dt>Land · {{ leaseYears }} yrs</dt>
+              <dd class="mono">{{ money(s.landTotal) }}</dd>
+            </div>
+            <div class="tot">
+              <dt>Total investment</dt>
+              <dd class="mono">{{ money(s.total) }}</dd>
+            </div>
+          </dl>
+
+          <div class="yield">
+            <div>
+              <span class="y-label">Indicative gross yield<sup>*</sup></span>
+              <span class="y-value mono">{{ s.grossYield.toFixed(1) }}%</span>
+            </div>
+            <div>
+              <span class="y-label">Net, after costs</span>
+              <span class="y-value mono y-net">{{ s.netYield.toFixed(1) }}%</span>
+            </div>
+          </div>
+
+          <p class="foot-note">{{ claim.footnote }}</p>
+        </section>
+      </div>
+
+      <!-- sticky action -->
+      <div class="ed-panel-foot">
+        <div class="foot-total">
+          <span>Total</span>
+          <strong class="mono">{{ money(s.total, true) }}</strong>
+        </div>
+        <button nz-button nzType="primary" nzSize="large" (click)="openSend()">
+          Send to the team
+          <nz-icon nzType="arrow-right" />
+        </button>
+      </div>
+    </aside>
+    <!-- ============ DRAWING ============ -->
+    <section class="ed-canvas" aria-label="Floor plan">
+      <div class="ed-scroll" #scrollBox>
+        <svg
+          class="cad"
+          [attr.viewBox]="sheetBox.viewBox"
+          [style.width.px]="renderWidthPx() || null"
+          role="img"
+          [attr.aria-label]="plan.name + ' of the configured villa'"
+        >
+          <defs>
+            <pattern id="cad-grid" width="1" height="1" patternUnits="userSpaceOnUse">
+              <path d="M1 0 L0 0 0 1" class="grid-line" />
+            </pattern>
+            <pattern id="water" width="0.8" height="0.8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="0.8" class="water-line" />
+            </pattern>
+          </defs>
+
+          <!-- sheet + frame -->
+          <rect
+            [attr.x]="sheetBox.minX" [attr.y]="sheetBox.minY"
+            [attr.width]="sheetBox.w" [attr.height]="sheetBox.h"
+            class="sheet"
+          />
+          <rect
+            [attr.x]="sheetBox.minX + 0.7" [attr.y]="sheetBox.minY + 0.7"
+            [attr.width]="sheetBox.w - 1.4" [attr.height]="sheetBox.h - 1.4"
+            class="frame"
+          />
+          <rect
+            [attr.x]="plan.minX - 1.5" [attr.y]="plan.minY - 1.5"
+            [attr.width]="plan.maxX - plan.minX + 3" [attr.height]="plan.maxY - plan.minY + 3"
+            fill="url(#cad-grid)"
+          />
+
+          <!-- storey below, as a reference -->
+          @for (room of ghostRooms(); track $index) {
+            <rect class="ghost" [attr.x]="room.x" [attr.y]="room.y" [attr.width]="room.w" [attr.height]="room.h" />
+          }
+
+          <!-- rooms -->
+          @for (room of plan.rooms; track $index) {
+            <g class="room" [class]="'kind-' + room.kind" [class.is-narrow]="room.w < 2.5">
+              <rect [attr.x]="room.x" [attr.y]="room.y" [attr.width]="room.w" [attr.height]="room.h" />
+              @if (room.kind === 'pool') {
+                <rect [attr.x]="room.x" [attr.y]="room.y" [attr.width]="room.w" [attr.height]="room.h" fill="url(#water)" stroke="none" />
+              }
+              @if (showLabel(room)) {
+                <text class="room-label" [attr.x]="room.x + room.w / 2" [attr.y]="room.y + room.h / 2" text-anchor="middle">
+                  {{ room.label }}
+                </text>
+                @if (showArea(room)) {
+                  <text class="room-area" [attr.x]="room.x + room.w / 2" [attr.y]="room.y + room.h / 2 + 0.95" text-anchor="middle">
+                    {{ room.sub || roomArea(room) }}
+                  </text>
+                }
+              }
+            </g>
+          }
+
+          <!-- doors -->
+          @for (d of doors(); track $index) {
+            <g class="door">
+              <path [attr.d]="'M ' + d.x + ' ' + d.y + ' l 0 ' + (d.flip ? -d.size : d.size)" class="door-gap" />
+              <path
+                [attr.d]="'M ' + d.x + ' ' + (d.flip ? d.y - d.size : d.y + d.size) +
+                          ' A ' + d.size + ' ' + d.size + ' 0 0 ' + (d.flip ? 1 : 0) +
+                          ' ' + (d.x + d.size) + ' ' + d.y"
+                class="door-swing"
+              />
+            </g>
+          }
+
+          <!-- exterior walls -->
+          @if (box) {
+            <rect class="walls" [attr.x]="box.x" [attr.y]="box.y" [attr.width]="box.w" [attr.height]="box.h" />
+          }
+
+          <!-- dimensions -->
+          @for (d of dimensions(); track $index) {
+            <g class="dim">
+              @if (d.axis === 'h') {
+                <line [attr.x1]="d.from" [attr.y1]="d.at" [attr.x2]="d.to" [attr.y2]="d.at" />
+                <line class="ext" [attr.x1]="d.from" [attr.y1]="d.at - 0.45" [attr.x2]="d.from" [attr.y2]="d.at + 0.45" />
+                <line class="ext" [attr.x1]="d.to" [attr.y1]="d.at - 0.45" [attr.x2]="d.to" [attr.y2]="d.at + 0.45" />
+                <text [attr.x]="(d.from + d.to) / 2" [attr.y]="d.at - 0.6" text-anchor="middle">{{ d.text }}</text>
+              } @else {
+                <line [attr.x1]="d.at" [attr.y1]="d.from" [attr.x2]="d.at" [attr.y2]="d.to" />
+                <line class="ext" [attr.x1]="d.at - 0.45" [attr.y1]="d.from" [attr.x2]="d.at + 0.45" [attr.y2]="d.from" />
+                <line class="ext" [attr.x1]="d.at - 0.45" [attr.y1]="d.to" [attr.x2]="d.at + 0.45" [attr.y2]="d.to" />
+                <text
+                  [attr.x]="d.at - 0.7" [attr.y]="(d.from + d.to) / 2"
+                  text-anchor="middle"
+                  [attr.transform]="'rotate(-90 ' + (d.at - 0.7) + ' ' + ((d.from + d.to) / 2) + ')'"
+                >{{ d.text }}</text>
+              }
+            </g>
+          }
+
+          <!-- north arrow -->
+          <g class="compass" [attr.transform]="'translate(' + (sheetBox.minX + sheetBox.w - 3) + ',' + (sheetBox.minY + 4) + ')'">
+            <path d="M0 0 L0 -2 M0 -2 L-0.5 -1.2 M0 -2 L0.5 -1.2" />
+            <text x="0" y="1.1" text-anchor="middle">N</text>
+          </g>
+
+          <!-- scale bar -->
+          @let bar = scaleBar();
+          <g class="scalebar">
+            <rect [attr.x]="bar.x" [attr.y]="bar.y" [attr.width]="bar.len / 2" height="0.28" class="sb-dark" />
+            <rect [attr.x]="bar.x + bar.len / 2" [attr.y]="bar.y" [attr.width]="bar.len / 2" height="0.28" class="sb-light" />
+            <text [attr.x]="bar.x" [attr.y]="bar.y - 0.5">0</text>
+            <text [attr.x]="bar.x + bar.len" [attr.y]="bar.y - 0.5" text-anchor="middle">{{ bar.len }} m</text>
+          </g>
+
+          <!-- title block -->
+          @let tb = titleBlock();
+          <g class="titleblock">
+            <rect [attr.x]="tb.x" [attr.y]="tb.y" [attr.width]="tb.w" [attr.height]="tb.h" />
+            <line [attr.x1]="tb.x" [attr.y1]="tb.y + 1.7" [attr.x2]="tb.x + tb.w" [attr.y2]="tb.y + 1.7" />
+            <line [attr.x1]="tb.x + tb.w * 0.58" [attr.y1]="tb.y + 1.7" [attr.x2]="tb.x + tb.w * 0.58" [attr.y2]="tb.y + tb.h" />
+
+            <text class="tb-brand" [attr.x]="tb.x + 0.6" [attr.y]="tb.y + 1.15">{{ brand.name }}</text>
+            <text class="tb-meta" [attr.x]="tb.x + tb.w - 0.6" [attr.y]="tb.y + 1.15" text-anchor="end">PRELIMINARY · NOT FOR CONSTRUCTION</text>
+
+            <text class="tb-key" [attr.x]="tb.x + 0.6" [attr.y]="tb.y + 2.9">DRAWING</text>
+            <text class="tb-val" [attr.x]="tb.x + 0.6" [attr.y]="tb.y + 3.9">{{ plan.name }}</text>
+            <text class="tb-key" [attr.x]="tb.x + 0.6" [attr.y]="tb.y + 5.1">{{ c.bedrooms }} bedrooms · {{ styleName() }}</text>
+
+            <text class="tb-key" [attr.x]="tb.x + tb.w * 0.58 + 0.6" [attr.y]="tb.y + 2.9">BUILT AREA</text>
+            <text class="tb-val" [attr.x]="tb.x + tb.w * 0.58 + 0.6" [attr.y]="tb.y + 3.9">{{ s.builtSqm }} m²</text>
+            <text class="tb-key" [attr.x]="tb.x + tb.w * 0.58 + 0.6" [attr.y]="tb.y + 5.1">Plot {{ c.landSqm }} m² · KDB {{ s.siteCoverage }}%</text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- coverage status, always visible over the drawing -->
+      <div class="ed-status" [class.is-over]="s.overCoverage">
+        <nz-icon [nzType]="s.overCoverage ? 'warning' : 'check-circle'" />
+        <div>
+          <strong>{{ s.footprintSqm }} m²</strong> footprint of
+          <strong>{{ s.maxFootprintSqm }} m²</strong> allowed
+          <span class="ed-status-sub">
+            KDB {{ s.coverageLimitPct }}% of {{ c.landSqm }} m² — pool, deck and carport excluded
+          </span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+  </div>
+</section>
+
+<!-- ============ SEND FLOW ============ -->
+<nz-drawer
+  [nzVisible]="sendOpen()"
+  [nzWidth]="420"
+  nzPlacement="right"
+  nzTitle="Send this design to the team"
+  nzWrapClassName="send-drawer"
+  (nzOnClose)="closeSend()"
+>
+  <ng-container *nzDrawerContent>
+    @if (!sent()) {
+      <p class="send-intro">
+        We will come back with what it would really cost on a plot that exists, and what we would
+        change about the plan.
+      </p>
+
+      <pre class="send-summary">{{ summaryText() }}</pre>
+
+      <form nz-form nzLayout="vertical" [formGroup]="sendForm" (ngSubmit)="submitSend()">
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="sn">Your name</nz-form-label>
+          <nz-form-control nzErrorTip="Please tell us your name.">
+            <input nz-input id="sn" formControlName="name" placeholder="Jane Doe" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzRequired nzFor="se">Email</nz-form-label>
+          <nz-form-control nzErrorTip="We need a valid email to reply to.">
+            <input nz-input id="se" type="email" formControlName="email" placeholder="jane@example.com" />
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzFor="sm">Anything to add? <span class="optional">Optional</span></nz-form-label>
+          <nz-form-control>
+            <textarea nz-input id="sm" rows="3" formControlName="note" placeholder="A plot you have seen, a date you are working towards."></textarea>
+          </nz-form-control>
+        </nz-form-item>
+
+        <button nz-button nzType="primary" nzBlock nzSize="large" type="submit" [nzLoading]="sending()">
+          Send the design
+        </button>
+      </form>
+
+      <div class="send-or">
+        <span>or</span>
+      </div>
+
+      <a nz-button nzBlock nzSize="large" class="send-wa" [href]="whatsappHref()" target="_blank" rel="noopener noreferrer">
+        <nz-icon nzType="whats-app" />
+        Send it on WhatsApp
+      </a>
+
+      <p class="send-note">Demonstration site — nothing is sent or stored.</p>
+    } @else {
+      <div class="send-done">
+        <nz-icon nzType="check-circle" class="done-icon" />
+        <h3>On its way</h3>
+        <p>A project lead will reply within one working day, with a costed view of this design.</p>
+        <button nz-button nzBlock (click)="closeSend()">Back to the editor</button>
+        <a nz-button nzBlock nzType="primary" routerLink="/projects">See what is open now</a>
+      </div>
+    }
+  </ng-container>
+</nz-drawer>
