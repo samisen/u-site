@@ -492,14 +492,34 @@ export function siteAreaOf(config: VillaConfig): number {
   return Math.round(ground.rooms.reduce((s, r) => s + r.w * r.h, 0));
 }
 
+/** How much facade the pool has to run along: the villa's depth on the ground floor. */
+export function facadeDepthOf(config: VillaConfig): number {
+  const ground = buildPlans({ ...config, pool: 'none' })[0];
+  return ground.rooms.find((r) => r.id === 'hall')?.h ?? 0;
+}
+
 /**
- * Whether this pool still leaves the whole layout inside the plot boundary.
+ * Whether this pool fits — both along the facade and on the plot.
+ *
+ * The pool runs parallel to the villa, so one longer than the facade hangs off
+ * both ends of the building; that is the overflow you can see in the drawing,
+ * and it is a separate question from whether the plot has the area for it.
+ *
  * "No pool" is always available — when the building alone is too big for the
  * plot, the answer is a smaller building, not a locked-out pool selector.
  */
 export function poolFitsPlot(config: VillaConfig, pool: PoolType): boolean {
   if (pool === 'none') return true;
+  const spec = POOLS.find((p) => p.id === pool)!;
+  if (spec.length > facadeDepthOf(config)) return false;
   return siteAreaOf({ ...config, pool }) <= config.landSqm;
+}
+
+/** Why a pool is unavailable, for the tooltip on its disabled button. */
+export function poolBlockedBy(config: VillaConfig, pool: PoolType): 'facade' | 'plot' | null {
+  if (poolFitsPlot(config, pool)) return null;
+  const spec = POOLS.find((p) => p.id === pool)!;
+  return spec.length > facadeDepthOf(config) ? 'facade' : 'plot';
 }
 
 /** The largest pool this plot can still take, for when the plot shrinks. */

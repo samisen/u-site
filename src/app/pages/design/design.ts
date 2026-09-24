@@ -31,6 +31,7 @@ import {
   EXTRAS,
   fitRoomsToPlot,
   largestPoolThatFits,
+  poolBlockedBy,
   poolFitsPlot,
   ExtraId,
   FINISHES,
@@ -218,9 +219,17 @@ export class DesignPage {
     this.patch({ pool });
   }
 
-  /** A pool that would push the layout past the plot boundary cannot be chosen. */
+  /** A pool that would overhang the facade or the plot cannot be chosen. */
   poolDisabled(pool: PoolType): boolean {
     return !poolFitsPlot(this.config(), pool);
+  }
+
+  poolNote(pool: PoolType): string | null {
+    switch (poolBlockedBy(this.config(), pool)) {
+      case 'facade': return 'Longer than this villa’s facade — add bedrooms or floor area first';
+      case 'plot': return 'Larger than this plot can take';
+      default: return null;
+    }
   }
   setArea(area: AreaId): void { this.patch({ area }); }
 

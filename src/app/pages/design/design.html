@@ -170,7 +170,7 @@
                 [class.is-on]="c.pool === p.id"
                 [disabled]="poolDisabled(p.id)"
                 (click)="setPool(p.id)"
-                [nz-tooltip]="poolDisabled(p.id) ? 'Larger than this plot can take' : null"
+                [nz-tooltip]="poolNote(p.id)"
               >
                 <span class="pill-name">{{ p.name }}</span>
                 <span class="pill-sub mono">{{ p.size }}</span>
