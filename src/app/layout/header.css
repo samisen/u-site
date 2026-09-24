@@ -71,6 +71,8 @@
   }
   .nav-desktop a {
     position: relative;
+    flex: none;
+    white-space: nowrap;
     color: inherit;
     text-decoration: none;
     font-size: 13.6px;

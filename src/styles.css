@@ -127,6 +127,11 @@ img { max-width: 100%; display: block; }
 .container-narrow { max-width: var(--container); }
 .container-narrow > * { max-width: 820px; }
 
+/* prose stays in the narrow column, but a collapse is a list of rows:
+   it reads better spanning the full container width */
+.container-narrow > nz-collapse,
+.container-narrow > .ant-collapse { max-width: none; }
+
 .section { padding-block: 64px; }
 .section-lg { padding-block: 80px; }
 .section-sand { background: var(--bg-sand); }
