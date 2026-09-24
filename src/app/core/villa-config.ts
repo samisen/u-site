@@ -167,6 +167,8 @@ export const EXTRAS: { id: ExtraId; name: string; note: string; cost: number }[]
 export type RoomKind = 'living' | 'bed' | 'bath' | 'service' | 'hall' | 'pool' | 'deck' | 'outdoor';
 
 export interface PlanRoom {
+  /** Stable across rebuilds, so the drawing can tell a moved room from a new one. */
+  id: string;
   label: string;
   sub?: string;
   x: number;
@@ -242,6 +244,7 @@ function bedroomRows(
     const master = n === 0;
     const h = heights[i];
     rooms.push({
+      id: `bed-${n}`,
       label: master ? 'Master bedroom' : `Bedroom ${n + 1}`,
       x,
       y,
@@ -251,6 +254,7 @@ function bedroomRows(
       counts: true,
     });
     rooms.push({
+      id: `bath-${n}`,
       label: master ? 'Ensuite' : 'Bath',
       x: x + BED_DEPTH,
       y,
@@ -272,6 +276,7 @@ function serviceRows(config: VillaConfig, fromY: number, toY: number): PlanRoom[
   const labels = available >= 5 ? ['Entry & powder', 'Laundry & store'] : ['Entry & store'];
   const h = available / labels.length;
   return labels.map((label, i) => ({
+    id: `service-${i}`,
     label,
     x: LEFT_W + HALL_W,
     y: fromY + i * h,
@@ -304,30 +309,31 @@ export function buildPlans(config: VillaConfig): FloorPlan[] {
   const livingActual = livingH + Math.max(0, groundH - leftStack);
 
   const ground: PlanRoom[] = [
-    { label: 'Living', sub: 'open to the pool', x: 0, y: 0, w: LEFT_W, h: livingActual, kind: 'living', counts: true },
-    { label: 'Kitchen & dining', x: 0, y: livingActual, w: LEFT_W, h: kitchenH, kind: 'living', counts: true },
+    { id: 'living', label: 'Living', sub: 'open to the pool', x: 0, y: 0, w: LEFT_W, h: livingActual, kind: 'living', counts: true },
+    { id: 'kitchen', label: 'Kitchen & dining', x: 0, y: livingActual, w: LEFT_W, h: kitchenH, kind: 'living', counts: true },
   ];
   let ly = livingActual + kitchenH;
   if (hasStudy) {
-    ground.push({ label: 'Study', x: 0, y: ly, w: LEFT_W, h: studyH, kind: 'service', counts: true });
+    ground.push({ id: 'study', label: 'Study', x: 0, y: ly, w: LEFT_W, h: studyH, kind: 'service', counts: true });
     ly += studyH;
   }
   if (hasGym) {
-    ground.push({ label: 'Gym', x: 0, y: ly, w: LEFT_W, h: gymH, kind: 'service', counts: true });
+    ground.push({ id: 'gym', label: 'Gym', x: 0, y: ly, w: LEFT_W, h: gymH, kind: 'service', counts: true });
     ly += gymH;
   }
 
-  ground.push({ label: 'Hall', x: LEFT_W, y: 0, w: HALL_W, h: groundH, kind: 'hall', counts: true });
+  ground.push({ id: 'hall', label: 'Hall', x: LEFT_W, y: 0, w: HALL_W, h: groundH, kind: 'hall', counts: true });
   ground.push(...bedroomRows(config, gBeds, 0, gHeights));
   ground.push(...serviceRows(config, rightStack, groundH));
 
   // outdoor
-  ground.push({ label: 'Deck', x: -DECK_D, y: 0, w: DECK_D, h: groundH, kind: 'deck', counts: false });
+  ground.push({ id: 'deck', label: 'Deck', x: -DECK_D, y: 0, w: DECK_D, h: groundH, kind: 'deck', counts: false });
 
   const pool = POOLS.find((p) => p.id === config.pool)!;
   if (pool.length > 0) {
     // the pool runs alongside the villa, parallel to the deck — not out from it
     ground.push({
+      id: 'pool',
       label: 'Pool',
       sub: pool.size,
       x: -DECK_D - pool.width,
@@ -342,13 +348,13 @@ export function buildPlans(config: VillaConfig): FloorPlan[] {
   const buildingW = LEFT_W + HALL_W + BED_DEPTH + ensuiteWidth(config);
 
   if (config.extras.includes('outdoor-kitchen')) {
-    ground.push({ label: 'Outdoor kitchen', x: -DECK_D, y: groundH - 3, w: DECK_D, h: 3, kind: 'outdoor', counts: false });
+    ground.push({ id: 'outdoor-kitchen', label: 'Outdoor kitchen', x: -DECK_D, y: groundH - 3, w: DECK_D, h: 3, kind: 'outdoor', counts: false });
   }
   if (config.extras.includes('staff')) {
-    ground.push({ label: 'Staff quarters', x: buildingW + 1.4, y: 0, w: 4.2, h: 3.2, kind: 'service', counts: true });
+    ground.push({ id: 'staff', label: 'Staff quarters', x: buildingW + 1.4, y: 0, w: 4.2, h: 3.2, kind: 'service', counts: true });
   }
   if (config.extras.includes('carport')) {
-    ground.push({ label: 'Carport', x: buildingW + 1.4, y: groundH - 3.2, w: 5.4, h: 3.2, kind: 'outdoor', counts: false });
+    ground.push({ id: 'carport', label: 'Carport', x: buildingW + 1.4, y: groundH - 3.2, w: 5.4, h: 3.2, kind: 'outdoor', counts: false });
   }
 
   const plans: FloorPlan[] = [
@@ -366,9 +372,9 @@ export function buildPlans(config: VillaConfig): FloorPlan[] {
     const loungeH = Math.max(upperH - terraceH, 3);
 
     const upper: PlanRoom[] = [
-      { label: 'Upper lounge', sub: 'over the pool', x: 0, y: 0, w: LEFT_W, h: loungeH, kind: 'living', counts: true },
-      { label: rooftop ? 'Roof terrace' : 'Balcony', sub: 'uncovered', x: 0, y: loungeH, w: LEFT_W, h: terraceH, kind: 'deck', counts: false },
-      { label: 'Landing', x: LEFT_W, y: 0, w: HALL_W, h: upperH, kind: 'hall', counts: true },
+      { id: 'upper-lounge', label: 'Upper lounge', sub: 'over the pool', x: 0, y: 0, w: LEFT_W, h: loungeH, kind: 'living', counts: true },
+      { id: 'terrace', label: rooftop ? 'Roof terrace' : 'Balcony', sub: 'uncovered', x: 0, y: loungeH, w: LEFT_W, h: terraceH, kind: 'deck', counts: false },
+      { id: 'landing', label: 'Landing', x: LEFT_W, y: 0, w: HALL_W, h: upperH, kind: 'hall', counts: true },
       ...bedroomRows(config, uBeds, gBeds, uHeights),
     ];
 

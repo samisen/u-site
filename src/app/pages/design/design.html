@@ -325,33 +325,52 @@
           />
 
           <!-- storey below, as a reference -->
-          @for (room of ghostRooms(); track $index) {
-            <rect class="ghost" [attr.x]="room.x" [attr.y]="room.y" [attr.width]="room.w" [attr.height]="room.h" />
+          @for (room of ghostRooms(); track room.id) {
+            <rect
+              class="ghost"
+              animate.enter="fade-enter"
+              animate.leave="fade-leave"
+              [attr.x]="room.x" [attr.y]="room.y" [attr.width]="room.w" [attr.height]="room.h"
+              [style.x.px]="room.x" [style.y.px]="room.y" [style.width.px]="room.w" [style.height.px]="room.h"
+            />
           }
 
-          <!-- rooms -->
-          @for (room of plan.rooms; track $index) {
-            <g class="room" [class]="'kind-' + room.kind" [class.is-narrow]="room.w < 2.5">
-              <rect [attr.x]="room.x" [attr.y]="room.y" [attr.width]="room.w" [attr.height]="room.h" />
+          <!-- rooms — tracked by id so a room that stays can slide to its new
+               size while one that is added or removed animates on its own -->
+          @for (room of plan.rooms; track room.id) {
+            <g
+              class="room"
+              [class]="'kind-' + room.kind"
+              [class.is-narrow]="room.w < 2.5"
+              animate.enter="room-enter"
+              animate.leave="room-leave"
+            >
+              <rect
+                [attr.x]="room.x" [attr.y]="room.y" [attr.width]="room.w" [attr.height]="room.h"
+                [style.x.px]="room.x" [style.y.px]="room.y" [style.width.px]="room.w" [style.height.px]="room.h"
+              />
               @if (room.kind === 'pool') {
-                <rect [attr.x]="room.x" [attr.y]="room.y" [attr.width]="room.w" [attr.height]="room.h" fill="url(#water)" stroke="none" />
+                <rect
+                  [attr.x]="room.x" [attr.y]="room.y" [attr.width]="room.w" [attr.height]="room.h"
+                  [style.x.px]="room.x" [style.y.px]="room.y" [style.width.px]="room.w" [style.height.px]="room.h"
+                  fill="url(#water)" stroke="none"
+                />
               }
               @if (showLabel(room)) {
-                <text class="room-label" [attr.x]="room.x + room.w / 2" [attr.y]="room.y + room.h / 2" text-anchor="middle">
-                  {{ room.label }}
-                </text>
-                @if (showArea(room)) {
-                  <text class="room-area" [attr.x]="room.x + room.w / 2" [attr.y]="room.y + room.h / 2 + 0.95" text-anchor="middle">
-                    {{ room.sub || roomArea(room) }}
-                  </text>
-                }
+                <!-- positioned by transform, not x/y, so the label travels with the room -->
+                <g class="room-text" [attr.transform]="'translate(' + (room.x + room.w / 2) + ' ' + (room.y + room.h / 2) + ')'">
+                  <text class="room-label" x="0" y="0" text-anchor="middle">{{ room.label }}</text>
+                  @if (showArea(room)) {
+                    <text class="room-area" x="0" y="0.95" text-anchor="middle">{{ room.sub || roomArea(room) }}</text>
+                  }
+                </g>
               }
             </g>
           }
 
           <!-- doors -->
           @for (d of doors(); track $index) {
-            <g class="door">
+            <g class="door" animate.enter="fade-enter" animate.leave="fade-leave">
               <path [attr.d]="'M ' + d.x + ' ' + d.y + ' l 0 ' + (d.flip ? -d.size : d.size)" class="door-gap" />
               <path
                 [attr.d]="'M ' + d.x + ' ' + (d.flip ? d.y - d.size : d.y + d.size) +
@@ -364,12 +383,16 @@
 
           <!-- exterior walls -->
           @if (box) {
-            <rect class="walls" [attr.x]="box.x" [attr.y]="box.y" [attr.width]="box.w" [attr.height]="box.h" />
+            <rect
+              class="walls"
+              [attr.x]="box.x" [attr.y]="box.y" [attr.width]="box.w" [attr.height]="box.h"
+              [style.x.px]="box.x" [style.y.px]="box.y" [style.width.px]="box.w" [style.height.px]="box.h"
+            />
           }
 
           <!-- dimensions -->
           @for (d of dimensions(); track $index) {
-            <g class="dim">
+            <g class="dim" animate.enter="fade-enter" animate.leave="fade-leave">
               @if (d.axis === 'h') {
                 <line [attr.x1]="d.from" [attr.y1]="d.at" [attr.x2]="d.to" [attr.y2]="d.at" />
                 <line class="ext" [attr.x1]="d.from" [attr.y1]="d.at - 0.45" [attr.x2]="d.from" [attr.y2]="d.at + 0.45" />
