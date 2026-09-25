@@ -33,6 +33,29 @@
 </section>
 
 <!-- ============ WHERE THE MONEY GOES ============ -->
+<!-- ============ LAND AND LICENSING ============ -->
+<section class="section section-sand">
+  <div class="container">
+    <div class="head" appReveal>
+      <p class="eyebrow">{{ diligence.eyebrow | t }}</p>
+      <h2 class="display">{{ diligence.title | t }}</h2>
+      <p class="lede">{{ diligence.lead | t }}</p>
+    </div>
+
+    <div class="grid grid-2">
+      @for (s of diligence.steps; track s.key; let i = $index) {
+        <article class="safeguard" [appReveal]="i * 60">
+          <nz-icon [nzType]="s.icon" class="safeguard-icon" />
+          <h3>{{ 'zoning.' + s.key + '.title' | t }}</h3>
+          <p>{{ 'zoning.' + s.key + '.text' | t }}</p>
+        </article>
+      }
+    </div>
+
+    <p class="zoning-note">{{ diligence.note | t }}</p>
+  </div>
+</section>
+
 <section class="section section-sand">
   <div class="container">
     <div class="head" appReveal>
@@ -109,6 +132,27 @@
 </section>
 
 <!-- ============ WHO WE ARE ============ -->
+<!-- ============ THE CRAFT ============ -->
+<section class="section">
+  <div class="container">
+    <div class="head" appReveal>
+      <p class="eyebrow">{{ craft.eyebrow | t }}</p>
+      <h2 class="display">{{ craft.title | t }}</h2>
+      <p class="lede">{{ craft.lead | t }}</p>
+    </div>
+
+    <div class="grid grid-2">
+      @for (c of craft.items; track c.key; let i = $index) {
+        <article class="craft-card" [appReveal]="i * 60">
+          <nz-icon [nzType]="c.icon" class="craft-icon" />
+          <h3>{{ 'craft.' + c.key + '.title' | t }}</h3>
+          <p>{{ 'craft.' + c.key + '.text' | t }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
 <section class="section section-sand">
   <div class="container">
     <div class="head" appReveal>
@@ -147,6 +191,29 @@
         </article>
       }
     </div>
+  </div>
+</section>
+
+<!-- ============ AFTER THE HANDOVER ============ -->
+<section class="section">
+  <div class="container">
+    <div class="head" appReveal>
+      <p class="eyebrow">{{ after.eyebrow | t }}</p>
+      <h2 class="display">{{ after.title | t }}</h2>
+      <p class="lede">{{ after.lead | t }}</p>
+    </div>
+
+    <ol class="after-steps">
+      @for (s of after.steps; track s.key; let i = $index) {
+        <li class="after-step" [appReveal]="i * 50">
+          <span class="after-mark"><nz-icon [nzType]="s.icon" /></span>
+          <div>
+            <h3>{{ 'after.' + s.key + '.title' | t }}</h3>
+            <p>{{ 'after.' + s.key + '.text' | t }}</p>
+          </div>
+        </li>
+      }
+    </ol>
   </div>
 </section>
 

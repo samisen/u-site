@@ -260,3 +260,76 @@ export type InsightFilter = (typeof INSIGHT_CATEGORIES)[number];
 export function insightCategoryKey(id: InsightFilter): string {
   return `insight.category.${id}`;
 }
+
+/* ------------------------------------------------------------ living here -- */
+
+/**
+ * The part of the decision that is not a spreadsheet.
+ *
+ * Almost nobody buys here on the numbers alone, and the questions that decide
+ * it — where do the children go to school, what happens if someone is ill,
+ * can I actually get a week's shopping — were missing from the site entirely.
+ */
+export const LIVING_HERE = {
+  eyebrow: 'living.eyebrow',
+  title: 'living.title',
+  lead: 'living.lead',
+  items: [
+    { icon: 'bulb', key: 'school' },
+    { icon: 'experiment', key: 'health' },
+    { icon: 'thunderbolt', key: 'sport' },
+    { icon: 'shop', key: 'food' },
+    { icon: 'team', key: 'family' },
+    { icon: 'compass', key: 'around' },
+  ],
+};
+
+/* ----------------------------------------------------------- the craft ----- */
+
+/** What actually gets built, and who builds it. */
+export const CRAFT = {
+  eyebrow: 'craft.eyebrow',
+  title: 'craft.title',
+  lead: 'craft.lead',
+  items: [
+    { icon: 'apartment', key: 'architecture' },
+    { icon: 'picture', key: 'interiors' },
+    { icon: 'environment', key: 'landscape' },
+    { icon: 'crown', key: 'hospitality' },
+  ],
+};
+
+/* ------------------------------------------------------ zoning and title --- */
+
+/**
+ * Indonesia tightened property licensing through 2025 and 2026, and Bali
+ * followed with its own provincial rule. Written the way Ugur asked for it —
+ * as the reason a properly-checked plot is worth more, not as a warning.
+ */
+export const DUE_DILIGENCE = {
+  eyebrow: 'zoning.eyebrow',
+  title: 'zoning.title',
+  lead: 'zoning.lead',
+  steps: [
+    { icon: 'environment', key: 'zone' },
+    { icon: 'file-protect', key: 'title' },
+    { icon: 'bank', key: 'company' },
+    { icon: 'safety-certificate', key: 'permit' },
+  ],
+  note: 'zoning.note',
+};
+
+/* --------------------------------------------------- after the handover ---- */
+
+/** The half of the relationship that starts when the keys change hands. */
+export const AFTER_HANDOVER = {
+  eyebrow: 'after.eyebrow',
+  title: 'after.title',
+  lead: 'after.lead',
+  steps: [
+    { icon: 'key', key: 'keys' },
+    { icon: 'schedule', key: 'monthly' },
+    { icon: 'fund', key: 'money' },
+    { icon: 'swap', key: 'exit' },
+  ],
+};

@@ -67,6 +67,29 @@
   </div>
 </section>
 
+<!-- ============ LIVING HERE ============ -->
+<section class="section section-lg">
+  <div class="container">
+    <div class="head" appReveal>
+      <p class="eyebrow">{{ living.eyebrow | t }}</p>
+      <h2 class="display">{{ living.title | t }}</h2>
+      <p class="lede">{{ living.lead | t }}</p>
+    </div>
+
+    <div class="grid grid-3">
+      @for (item of living.items; track item.key; let i = $index) {
+        <article class="facet" [appReveal]="(i % 3) * 60">
+          <nz-icon [nzType]="item.icon" class="facet-icon" />
+          <h3>{{ 'living.' + item.key + '.title' | t }}</h3>
+          <p>{{ 'living.' + item.key + '.text' | t }}</p>
+        </article>
+      }
+    </div>
+
+    <p class="living-note">{{ 'living.note' | t }}</p>
+  </div>
+</section>
+
 <!-- ============ THE ISLAND, AREA BY AREA ============ -->
 <section class="section section-lg">
   <div class="container">

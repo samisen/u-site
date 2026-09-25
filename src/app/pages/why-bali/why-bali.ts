@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { TOURISM } from '../../core/brand';
-import { INSIGHTS, WHY_BALI, insightCategoryKey } from '../../core/content';
+import { INSIGHTS, LIVING_HERE, WHY_BALI, insightCategoryKey } from '../../core/content';
 import { CatalogService } from '../../core/catalog.service';
 import { BaliMapComponent } from '../../shared/bali-map';
 import { CtaBandComponent } from '../../shared/cta-band';
@@ -33,6 +33,7 @@ export class WhyBaliPage {
   private readonly catalog = inject(CatalogService);
 
   readonly copy = WHY_BALI;
+  readonly living = LIVING_HERE;
   readonly categoryKey = insightCategoryKey;
   readonly tourism = TOURISM;
   readonly areas = this.catalog.areas;

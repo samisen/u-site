@@ -87,3 +87,12 @@
 }
 .read-body h3 { margin: 0 0 8px; font-size: 1.05rem; font-weight: 600; line-height: 1.35; color: var(--ink); }
 .read-excerpt { margin: 0; font-size: 13.8px; line-height: 1.6; color: var(--ink-2); }
+
+/* the practical layer: schools, clinics, sport, the weekly shop */
+.living-note {
+  margin: 30px 0 0;
+  max-width: 78ch;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink-3);
+}

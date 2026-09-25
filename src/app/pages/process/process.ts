@@ -3,7 +3,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { BRAND, YIELD_CLAIM } from '../../core/brand';
-import { BELIEF_LINE, BUILD_STEPS, ROLE_LINE, TAILOR_MADE_LINE } from '../../core/content';
+import { AFTER_HANDOVER, CRAFT, DUE_DILIGENCE, BELIEF_LINE, BUILD_STEPS, ROLE_LINE, TAILOR_MADE_LINE } from '../../core/content';
 import { CatalogService } from '../../core/catalog.service';
 import { MANAGEMENT_FEE, OPERATING_COST } from '../../core/yield-model';
 import { CtaBandComponent } from '../../shared/cta-band';
@@ -42,6 +42,9 @@ interface StatementLine {
   styleUrl: './process.css',
 })
 export class ProcessPage {
+  readonly craft = CRAFT;
+  readonly diligence = DUE_DILIGENCE;
+  readonly after = AFTER_HANDOVER;
   private readonly catalog = inject(CatalogService);
 
   readonly steps = BUILD_STEPS;
