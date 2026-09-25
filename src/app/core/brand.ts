@@ -48,7 +48,7 @@ export const BRAND = BRAND_BASE;
 /** The yield claim and its mandatory qualifier. Never show one without the other. */
 export const YIELD_CLAIM = {
   /** A number, so it reads the same everywhere. */
-  range: '12–22%',
+  range: '14–20%',
   headline: 'yield.headline',
   subline: 'yield.subline',
   footnote: 'yield.footnote',

@@ -3,15 +3,7 @@
     <img [src]="project().hero" [alt]="project().name | t" loading="lazy" decoding="async" />
     <div class="media-top">
       <nz-tag [nzColor]="statusColor()">{{ statusLabel() | t }}</nz-tag>
-      @if (project().unitsAvailable > 0 && project().unitsTotal > 1) {
-        <span class="units">{{ 'projectCard.unitsLeft' | t: { available: project().unitsAvailable, total: project().unitsTotal } }}</span>
-      }
     </div>
-    @if (project().progress > 0 && project().progress < 100) {
-      <div class="progress" [style.--p.%]="project().progress">
-        <span class="progress-label">{{ 'projectCard.built' | t: { percent: project().progress } }}</span>
-      </div>
-    }
   </div>
 
   <div class="body">
@@ -27,13 +19,13 @@
 
     <dl class="facts">
       <div>
-        <dt>{{ 'projectCard.from' | t }}</dt>
-        <dd class="mono strong">{{ price() }}</dd>
+        <dt>{{ (project().status === 'delivered' ? 'projectCard.deliveredAt' : 'projectCard.budgetedAt') | t }}</dt>
+        <dd class="mono strong">{{ band() }}</dd>
       </div>
-      @if (project().projectedGrossYield > 0) {
+      @if (project().projectedNetYield > 0) {
         <div>
-          <dt>{{ 'projectCard.grossYield' | t }}<sup>*</sup></dt>
-          <dd class="mono strong accent">{{ project().projectedGrossYield }}%</dd>
+          <dt>{{ 'projectCard.netYield' | t }}<sup>*</sup></dt>
+          <dd class="mono strong accent">{{ project().projectedNetYield }}%</dd>
         </div>
       }
       <div>

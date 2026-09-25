@@ -41,6 +41,10 @@ export interface Project {
   videoPoster?: string;
   pool: string;
   priceFromUsd: number;
+  /** What this kind of build actually landed at, for display. We show a band
+   *  rather than a "from" price: these are references, not stock. */
+  bandLowUsd: number;
+  bandHighUsd: number;
   landSqm: number;
   builtSqm: number;
   bedrooms: number;

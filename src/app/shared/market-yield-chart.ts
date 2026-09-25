@@ -9,7 +9,7 @@ import { MARKET_YIELDS, MARKET_YIELDS_META } from '../core/content';
  * Bali indicative range.
  *
  * The two are deliberately different objects: the brief requires that the
- * 12–22% range is never drawn as a seventh bar, because it is a different
+ * 14–20% range is never drawn as a seventh bar, because it is a different
  * measure (short-term hospitality) from a different source. One series means
  * one colour for every bar — a value ramp would double-encode bar length.
  */
