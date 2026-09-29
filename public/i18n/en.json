@@ -1072,5 +1072,13 @@
   "after.money.title": "Money in your account",
   "after.money.text": "The balance is transferred monthly to the account you nominate, in the currency you ask for. Indonesian tax on rental income (PB1 and company filings) is lodged by us, and the annual pack your accountant at home will want is prepared without you having to ask.",
   "after.exit.title": "And when you want out",
-  "after.exit.text": "A leasehold can be assigned, and a villa with a clean permit trail and two years of published statements sells faster and higher than one without. We keep the file in a state that makes that possible, we will market it when the time comes, and we will tell you honestly what the remaining term is worth."
+  "after.exit.text": "A leasehold can be assigned, and a villa with a clean permit trail and two years of published statements sells faster and higher than one without. We keep the file in a state that makes that possible, we will market it when the time comes, and we will tell you honestly what the remaining term is worth.",
+  "gate.title": "A private preview",
+  "gate.lede": "This site is still being built, and we are showing it to a small group first. Enter your access code and it opens.",
+  "gate.label": "Access code",
+  "gate.placeholder": "Enter your code",
+  "gate.submit": "Open the site",
+  "gate.wrong": "That code does not match. Have another go.",
+  "gate.insecure": "This browser needs a secure (https) address to check the code. Open the site over https and it will work.",
+  "gate.note": "Do not have a code? Ask whoever sent you the link — they can pass one on."
 }

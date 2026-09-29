@@ -5,11 +5,16 @@ import { filter } from 'rxjs/operators';
 import { HeaderComponent } from './layout/header';
 import { FooterComponent } from './layout/footer';
 import { WhatsappFabComponent } from './shared/whatsapp-fab';
+import { GateComponent } from './shared/gate';
+import { GateService } from './core/gate.service';
 import { TranslatePipe } from './core/i18n';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, WhatsappFabComponent, TranslatePipe],
+  imports: [
+    RouterOutlet, HeaderComponent, FooterComponent, WhatsappFabComponent, GateComponent,
+    TranslatePipe,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app.html',
   styleUrl: './app.css',
@@ -17,6 +22,9 @@ import { TranslatePipe } from './core/i18n';
 export class App {
   private readonly router = inject(Router);
   private readonly doc = inject(DOCUMENT);
+
+  /** The site stays behind its door until the visitor has the code. */
+  protected readonly gate = inject(GateService);
 
   constructor() {
     /**

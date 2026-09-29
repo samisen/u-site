@@ -1,0 +1,4 @@
+# The site is a private preview behind an access code. Nothing here is meant to
+# be indexed yet. Delete this file when the site goes public.
+User-agent: *
+Disallow: /

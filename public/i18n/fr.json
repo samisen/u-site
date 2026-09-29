@@ -1072,5 +1072,13 @@
   "after.money.title": "L’argent sur votre compte",
   "after.money.text": "Le solde est viré mensuellement sur le compte que vous désignez, dans la devise que vous demandez. L’impôt indonésien sur les revenus locatifs (PB1 et déclarations de société) est déposé par nos soins, et le dossier annuel que votre comptable réclamera est préparé sans que vous ayez à le demander.",
   "after.exit.title": "Et quand vous voudrez sortir",
-  "after.exit.text": "Un bail peut être cédé, et une villa dotée d’un dossier d’autorisations propre et de deux ans de relevés publiés se vend plus vite et plus cher qu’une autre. Nous tenons ce dossier dans un état qui le permet, nous la commercialiserons le moment venu, et nous vous dirons honnêtement ce que vaut la durée restante."
+  "after.exit.text": "Un bail peut être cédé, et une villa dotée d’un dossier d’autorisations propre et de deux ans de relevés publiés se vend plus vite et plus cher qu’une autre. Nous tenons ce dossier dans un état qui le permet, nous la commercialiserons le moment venu, et nous vous dirons honnêtement ce que vaut la durée restante.",
+  "gate.title": "Un aperçu privé",
+  "gate.lede": "Ce site est encore en construction, et nous le montrons d'abord à un petit groupe. Saisissez votre code d'accès et il s'ouvre.",
+  "gate.label": "Code d'accès",
+  "gate.placeholder": "Saisissez votre code",
+  "gate.submit": "Ouvrir le site",
+  "gate.wrong": "Ce code ne correspond pas. Réessayez.",
+  "gate.insecure": "Ce navigateur a besoin d'une adresse sécurisée (https) pour vérifier le code. Ouvrez le site en https et cela fonctionnera.",
+  "gate.note": "Pas de code ? Demandez à la personne qui vous a envoyé le lien — elle peut vous en transmettre un."
 }

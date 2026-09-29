@@ -3,10 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "prestart": "node scripts/gate-key.mjs",
     "start": "ng serve",
+    "prebuild": "node scripts/gate-key.mjs",
     "build": "ng build",
+    "prewatch": "node scripts/gate-key.mjs",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "gate:key": "node scripts/gate-key.mjs"
   },
   "private": true,
   "packageManager": "npm@10.9.4",

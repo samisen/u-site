@@ -1072,5 +1072,13 @@
   "after.money.title": "Para hesabınızda",
   "after.money.text": "Bakiye her ay, belirlediğiniz hesaba, istediğiniz para biriminde aktarılıyor. Kira gelirine ilişkin Endonezya vergisi (PB1 ve şirket beyanları) bizim tarafımızdan veriliyor; ülkenizdeki mali müşavirinizin isteyeceği yıllık dosya siz sormadan hazırlanıyor.",
   "after.exit.title": "Ve çıkmak istediğinizde",
-  "after.exit.text": "Kira hakkı devredilebiliyor ve izin dosyası temiz, iki yıllık yayımlanmış ekstresi olan bir villa, olmayandan daha hızlı ve daha yüksek satılıyor. Dosyayı bunu mümkün kılacak durumda tutuyoruz, zamanı gelince pazarlamasını yapıyoruz ve kalan sürenin ne ettiğini size dürüstçe söylüyoruz."
+  "after.exit.text": "Kira hakkı devredilebiliyor ve izin dosyası temiz, iki yıllık yayımlanmış ekstresi olan bir villa, olmayandan daha hızlı ve daha yüksek satılıyor. Dosyayı bunu mümkün kılacak durumda tutuyoruz, zamanı gelince pazarlamasını yapıyoruz ve kalan sürenin ne ettiğini size dürüstçe söylüyoruz.",
+  "gate.title": "Özel ön gösterim",
+  "gate.lede": "Bu site hâlâ yapım aşamasında ve önce küçük bir gruba gösteriyoruz. Erişim kodunuzu girin, site açılsın.",
+  "gate.label": "Erişim kodu",
+  "gate.placeholder": "Kodunuzu girin",
+  "gate.submit": "Siteyi aç",
+  "gate.wrong": "Bu kod eşleşmedi. Bir daha deneyin.",
+  "gate.insecure": "Bu tarayıcının kodu doğrulaması için güvenli (https) bir adres gerekiyor. Siteyi https üzerinden açtığınızda çalışacak.",
+  "gate.note": "Kodunuz yok mu? Bağlantıyı gönderen kişiye sorun — size bir kod iletebilir."
 }

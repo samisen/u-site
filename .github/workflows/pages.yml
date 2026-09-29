@@ -29,8 +29,13 @@ jobs:
       - run: npm ci
 
       # a project site is served from /<repo>/, so the app has to know its base
+      # `npm run build` runs scripts/gate-key.mjs first, which turns the access
+      # code into the key the browser checks against. The code itself stays in
+      # the secret and never reaches the repository or the bundle.
       - name: Build
-        run: npx ng build --base-href "/${GITHUB_REPOSITORY#*/}/"
+        run: npm run build -- --base-href "/${GITHUB_REPOSITORY#*/}/"
+        env:
+          SITE_PASSWORD: ${{ secrets.SITE_PASSWORD }}
 
       - name: Prepare for Pages
         run: |
