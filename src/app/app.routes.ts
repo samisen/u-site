@@ -22,6 +22,11 @@ export const routes: Routes = [
     title: 'title.opportunity',
   },
   {
+    path: 'locations',
+    title: 'title.locations',
+    loadComponent: () => import('./pages/locations/locations').then((m) => m.LocationsPage),
+  },
+  {
     path: 'projects',
     loadComponent: () => import('./pages/projects/projects').then((m) => m.ProjectsPage),
     title: 'title.projects',
@@ -57,7 +62,7 @@ export const routes: Routes = [
   },
 
   // pages folded into the ones above
-  { path: 'areas', redirectTo: 'projects', pathMatch: 'full' },
+  { path: 'areas', redirectTo: 'locations', pathMatch: 'full' },
   { path: 'about', redirectTo: 'how-we-build', pathMatch: 'full' },
   { path: 'operations', redirectTo: 'how-we-build', pathMatch: 'full' },
   { path: 'management', redirectTo: 'how-we-build', pathMatch: 'full' },

@@ -1,8 +1,12 @@
 export type ProjectStatus = 'available' | 'construction' | 'reserved' | 'delivered' | 'coming-soon';
 export type ProjectType = 'villa' | 'townhouse' | 'apartment' | 'commercial' | 'land';
-export type AreaId =
-  | 'canggu' | 'pererenan' | 'seminyak' | 'uluwatu'
-  | 'ubud' | 'sanur' | 'nusa-dua' | 'tabanan';
+/** Listed as values as well as a type, so a link carrying one can be checked. */
+export const AREA_IDS = [
+  'canggu', 'pererenan', 'seminyak', 'uluwatu',
+  'ubud', 'sanur', 'nusa-dua', 'tabanan',
+] as const;
+
+export type AreaId = (typeof AREA_IDS)[number];
 
 export interface Area {
   id: AreaId;

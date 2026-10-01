@@ -44,6 +44,7 @@ export class HeaderComponent {
   readonly nav: NavItem[] = [
     { label: 'nav.whyBali', link: '/why-bali', blurb: 'nav.whyBali.blurb' },
     { label: 'nav.opportunity', link: '/opportunity', blurb: 'nav.opportunity.blurb' },
+    { label: 'nav.locations', link: '/locations', blurb: 'nav.locations.blurb' },
     { label: 'nav.projects', link: '/projects', blurb: 'nav.projects.blurb' },
     { label: 'nav.design', link: '/design-your-villa', blurb: 'nav.design.blurb' },
     { label: 'nav.process', link: '/how-we-build', blurb: 'nav.process.blurb' },

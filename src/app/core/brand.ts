@@ -1,24 +1,23 @@
 /**
  * Single source of truth for the brand.
  *
- * The developer brief treats "Turta Escape" as a working placeholder, so every
- * brand reference on the site reads from here: change these values and the
- * name, wordmark, contact details and legal footer change everywhere.
+ * Every brand reference on the site reads from here: change these values and
+ * the name, wordmark, contact details and legal footer change everywhere.
  *
  * Names, addresses and numbers are the same in every language and stay here as
  * they are. Anything with words in it — the strapline, the calls to action,
  * the yield qualifier — is a translation key resolved through the `t` pipe.
  */
 const BRAND_BASE = {
-  name: 'Turta Escape',
-  wordmarkLead: 'Turta',
-  wordmarkTail: 'Escape',
-  isPlaceholder: true,
+  name: 'Apex Developments',
+  wordmarkLead: 'Apex',
+  wordmarkTail: 'Developments',
+  isPlaceholder: false,
 
   coreIdea: 'brand.coreIdea',
   descriptor: 'brand.descriptor',
 
-  email: 'hello@turtaescape.com',
+  email: 'hello@apexdevelopments.id',
   phone: '+62 361 000 000',
   phoneHref: 'tel:+62361000000',
   whatsapp: '+90 533 399 46 48',
@@ -47,18 +46,34 @@ export const BRAND = BRAND_BASE;
 
 /** The yield claim and its mandatory qualifier. Never show one without the other. */
 export const YIELD_CLAIM = {
-  /** A number, so it reads the same everywhere. */
-  range: '14–20%',
+  /**
+   * The band the portfolio is modelled to sit inside, on the base scenario.
+   * It is deliberately a little wider than the portfolio's own spread, so a
+   * future project below today's lowest figure does not move the claim.
+   */
+  range: '15–22%',
   headline: 'yield.headline',
   subline: 'yield.subline',
   footnote: 'yield.footnote',
 } as const;
 
+/**
+ * The demand numbers, with their sources attached.
+ *
+ * Every figure the site publishes about tourism carries a period and a source,
+ * because a statistic without one is decoration. They are listed here rather
+ * than written into a page so a single update moves all of them.
+ */
 export const TOURISM = {
   baliArrivals2025: 6_948_754,
   baliArrivalsLabel: '6,948,754',
   baliArrivalsShort: '6.95M',
   baliGrowthPct: 9.72,
+  /** Worldwide, 2025. */
+  globalArrivalsBn: 1.5,
+  /** Travel & tourism's contribution to world GDP, 2025, in US dollars. */
+  globalGdpTn: 11.6,
+  period: '2025',
   baliSentence: 'tourism.bali',
   globalSentence: 'tourism.global',
   sources: [
@@ -70,6 +85,13 @@ export const TOURISM = {
       label: 'tourism.source.bpsOverview',
       url: 'https://bali.bps.go.id/en/pressrelease/2026/02/02/718014/tourism-overview-of-bali-province--december-2025.html',
     },
-    { label: 'tourism.source.unTourism', url: 'https://www.unwto.org/' },
+    {
+      label: 'tourism.source.wttc',
+      url: 'https://wttc.org/news/travel-tourism-sees-best-year-ever-outpacing-global-economy-in-2025',
+    },
+    {
+      label: 'tourism.source.wef',
+      url: 'https://www.weforum.org/publications/travel-tourism-development-index-2026/in-full/2-global-context/',
+    },
   ],
 } as const;

@@ -1,6 +1,17 @@
 import { TranslateParams } from './i18n/locale';
-import { AreaId } from './models';
-import { grossAnnualRevenue, grossYieldPct, netAnnualIncome, netYieldPct } from './yield-model';
+import { AREA_IDS, AreaId } from './models';
+import {
+  developmentMargin,
+  DevelopmentMargin,
+  grossAnnualRevenue,
+  grossYieldPct,
+  managementFeeAnnual,
+  netAnnualIncome,
+  netYieldPct,
+  nightsFromOccupancy,
+  operatingCostAnnual,
+  operatingLines,
+} from './yield-model';
 
 /* ============================================================================
    The villa configurator's domain: a configuration in, a floor plan and a
@@ -98,15 +109,18 @@ export const PRESETS: { id: string; name: string; note: string; patch: Partial<V
 
 export const DEFAULT_CONFIG: VillaConfig = {
   style: 'tropical',
-  bedrooms: 3,
+  bedrooms: 2,
   storeys: 1,
   pool: 'standard',
   finish: 'essential',
   extras: ['carport', 'solar'],
   area: 'pererenan',
-  // a single-storey three-bedroom villa puts its whole footprint on the
-  // ground, so the starting plot has to carry it inside the 50% KDB limit
-  landSqm: 500,
+  // A two-bedroom villa is where the portfolio actually lives, and it is the
+  // shape that earns best: build cost falls faster than the nightly rate
+  // does. The editor should open on that argument rather than on the largest
+  // thing it can draw. Single storey, so the whole footprint sits on the
+  // ground and the plot has to carry it inside the 50% KDB limit.
+  landSqm: 380,
   rooms: { ...DEFAULT_ROOMS },
 };
 
@@ -155,9 +169,12 @@ export const FINISHES: {
 /** `length` runs along the villa's facade; `width` is the reach away from it. */
 export const POOLS: { id: PoolType; name: string; size: string; cost: number; length: number; width: number }[] = [
   { id: 'none', name: 'villa.pool.none', size: '—', cost: 0, length: 0, width: 0 },
-  { id: 'plunge', name: 'villa.pool.plunge', size: '4.0 × 3.0 m', cost: 16000, length: 4, width: 3 },
-  { id: 'standard', name: 'villa.pool.standard', size: '8.0 × 3.5 m', cost: 34000, length: 8, width: 3.5 },
-  { id: 'infinity', name: 'villa.pool.infinity', size: '11.0 × 4.0 m', cost: 62000, length: 11, width: 4 },
+  // Shell, plant, filtration, tiling and the deck edge. The client's costing
+  // carries the shell and the plant on separate lines; these are the two put
+  // back together at what the work actually goes for on the island.
+  { id: 'plunge', name: 'villa.pool.plunge', size: '4.0 × 3.0 m', cost: 12000, length: 4, width: 3 },
+  { id: 'standard', name: 'villa.pool.standard', size: '8.0 × 3.5 m', cost: 24000, length: 8, width: 3.5 },
+  { id: 'infinity', name: 'villa.pool.infinity', size: '11.0 × 4.0 m', cost: 46000, length: 11, width: 4 },
 ];
 
 export const EXTRAS: { id: ExtraId; name: string; note: string; cost: number; sqm: number }[] = [
@@ -524,15 +541,38 @@ export interface VillaStudy {
   landTotal: number;
   total: number;
   nightlyRate: number;
+  /** What the design alone implies, before the visitor touches anything. */
+  modelledRate: number;
+  /** True when the visitor has moved the rate away from the modelled one. */
+  rateIsOverridden: boolean;
   occupancy: number;
+  occupiedNights: number;
   grossAnnual: number;
   grossYield: number;
+  /** What the operator takes. */
+  managementFee: number;
+  /** Everything else it costs to keep the villa earning, and its breakdown. */
+  operatingCost: number;
+  operatingLines: { label: string; amount: number }[];
   netAnnual: number;
   netYield: number;
   paybackYears: number;
+  /**
+   * Margin if the villa were built and sold rather than held and let. Modelled
+   * so the two are never confused with each other, and deliberately not shown:
+   * publishing it would mean publishing a resale value.
+   */
+  margin: DevelopmentMargin;
 }
 
-const LEASE_YEARS = 25;
+/**
+ * Years of lease paid up front.
+ *
+ * Taken from the client's own costing: a thirty-year contract with twenty
+ * years paid at signature and the balance renewable. Modelling twenty-five
+ * overstated the land in every study the editor produced.
+ */
+const LEASE_YEARS = 20;
 
 /**
  * Koefisien Dasar Bangunan — the share of a plot that may be covered by
@@ -644,6 +684,8 @@ const STYLE_RATE_FACTOR: Record<VillaStyle, number> = { tropical: 1, joglo: 1.03
 export function buildStudy(
   config: VillaConfig,
   area: { landPriceArePerYearUsd: number; avgNightlyRateUsd: number; occupancy: number },
+  /** A nightly rate the visitor has set by hand, in place of the modelled one. */
+  nightlyOverrideUsd?: number | null,
 ): VillaStudy {
   const plans = buildPlans(config);
 
@@ -711,13 +753,16 @@ export function buildStudy(
   );
   const total = buildTotal + landTotal;
 
-  const nightlyRate = Math.round(
+  const modelledRate = Math.round(
     area.avgNightlyRateUsd *
       (0.62 + 0.17 * config.bedrooms) *
       (config.finish === 'prestige' ? 1.16 : 1) *
       POOL_RATE_FACTOR[config.pool] *
       STYLE_RATE_FACTOR[config.style],
   );
+  const nightlyRate = nightlyOverrideUsd && nightlyOverrideUsd > 0
+    ? Math.round(nightlyOverrideUsd)
+    : modelledRate;
 
   const grossAnnual = grossAnnualRevenue(nightlyRate, area.occupancy);
   const grossYield = grossYieldPct(nightlyRate, area.occupancy, total);
@@ -749,13 +794,104 @@ export function buildStudy(
     landTotal,
     total,
     nightlyRate,
+    modelledRate,
+    rateIsOverridden: nightlyRate !== modelledRate,
     occupancy: area.occupancy,
+    occupiedNights: nightsFromOccupancy(area.occupancy),
     grossAnnual,
     grossYield,
+    managementFee: managementFeeAnnual(nightlyRate, area.occupancy),
+    operatingCost: operatingCostAnnual(nightlyRate, area.occupancy),
+    operatingLines: operatingLines(nightlyRate, area.occupancy),
     netAnnual,
     netYield,
     paybackYears: netAnnual > 0 ? total / netAnnual : 0,
+    // a sale is not what this page is selling; the figure exists so the two
+    // kinds of return cannot be added together by accident
+    margin: developmentMargin(total, Math.round(total * 1.18)),
   };
 }
 
 export const LEASE_TERM_YEARS = LEASE_YEARS;
+
+/* ------------------------------------------------------------ the link -- */
+
+/**
+ * A configuration packed into something short enough to live in a URL.
+ *
+ * Every enquiry carries one, so whoever picks it up opens the drawing the
+ * visitor actually made and can keep working on it. JSON in base64 worked but
+ * ran to a thousand characters, which is unwieldy in a WhatsApp message; this
+ * is positional, versioned and stays under a hundred.
+ */
+const PLAN_VERSION = '1';
+const ROOM_ORDER: (keyof RoomSizes)[] = ['master', 'bedroom', 'ensuite', 'living', 'kitchen'];
+
+export function encodePlan(
+  config: VillaConfig,
+  nights: number,
+  nightlyOverride: number | null,
+): string {
+  return [
+    PLAN_VERSION,
+    config.style,
+    config.bedrooms,
+    config.storeys,
+    config.pool,
+    config.finish,
+    config.extras.join('.'),
+    config.area,
+    config.landSqm,
+    ROOM_ORDER.map((k) => config.rooms[k]).join('.'),
+    nights,
+    nightlyOverride ?? '',
+  ].join('~');
+}
+
+export interface DecodedPlan {
+  config: VillaConfig;
+  nights: number;
+  nightlyOverride: number | null;
+}
+
+/** Returns null for anything it does not recognise, so a mangled link is
+ *  simply ignored rather than half-applied. */
+export function decodePlan(code: string): DecodedPlan | null {
+  const p = code.split('~');
+  if (p.length < 12 || p[0] !== PLAN_VERSION) return null;
+
+  const num = (v: string, fallback: number) => {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : fallback;
+  };
+  const oneOf = <T extends string>(v: string, allowed: readonly T[], fallback: T): T =>
+    (allowed as readonly string[]).includes(v) ? (v as T) : fallback;
+
+  const roomValues = p[9].split('.');
+  const rooms = { ...DEFAULT_ROOMS };
+  ROOM_ORDER.forEach((k, i) => {
+    const limit = ROOM_LIMITS[k];
+    const v = num(roomValues[i], DEFAULT_ROOMS[k]);
+    rooms[k] = Math.min(limit.max, Math.max(limit.min, v));
+  });
+
+  const config: VillaConfig = {
+    ...DEFAULT_CONFIG,
+    style: oneOf(p[1], STYLES.map((s) => s.id), DEFAULT_CONFIG.style),
+    bedrooms: Math.min(6, Math.max(1, Math.round(num(p[2], DEFAULT_CONFIG.bedrooms)))),
+    storeys: num(p[3], 1) === 2 ? 2 : 1,
+    pool: oneOf(p[4], POOLS.map((x) => x.id), DEFAULT_CONFIG.pool),
+    finish: oneOf(p[5], FINISHES.map((f) => f.id), DEFAULT_CONFIG.finish),
+    extras: p[6] ? (p[6].split('.').filter((e) => EXTRAS.some((x) => x.id === e)) as ExtraId[]) : [],
+    area: oneOf(p[7], AREA_IDS, DEFAULT_CONFIG.area),
+    landSqm: Math.min(3000, Math.max(100, Math.round(num(p[8], DEFAULT_CONFIG.landSqm)))),
+    rooms,
+  };
+
+  const override = p[11] === '' ? null : Math.round(num(p[11], 0)) || null;
+  return {
+    config,
+    nights: Math.min(365, Math.max(0, Math.round(num(p[10], 298)))),
+    nightlyOverride: override,
+  };
+}

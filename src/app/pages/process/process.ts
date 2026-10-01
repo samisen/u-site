@@ -2,8 +2,12 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { RouterLink } from '@angular/router';
 import { BRAND, YIELD_CLAIM } from '../../core/brand';
-import { AFTER_HANDOVER, CRAFT, DUE_DILIGENCE, BELIEF_LINE, BUILD_STEPS, ROLE_LINE, TAILOR_MADE_LINE } from '../../core/content';
+import {
+  AFTER_HANDOVER, CRAFT, DEVELOPMENT_MODELS, DUE_DILIGENCE, WHO_WE_ARE,
+  BELIEF_LINE, BUILD_STEPS, ROLE_LINE, TAILOR_MADE_LINE,
+} from '../../core/content';
 import { CatalogService } from '../../core/catalog.service';
 import { MANAGEMENT_FEE, OPERATING_COST } from '../../core/yield-model';
 import { CtaBandComponent } from '../../shared/cta-band';
@@ -32,6 +36,7 @@ interface StatementLine {
     NzButtonModule,
     NzCollapseModule,
     NzIconModule,
+    RouterLink,
     PageHeroComponent,
     CtaBandComponent,
     RevealDirective,
@@ -54,6 +59,9 @@ export class ProcessPage {
   readonly brand = BRAND;
   readonly claim = YIELD_CLAIM;
   readonly faqs = this.catalog.faqs;
+
+  readonly models = DEVELOPMENT_MODELS;
+  readonly who = WHO_WE_ARE;
 
   readonly costs: CostLine[] = [
     { label: 'process.cost1.label', share: 32, note: 'process.cost1.note' },

@@ -1,5 +1,5 @@
 import { Area, FaqItem, Pillar, ProcessStep, Project, Testimonial } from './models';
-import { grossYieldPct, netYieldPct } from './yield-model';
+import { BASE_OCCUPANCY, grossYieldPct, netYieldPct } from './yield-model';
 
 const IMG = 'img';
 
@@ -13,7 +13,7 @@ export const AREAS: Area[] = [
     description: 'area.canggu.description',
     landPriceArePerYearUsd: 1850,
     avgNightlyRateUsd: 285,
-    occupancy: 0.82,
+    occupancy: BASE_OCCUPANCY,
     driveToAirportMin: 45,
     bestFor: ['area.canggu.bestFor1', 'area.canggu.bestFor2', 'area.canggu.bestFor3'],
   },
@@ -26,7 +26,7 @@ export const AREAS: Area[] = [
     description: 'area.pererenan.description',
     landPriceArePerYearUsd: 1400,
     avgNightlyRateUsd: 260,
-    occupancy: 0.79,
+    occupancy: BASE_OCCUPANCY,
     driveToAirportMin: 50,
     bestFor: ['area.pererenan.bestFor1', 'area.pererenan.bestFor2', 'area.pererenan.bestFor3'],
   },
@@ -39,7 +39,7 @@ export const AREAS: Area[] = [
     description: 'area.seminyak.description',
     landPriceArePerYearUsd: 2100,
     avgNightlyRateUsd: 310,
-    occupancy: 0.77,
+    occupancy: BASE_OCCUPANCY,
     driveToAirportMin: 30,
     bestFor: ['area.seminyak.bestFor1', 'area.seminyak.bestFor2', 'area.seminyak.bestFor3'],
   },
@@ -52,7 +52,7 @@ export const AREAS: Area[] = [
     description: 'area.uluwatu.description',
     landPriceArePerYearUsd: 1250,
     avgNightlyRateUsd: 395,
-    occupancy: 0.74,
+    occupancy: BASE_OCCUPANCY,
     driveToAirportMin: 40,
     bestFor: ['area.uluwatu.bestFor1', 'area.uluwatu.bestFor2', 'area.uluwatu.bestFor3'],
   },
@@ -65,7 +65,7 @@ export const AREAS: Area[] = [
     description: 'area.ubud.description',
     landPriceArePerYearUsd: 900,
     avgNightlyRateUsd: 240,
-    occupancy: 0.8,
+    occupancy: BASE_OCCUPANCY,
     driveToAirportMin: 75,
     bestFor: ['area.ubud.bestFor1', 'area.ubud.bestFor2', 'area.ubud.bestFor3'],
   },
@@ -78,7 +78,7 @@ export const AREAS: Area[] = [
     description: 'area.sanur.description',
     landPriceArePerYearUsd: 1150,
     avgNightlyRateUsd: 215,
-    occupancy: 0.81,
+    occupancy: BASE_OCCUPANCY,
     driveToAirportMin: 35,
     bestFor: ['area.sanur.bestFor1', 'area.sanur.bestFor2', 'area.sanur.bestFor3'],
   },
@@ -91,7 +91,7 @@ export const AREAS: Area[] = [
     description: 'area.nusa-dua.description',
     landPriceArePerYearUsd: 1550,
     avgNightlyRateUsd: 330,
-    occupancy: 0.76,
+    occupancy: BASE_OCCUPANCY,
     driveToAirportMin: 20,
     bestFor: ['area.nusa-dua.bestFor1', 'area.nusa-dua.bestFor2', 'area.nusa-dua.bestFor3'],
   },
@@ -104,7 +104,7 @@ export const AREAS: Area[] = [
     description: 'area.tabanan.description',
     landPriceArePerYearUsd: 550,
     avgNightlyRateUsd: 195,
-    occupancy: 0.68,
+    occupancy: BASE_OCCUPANCY,
     driveToAirportMin: 70,
     bestFor: ['area.tabanan.bestFor1', 'area.tabanan.bestFor2', 'area.tabanan.bestFor3'],
   },
@@ -136,7 +136,7 @@ export const PROJECTS: Project[] = [
     leaseStartYear: 2026,
     projectedGrossYield: 0,
     projectedNetYield: 0,
-    targetOccupancy: 0.66,
+    targetOccupancy: BASE_OCCUPANCY,
     nightlyRateUsd: 250,
     handover: 'project.ombak-residences.handover',
     handoverOrder: 20271,
@@ -176,7 +176,7 @@ export const PROJECTS: Project[] = [
     leaseStartYear: 2026,
     projectedGrossYield: 0,
     projectedNetYield: 0,
-    targetOccupancy: 0.62,
+    targetOccupancy: BASE_OCCUPANCY,
     nightlyRateUsd: 340,
     handover: 'project.tebing-cliff-villas.handover',
     handoverOrder: 20273,
@@ -203,9 +203,9 @@ export const PROJECTS: Project[] = [
     body: ['project.sawah-ubud-retreat.body1', 'project.sawah-ubud-retreat.body2', 'project.sawah-ubud-retreat.body3'],
     hero: `${IMG}/villa-lawn.jpg`,
     gallery: [`${IMG}/villa-lawn.jpg`, `${IMG}/villa-dining-void.jpg`, `${IMG}/villa-bed-terrace.jpg`, `${IMG}/rice-ubud.jpg`],
-    priceFromUsd: 152000,
-    bandLowUsd: 140000,
-    bandHighUsd: 165000,
+    priceFromUsd: 155000,
+    bandLowUsd: 142000,
+    bandHighUsd: 168000,
     landSqm: 180,
     builtSqm: 88,
     bedrooms: 1,
@@ -215,7 +215,7 @@ export const PROJECTS: Project[] = [
     leaseStartYear: 2025,
     projectedGrossYield: 0,
     projectedNetYield: 0,
-    targetOccupancy: 0.71,
+    targetOccupancy: BASE_OCCUPANCY,
     nightlyRateUsd: 152,
     handover: 'project.sawah-ubud-retreat.handover',
     handoverOrder: 20264,
@@ -255,7 +255,7 @@ export const PROJECTS: Project[] = [
     leaseStartYear: 2025,
     projectedGrossYield: 0,
     projectedNetYield: 0,
-    targetOccupancy: 0.7,
+    targetOccupancy: BASE_OCCUPANCY,
     nightlyRateUsd: 205,
     handover: 'project.batu-loft-townhouses.handover',
     handoverOrder: 20263,
@@ -295,7 +295,7 @@ export const PROJECTS: Project[] = [
     leaseStartYear: 2027,
     projectedGrossYield: 0,
     projectedNetYield: 0,
-    targetOccupancy: 0.66,
+    targetOccupancy: BASE_OCCUPANCY,
     nightlyRateUsd: 355,
     handover: 'project.segara-beachfront-villas.handover',
     handoverOrder: 20281,
@@ -332,7 +332,7 @@ export const PROJECTS: Project[] = [
     leaseStartYear: 2026,
     projectedGrossYield: 19.4,
     projectedNetYield: 15.1,
-    targetOccupancy: 0.72,
+    targetOccupancy: BASE_OCCUPANCY,
     nightlyRateUsd: 125,
     handover: 'project.kayu-commercial-block.handover',
     handoverOrder: 20272,
@@ -378,7 +378,7 @@ export const PROJECTS: Project[] = [
     leaseStartYear: 2023,
     projectedGrossYield: 0,
     projectedNetYield: 0,
-    targetOccupancy: 0.66,
+    targetOccupancy: BASE_OCCUPANCY,
     nightlyRateUsd: 240,
     handover: 'project.sungai-house.handover',
     handoverOrder: 0,
@@ -418,7 +418,7 @@ export const PROJECTS: Project[] = [
     leaseStartYear: 2026,
     projectedGrossYield: 0,
     projectedNetYield: 0,
-    targetOccupancy: 0.68,
+    targetOccupancy: BASE_OCCUPANCY,
     nightlyRateUsd: 205,
     handover: 'project.karang-nusa-villas.handover',
     handoverOrder: 20274,
@@ -557,11 +557,17 @@ export const FAQS: FaqItem[] = [
 
 // Every one of these is carried by the portfolio below or by the yield model,
 // so none of them can drift away from what the rest of the site says.
+/**
+ * Credibility figures for a strip that is not on the site at the moment: the
+ * two counts are real, the two percentages are derived from the portfolio
+ * below. Kept in step so the strip can go back up the day there are team and
+ * delivery numbers to put beside them.
+ */
 export const STATS = [
   { value: '4', suffix: '', label: 'stat1.label' },
   { value: '4', suffix: '', label: 'stat2.label' },
-  { value: '17.1', suffix: '%', label: 'stat3.label' },
-  { value: '66', suffix: '%', label: 'stat4.label' },
+  { value: '19.7', suffix: '%', label: 'stat3.label' },
+  { value: '82', suffix: '%', label: 'stat4.label' },
 ];
 
 // Yields are derived, never authored: a project that earns a nightly rate gets

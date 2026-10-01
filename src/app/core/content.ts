@@ -333,3 +333,59 @@ export const AFTER_HANDOVER = {
     { icon: 'swap', key: 'exit' },
   ],
 };
+
+/* ------------------------------------------------- how a project starts ---- */
+
+export interface DevelopmentModel {
+  id: 'offPlan' | 'tailorMade' | 'landowner';
+  icon: string;
+  /** Where the enquiry should go, or null while the model is still being shaped. */
+  link: string | null;
+}
+
+/**
+ * The three doors into a project.
+ *
+ * A visitor arrives in one of these situations and not the others, so naming
+ * them is the fastest way to get someone to the right conversation. The
+ * landowner route is real but not yet defined in writing, which is why it
+ * invites a conversation rather than pointing at a page.
+ */
+export const DEVELOPMENT_MODELS: DevelopmentModel[] = [
+  { id: 'offPlan', icon: 'apartment', link: '/projects' },
+  { id: 'tailorMade', icon: 'compass', link: '/design-your-villa' },
+  { id: 'landowner', icon: 'environment', link: null },
+];
+
+/* ------------------------------------------------------------- who we are -- */
+
+/**
+ * The company, without the names.
+ *
+ * A team page with no faces on it costs more trust than it earns, so the
+ * people are described by what they are accountable for until there are
+ * photographs and titles to put on them. TEAM below is the shape that page
+ * will take; nothing routes to it yet.
+ */
+export const WHO_WE_ARE = {
+  eyebrow: 'who.eyebrow',
+  title: 'who.title',
+  lead: 'who.lead',
+  points: [
+    { icon: 'team', key: 'onTheGround' },
+    { icon: 'solution', key: 'accountable' },
+    { icon: 'file-protect', key: 'independent' },
+  ],
+};
+
+export interface TeamMember {
+  id: string;
+  /** Translation keys. */
+  name: string;
+  role: string;
+  bio: string;
+  photo: string;
+}
+
+/** Waiting on names and photographs. Nothing renders while it is empty. */
+export const TEAM: TeamMember[] = [];

@@ -22,6 +22,14 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSliderModule } from 'ng-zorro-antd/slider';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { BRAND, YIELD_CLAIM } from '../../core/brand';
+import {
+  BASE_OCCUPANCY,
+  SCENARIOS,
+  ScenarioId,
+  nightsFromOccupancy,
+  occupancyFromNights,
+  scenarioById,
+} from '../../core/yield-model';
 import { I18nService, TranslatePipe, TranslateParams } from '../../core/i18n';
 import { WhatsappService } from '../../core/whatsapp.service';
 import { CatalogService } from '../../core/catalog.service';
@@ -51,6 +59,8 @@ import {
   VillaConfig,
   VillaStyle,
   buildStudy,
+  decodePlan,
+  encodePlan,
 } from '../../core/villa-config';
 
 interface Dimension {
@@ -126,7 +136,63 @@ export class DesignPage {
   });
 
   readonly area = computed(() => this.catalog.areaById(this.config().area)!);
-  readonly study = computed(() => buildStudy(this.config(), this.area()));
+
+  /* --------------------------------------------------- how well it lets -- */
+
+  readonly scenarios = SCENARIOS;
+
+  /** Let nights a year. Occupancy is the same number worn differently. */
+  readonly nights = signal(nightsFromOccupancy(BASE_OCCUPANCY));
+  readonly occupancy = computed(() => occupancyFromNights(this.nights()));
+
+  /** Null while the nightly rate follows the design rather than the visitor. */
+  readonly rateOverride = signal<number | null>(null);
+
+  /** The scenario whose nights match, or null once the slider has left them. */
+  readonly activeScenario = computed<ScenarioId | null>(() => {
+    const n = this.nights();
+    return SCENARIOS.find((s) => nightsFromOccupancy(s.occupancy) === n)?.id ?? null;
+  });
+
+  setScenario(id: ScenarioId): void {
+    this.nights.set(nightsFromOccupancy(scenarioById(id).occupancy));
+  }
+
+  setNights(nights: number): void {
+    this.nights.set(Math.round(nights));
+  }
+
+  setRate(rate: number): void {
+    this.rateOverride.set(Math.round(rate));
+  }
+
+  /** Hand the rate back to the model, so it follows the design again. */
+  resetRate(): void {
+    this.rateOverride.set(null);
+  }
+
+  /** The band the rate slider moves in, built around what the design implies. */
+  readonly rateBounds = computed(() => {
+    const base = this.study().modelledRate;
+    return { min: Math.max(40, Math.round(base * 0.6)), max: Math.round(base * 1.5) };
+  });
+
+  private readonly rentalArea = computed(() => ({
+    ...this.area(),
+    occupancy: this.occupancy(),
+  }));
+
+  readonly study = computed(() =>
+    buildStudy(this.config(), this.rentalArea(), this.rateOverride()),
+  );
+
+  /** The slider's own bubble, so dragging reads in nights rather than ticks. */
+  readonly nightsTip = (value: number): string =>
+    this.i18n.t('scenario.nights', { nights: value });
+
+  /** Running costs are collapsed by default: six lines is a lot of detail. */
+  readonly opexOpen = signal(false);
+  toggleOpex(): void { this.opexOpen.update((v) => !v); }
 
   /** Simple keeps it to seven decisions; advanced opens room areas, style and options. */
   readonly mode = signal<'simple' | 'advanced'>('simple');
@@ -150,6 +216,8 @@ export class DesignPage {
   readonly sending = signal(false);
 
   constructor() {
+    this.restoreFromLink();
+
     // keep the drawing sized to whatever space the canvas actually has
     effect((onCleanup) => {
       const el = this.scrollBox()?.nativeElement;
@@ -485,10 +553,46 @@ export class DesignPage {
       this.i18n.t('design.summary.line4', { options: this.extraNames() }),
       this.i18n.t('design.summary.line5', {
         total: this.money(s.total),
-        yield: s.grossYield.toFixed(1),
+        yield: s.netYield.toFixed(1),
       }),
+      this.i18n.t('design.summary.line6', {
+        nights: s.occupiedNights,
+        rate: this.money(s.nightlyRate),
+      }),
+      this.i18n.t('design.summary.line7', { link: this.planLink() }),
     ].join('\n');
   });
+
+  /* ---------------------------------------------------------- the link --- */
+
+  /**
+   * The whole configuration, packed into a link.
+   *
+   * It travels with every enquiry, so whoever picks the enquiry up opens the
+   * drawing the visitor actually made rather than a description of it — and
+   * can keep working on it from there. A PDF would be a picture of the same
+   * thing; this is the thing itself.
+   */
+  readonly planLink = computed(() => {
+    const view = this.doc.defaultView;
+    if (!view) return '';
+    const code = encodePlan(this.config(), this.nights(), this.rateOverride());
+    return `${new URL('design-your-villa', this.doc.baseURI).href}#plan=${code}`;
+  });
+
+  /** Opens a link made by the method above, if this page was reached by one. */
+  private restoreFromLink(): void {
+    const view = this.doc.defaultView;
+    const hash = view?.location.hash ?? '';
+    const code = /[#&]plan=([^&]+)/.exec(hash)?.[1];
+    if (!code) return;
+    const plan = decodePlan(decodeURIComponent(code));
+    // a mangled or outdated link simply leaves the default configuration
+    if (!plan) return;
+    this.config.set(plan.config);
+    this.nights.set(plan.nights);
+    this.rateOverride.set(plan.nightlyOverride);
+  }
 
   readonly whatsappHref = computed(() => this.whatsapp.linkWith(this.summaryText()));
 

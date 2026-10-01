@@ -5,6 +5,36 @@
   image="media/villa-facade.jpg"
 />
 
+<!-- ============ THREE WAYS IN ============ -->
+<section class="section">
+  <div class="container">
+    <div class="head" appReveal>
+      <p class="eyebrow">{{ 'models.eyebrow' | t }}</p>
+      <h2 class="display">{{ 'models.title' | t }}</h2>
+      <p class="lede">{{ 'models.lead' | t }}</p>
+    </div>
+
+    <div class="models">
+      @for (m of models; track m.id; let i = $index) {
+        <article class="model" [appReveal]="i * 60">
+          <nz-icon [nzType]="m.icon" class="model-icon" />
+          <h3>{{ 'models.' + m.id + '.title' | t }}</h3>
+          <p>{{ 'models.' + m.id + '.text' | t }}</p>
+          @if (m.link) {
+            <a class="model-cta" [routerLink]="m.link">
+              {{ 'models.' + m.id + '.cta' | t }} <nz-icon nzType="arrow-right" />
+            </a>
+          } @else {
+            <a class="model-cta" routerLink="/contact">
+              {{ 'models.' + m.id + '.cta' | t }} <nz-icon nzType="arrow-right" />
+            </a>
+          }
+        </article>
+      }
+    </div>
+  </div>
+</section>
+
 <!-- ============ THE SIX STEPS ============ -->
 <section class="section">
   <div class="container">
@@ -74,6 +104,27 @@
           <div class="cost-bar"><span [style.width.%]="c.share"></span></div>
           <p class="cost-note">{{ c.note | t }}</p>
         </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHO WE ARE ============ -->
+<section class="section section-sand">
+  <div class="container">
+    <div class="head" appReveal>
+      <p class="eyebrow">{{ who.eyebrow | t }}</p>
+      <h2 class="display">{{ who.title | t }}</h2>
+      <p class="lede">{{ who.lead | t }}</p>
+    </div>
+
+    <div class="craft-grid">
+      @for (w of who.points; track w.key; let i = $index) {
+        <article class="craft-card" [appReveal]="i * 60">
+          <nz-icon [nzType]="w.icon" class="craft-icon" />
+          <h3>{{ 'who.' + w.key + '.title' | t }}</h3>
+          <p>{{ 'who.' + w.key + '.text' | t }}</p>
+        </article>
       }
     </div>
   </div>

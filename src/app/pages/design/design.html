@@ -261,6 +261,87 @@
             </div>
           </dl>
 
+          <!-- how well it lets, and what that leaves -->
+          <h3 class="rev-head">{{ 'design.returns' | t }}</h3>
+
+          <div class="scen" role="group" [attr.aria-label]="'scenario.label' | t">
+            @for (sc of scenarios; track sc.id) {
+              <button
+                type="button"
+                class="scen-btn"
+                [class.is-on]="activeScenario() === sc.id"
+                [nz-tooltip]="sc.note | t"
+                (click)="setScenario(sc.id)"
+              >{{ sc.label | t }}</button>
+            }
+          </div>
+
+          <div class="rev-row">
+            <span class="rev-k">{{ 'design.nights' | t }}</span>
+            <span class="rev-v mono">{{ s.occupiedNights }}</span>
+          </div>
+          <nz-slider
+            [ngModel]="nights()"
+            (ngModelChange)="setNights($event)"
+            [nzMin]="150"
+            [nzMax]="350"
+            [nzTipFormatter]="nightsTip"
+          />
+          <p class="rev-note">{{ 'design.occupancyOf' | t: { pct: (s.occupancy * 100).toFixed(0) } }}</p>
+
+          <div class="rev-row">
+            <span class="rev-k">{{ 'design.nightlyRate' | t }}</span>
+            <span class="rev-v mono">{{ money(s.nightlyRate) }}</span>
+          </div>
+          <nz-slider
+            [ngModel]="s.nightlyRate"
+            (ngModelChange)="setRate($event)"
+            [nzMin]="rateBounds().min"
+            [nzMax]="rateBounds().max"
+            [nzStep]="5"
+          />
+          <p class="rev-note">
+            @if (s.rateIsOverridden) {
+              <button type="button" class="rev-reset" (click)="resetRate()">
+                <nz-icon nzType="swap" /> {{ 'design.rateReset' | t }}
+              </button>
+            } @else {
+              {{ 'design.rateModelled' | t }}
+            }
+          </p>
+
+          <dl class="nums rev-nums">
+            <div>
+              <dt>{{ 'design.grossRevenue' | t }}</dt>
+              <dd class="mono">{{ money(s.grossAnnual) }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'design.managementFee' | t }}</dt>
+              <dd class="mono neg">−{{ money(s.managementFee) }}</dd>
+            </div>
+            <div>
+              <dt>
+                <button type="button" class="opex-toggle" (click)="toggleOpex()">
+                  {{ 'design.runningCosts' | t }}
+                  <nz-icon [nzType]="opexOpen() ? 'up' : 'down'" />
+                </button>
+              </dt>
+              <dd class="mono neg">−{{ money(s.operatingCost) }}</dd>
+            </div>
+            @if (opexOpen()) {
+              @for (l of s.operatingLines; track l.label) {
+                <div class="opex-line">
+                  <dt>{{ l.label | t }}</dt>
+                  <dd class="mono">{{ money(l.amount) }}</dd>
+                </div>
+              }
+            }
+            <div class="tot">
+              <dt>{{ 'design.noi' | t }}</dt>
+              <dd class="mono">{{ money(s.netAnnual) }}</dd>
+            </div>
+          </dl>
+
           <div class="yield">
             <div>
               <span class="y-label">{{ 'detail.indicativeGross' | t }}<sup>*</sup></span>
@@ -271,6 +352,13 @@
               <span class="y-value mono y-net">{{ s.netYield.toFixed(1) }}%</span>
             </div>
           </div>
+
+          @if (s.paybackYears > 0) {
+            <p class="rev-payback">
+              {{ 'design.payback' | t }}
+              <strong class="mono">{{ 'design.payback.years' | t: { years: s.paybackYears.toFixed(1) } }}</strong>
+            </p>
+          }
 
           <p class="foot-note">{{ claim.footnote | t }}</p>
         </section>

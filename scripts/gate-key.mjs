@@ -27,7 +27,7 @@ const FALLBACK = 'asd987';
  * Public by design: a salt only has to be unique to this site, so that a
  * ready-made table of common passwords does not match the key we ship.
  */
-const SALT = 'turta-escape/gate/v1';
+const SALT = 'apex-developments/gate/v1';
 
 /** Enough work that guessing at the key is slow, little enough that a real
  *  visitor does not notice the wait. */

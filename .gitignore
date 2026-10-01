@@ -43,10 +43,13 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 
-# Client source documents — the developer brief is marked confidential, so it is
-# kept out of the repository. Add it deliberately if the repo is private and you
-# want it versioned.
+# Client source documents — the briefs are marked confidential and the costing
+# workbook holds the client's real build prices, so neither goes near a public
+# repository. Add them deliberately if the repo is ever private.
 *.pages
+*.numbers
+*.key
+*.xlsx
 
 # The site's access code, and the key derived from it at build time. Both are
 # produced by scripts/gate-key.mjs — see .env.example.
