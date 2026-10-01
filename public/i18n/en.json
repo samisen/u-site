@@ -1123,15 +1123,6 @@
   "models.landowner.title": "You already own the land",
   "models.landowner.text": "If you hold a plot and want a development partner rather than a buyer, there is a structure for that. The terms depend on the land, the scheme and what each side brings, so this one starts with a conversation.",
   "models.landowner.cta": "Talk to us about it",
-  "who.eyebrow": "Who you would be working with",
-  "who.title": "A small team, on the island, answerable to you.",
-  "who.lead": "We are a Bali-based development partner, not a broker and not a contractor who only builds what is handed over. One team carries a project from the first conversation to the keys, and stays after them.",
-  "who.onTheGround.title": "On the ground, not on a call",
-  "who.onTheGround.text": "Our people are in Bali. Site visits, suppliers, the banjar, the licensing office — these are handled in person by someone whose name you will know.",
-  "who.accountable.title": "One team, one accountability",
-  "who.accountable.text": "Land, design, costing, construction and handover sit with the same people. There is nobody to pass you to when a question crosses two of them.",
-  "who.independent.title": "Independent advice, coordinated",
-  "who.independent.text": "Notaries, tax advisers, surveyors and licensing consultants are independent professionals we coordinate — not staff whose opinion we can influence.",
   "title.locations": "Locations",
   "nav.locations": "Locations",
   "nav.locations.blurb": "Eight markets, and what separates them",
@@ -1154,5 +1145,11 @@
   "locations.cta.eyebrow": "Not sure which?",
   "locations.cta.heading": "Tell us how you want to use it, and we will tell you where.",
   "locations.cta.lede": "Most people arrive with an area in mind and leave with a different one, because the way they intend to use the villa points somewhere else. That conversation is free and it is the useful one.",
-  "whyBali.stat.gdp": "Travel and tourism’s contribution to world GDP, 2025"
+  "whyBali.stat.gdp": "Travel and tourism’s contribution to world GDP, 2025",
+  "design.gate.title": "What this study does not show",
+  "design.gate.text": "The line-by-line costing behind these figures — every item, every rate, the suppliers and the contingency — is not published. It comes with the conversation, run against your own numbers rather than our defaults.",
+  "design.gate.cta": "Ask for the full costing",
+  "insightDetail.cta.eyebrow": "From reading to your own numbers",
+  "insightDetail.cta.heading": "Does any of this hold for the villa you have in mind?",
+  "insightDetail.cta.lede": "The useful version of an article like this is the one run against a real plot, a real budget and a real intention. Tell us yours and we will do that."
 }

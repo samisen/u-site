@@ -1123,15 +1123,6 @@
   "models.landowner.title": "Arsanız zaten var",
   "models.landowner.text": "Elinizde bir parsel varsa ve alıcı değil geliştirme ortağı arıyorsanız, bunun bir yapısı var. Koşullar arsaya, projeye ve her iki tarafın ne koyduğuna göre değişiyor; bu yüzden bu yol bir görüşmeyle başlıyor.",
   "models.landowner.cta": "Bunu konuşalım",
-  "who.eyebrow": "Kiminle çalışacaksınız",
-  "who.title": "Adada, küçük bir ekip; muhatabınız biziz.",
-  "who.lead": "Bali merkezli bir geliştirme ortağıyız — ne aracıyız ne de eline verilen projeyi inşa edip biten bir müteahhit. Tek ekip projeyi ilk görüşmeden anahtara kadar taşır ve anahtardan sonra da kalır.",
-  "who.onTheGround.title": "Telefonda değil, sahada",
-  "who.onTheGround.text": "Ekibimiz Bali’de. Saha ziyaretleri, tedarikçiler, banjar, ruhsat ofisi — hepsi, adını bileceğiniz biri tarafından yüz yüze yürütülür.",
-  "who.accountable.title": "Tek ekip, tek sorumluluk",
-  "who.accountable.text": "Arsa, tasarım, maliyet, inşaat ve teslim aynı kişilerde. Bir soru iki alanı birden kestiğinde sizi yönlendirecek kimse yok.",
-  "who.independent.title": "Bağımsız danışmanlık, koordine edilmiş",
-  "who.independent.text": "Noterler, vergi danışmanları, haritacılar ve ruhsat danışmanları bizim koordine ettiğimiz bağımsız profesyoneller — görüşünü etkileyebileceğimiz çalışanlarımız değil.",
   "title.locations": "Konumlar",
   "nav.locations": "Konumlar",
   "nav.locations.blurb": "Sekiz pazar ve aralarındaki fark",
@@ -1154,5 +1145,11 @@
   "locations.cta.eyebrow": "Kararsız mısınız?",
   "locations.cta.heading": "Nasıl kullanacağınızı söyleyin, nerede olacağını biz söyleyelim.",
   "locations.cta.lede": "İnsanların çoğu aklında bir bölgeyle gelip başka bir bölgeyle ayrılıyor, çünkü villayı kullanma biçimleri başka yeri işaret ediyor. O görüşme ücretsiz ve asıl işe yarayan o.",
-  "whyBali.stat.gdp": "Seyahat ve turizmin küresel GSYH’ye katkısı, 2025"
+  "whyBali.stat.gdp": "Seyahat ve turizmin küresel GSYH’ye katkısı, 2025",
+  "design.gate.title": "Bu çalışmanın göstermediği şey",
+  "design.gate.text": "Bu rakamların arkasındaki kalem kalem maliyet dökümü — her poz, her birim fiyat, tedarikçiler ve beklenmedik gider payı — yayınlanmıyor. Görüşmeyle birlikte geliyor ve bizim varsayılanlarımızla değil, sizin kendi rakamlarınızla çalıştırılıyor.",
+  "design.gate.cta": "Tam maliyet dökümünü isteyin",
+  "insightDetail.cta.eyebrow": "Okumaktan kendi rakamlarınıza",
+  "insightDetail.cta.heading": "Bunlar aklınızdaki villa için de geçerli mi?",
+  "insightDetail.cta.lede": "Böyle bir yazının işe yarayan hali, gerçek bir parsele, gerçek bir bütçeye ve gerçek bir niyete uygulanmış olanıdır. Sizinkini söyleyin, biz yapalım."
 }

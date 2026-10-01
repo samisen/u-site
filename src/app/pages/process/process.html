@@ -109,27 +109,6 @@
   </div>
 </section>
 
-<!-- ============ WHO WE ARE ============ -->
-<section class="section section-sand">
-  <div class="container">
-    <div class="head" appReveal>
-      <p class="eyebrow">{{ who.eyebrow | t }}</p>
-      <h2 class="display">{{ who.title | t }}</h2>
-      <p class="lede">{{ who.lead | t }}</p>
-    </div>
-
-    <div class="craft-grid">
-      @for (w of who.points; track w.key; let i = $index) {
-        <article class="craft-card" [appReveal]="i * 60">
-          <nz-icon [nzType]="w.icon" class="craft-icon" />
-          <h3>{{ 'who.' + w.key + '.title' | t }}</h3>
-          <p>{{ 'who.' + w.key + '.text' | t }}</p>
-        </article>
-      }
-    </div>
-  </div>
-</section>
-
 <!-- ============ AFTER HANDOVER ============ -->
 <section class="section">
   <div class="container">

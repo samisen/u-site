@@ -5,7 +5,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { RouterLink } from '@angular/router';
 import { BRAND, YIELD_CLAIM } from '../../core/brand';
 import {
-  AFTER_HANDOVER, CRAFT, DEVELOPMENT_MODELS, DUE_DILIGENCE, WHO_WE_ARE,
+  AFTER_HANDOVER, CRAFT, DEVELOPMENT_MODELS, DUE_DILIGENCE,
   BELIEF_LINE, BUILD_STEPS, ROLE_LINE, TAILOR_MADE_LINE,
 } from '../../core/content';
 import { CatalogService } from '../../core/catalog.service';
@@ -61,7 +61,6 @@ export class ProcessPage {
   readonly faqs = this.catalog.faqs;
 
   readonly models = DEVELOPMENT_MODELS;
-  readonly who = WHO_WE_ARE;
 
   readonly costs: CostLine[] = [
     { label: 'process.cost1.label', share: 32, note: 'process.cost1.note' },

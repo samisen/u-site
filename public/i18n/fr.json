@@ -1123,15 +1123,6 @@
   "models.landowner.title": "Vous possédez déjà le terrain",
   "models.landowner.text": "Si vous détenez une parcelle et cherchez un partenaire de développement plutôt qu’un acheteur, une structure existe. Les termes dépendent du terrain, du projet et de ce que chacun apporte : celle-ci commence par une conversation.",
   "models.landowner.cta": "Parlons-en",
-  "who.eyebrow": "Avec qui vous travailleriez",
-  "who.title": "Une petite équipe, sur l’île, qui vous répond.",
-  "who.lead": "Nous sommes un partenaire de développement basé à Bali — ni courtier, ni entreprise qui se contente de bâtir des plans qu’on lui remet. Une même équipe porte le projet de la première conversation jusqu’aux clés, et reste au-delà.",
-  "who.onTheGround.title": "Sur place, pas au téléphone",
-  "who.onTheGround.text": "Nos équipes sont à Bali. Visites de site, fournisseurs, banjar, bureau des licences : tout cela se traite en personne, par quelqu’un dont vous connaîtrez le nom.",
-  "who.accountable.title": "Une équipe, une responsabilité",
-  "who.accountable.text": "Terrain, conception, chiffrage, construction et livraison relèvent des mêmes personnes. Personne à qui vous renvoyer quand une question traverse deux domaines.",
-  "who.independent.title": "Des conseils indépendants, coordonnés",
-  "who.independent.text": "Notaires, fiscalistes, géomètres et consultants en licences sont des professionnels indépendants que nous coordonnons — pas des salariés dont nous pourrions infléchir l’avis.",
   "title.locations": "Emplacements",
   "nav.locations": "Emplacements",
   "nav.locations.blurb": "Huit marchés, et ce qui les sépare",
@@ -1154,5 +1145,11 @@
   "locations.cta.eyebrow": "Vous hésitez ?",
   "locations.cta.heading": "Dites-nous comment vous comptez l’utiliser, nous vous dirons où.",
   "locations.cta.lede": "La plupart des gens arrivent avec une zone en tête et repartent avec une autre, parce que l’usage qu’ils prévoient pointe ailleurs. Cette conversation est gratuite et c’est la plus utile.",
-  "whyBali.stat.gdp": "Contribution du voyage et du tourisme au PIB mondial, 2025"
+  "whyBali.stat.gdp": "Contribution du voyage et du tourisme au PIB mondial, 2025",
+  "design.gate.title": "Ce que cette étude ne montre pas",
+  "design.gate.text": "Le chiffrage ligne par ligne derrière ces montants — chaque poste, chaque prix unitaire, les fournisseurs et les aléas — n’est pas publié. Il vient avec la conversation, appliqué à vos propres chiffres plutôt qu’à nos valeurs par défaut.",
+  "design.gate.cta": "Demander le chiffrage complet",
+  "insightDetail.cta.eyebrow": "De la lecture à vos propres chiffres",
+  "insightDetail.cta.heading": "Est-ce que tout cela vaut pour la villa que vous avez en tête ?",
+  "insightDetail.cta.lede": "La version utile d’un article comme celui-ci est celle qu’on applique à un vrai terrain, un vrai budget et une vraie intention. Dites-nous les vôtres et nous le ferons."
 }

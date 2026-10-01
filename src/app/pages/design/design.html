@@ -360,6 +360,17 @@
             </p>
           }
 
+          <!-- What the page deliberately does not publish, offered instead.
+               The line-by-line costing is real and we hold it; it is not a
+               manufactured reason to make contact. -->
+          <div class="gate">
+            <p class="gate-title">{{ 'design.gate.title' | t }}</p>
+            <p class="gate-text">{{ 'design.gate.text' | t }}</p>
+            <button type="button" class="gate-cta" (click)="openSend()">
+              {{ 'design.gate.cta' | t }} <nz-icon nzType="arrow-right" />
+            </button>
+          </div>
+
           <p class="foot-note">{{ claim.footnote | t }}</p>
         </section>
       </div>

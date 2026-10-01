@@ -357,35 +357,3 @@ export const DEVELOPMENT_MODELS: DevelopmentModel[] = [
   { id: 'landowner', icon: 'environment', link: null },
 ];
 
-/* ------------------------------------------------------------- who we are -- */
-
-/**
- * The company, without the names.
- *
- * A team page with no faces on it costs more trust than it earns, so the
- * people are described by what they are accountable for until there are
- * photographs and titles to put on them. TEAM below is the shape that page
- * will take; nothing routes to it yet.
- */
-export const WHO_WE_ARE = {
-  eyebrow: 'who.eyebrow',
-  title: 'who.title',
-  lead: 'who.lead',
-  points: [
-    { icon: 'team', key: 'onTheGround' },
-    { icon: 'solution', key: 'accountable' },
-    { icon: 'file-protect', key: 'independent' },
-  ],
-};
-
-export interface TeamMember {
-  id: string;
-  /** Translation keys. */
-  name: string;
-  role: string;
-  bio: string;
-  photo: string;
-}
-
-/** Waiting on names and photographs. Nothing renders while it is empty. */
-export const TEAM: TeamMember[] = [];

@@ -625,3 +625,46 @@
   justify-content: space-between;
   gap: 10px;
 }
+
+/* ------------------------------------------- what we have not shown ---- */
+/* The costing exists and is not published. Saying so is more honest than a
+   bare contact button, and it gives the visitor a reason to make contact
+   that is actually worth something to them. */
+
+.gate {
+  margin-top: 22px;
+  padding: 16px 18px;
+  background: var(--brand-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.gate-title {
+  margin: 0 0 4px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.gate-text {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.gate-cta {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand-strong);
+}
+.gate-cta:hover { text-decoration: underline; }
