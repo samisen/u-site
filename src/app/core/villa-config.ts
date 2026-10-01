@@ -147,21 +147,32 @@ export const STYLES: { id: VillaStyle; name: string; blurb: string; multiplier: 
   },
 ];
 
+/**
+ * `rate` is structure and finishes; `services` is everything that runs through
+ * the walls — electrical, plumbing, water supply, drainage, air conditioning.
+ *
+ * The client's costing prices those separately (M&E / MEP against the grey
+ * works contract), which works out at about $78 per m² across a four-unit
+ * block. A standalone villa carries its own well, pump, tanks and septic
+ * rather than sharing them, so it runs higher per square metre.
+ */
 export const FINISHES: {
-  id: FinishLevel; name: string; blurb: string; rate: number; furniture: number;
+  id: FinishLevel; name: string; blurb: string; rate: number; services: number; furniture: number;
 }[] = [
   {
     id: 'essential',
     name: 'villa.finish.essential.name',
     blurb: 'villa.finish.essential.blurb',
-    rate: 790,
+    rate: 680,
+    services: 110,
     furniture: 190,
   },
   {
     id: 'prestige',
     name: 'villa.finish.prestige.name',
     blurb: 'villa.finish.prestige.blurb',
-    rate: 1180,
+    rate: 1040,
+    services: 140,
     furniture: 340,
   },
 ];
@@ -582,6 +593,9 @@ const LEASE_YEARS = 20;
  */
 export const COVERAGE_LIMIT_PCT = 50;
 
+/** Provision for the unforeseen, as a share of everything else in the build. */
+const CONTINGENCY_RATE = 0.04;
+
 /**
  * The ground the layout actually occupies: the bounding rectangle of the whole
  * ground-floor drawing, pool and deck and carport included.
@@ -707,6 +721,7 @@ export function buildStudy(
   const pool = POOLS.find((p) => p.id === config.pool)!;
 
   const construction = Math.round(builtSqm * finish.rate * style.multiplier);
+  const services = Math.round(builtSqm * finish.services);
   const extrasCost = config.extras.reduce(
     (sum, id) => sum + (EXTRAS.find((e) => e.id === id)?.cost ?? 0),
     0,
@@ -723,6 +738,12 @@ export function buildStudy(
       note: 'villa.cost.construction.note',
       noteParams: { sqm: builtSqm, rate: finish.rate },
       noteNameKey: style.name,
+    },
+    {
+      label: 'villa.cost.services',
+      amount: services,
+      note: 'villa.cost.services.note',
+      noteParams: { sqm: builtSqm, rate: finish.services },
     },
     {
       label: 'villa.cost.pool',
@@ -746,6 +767,17 @@ export function buildStudy(
     { label: 'villa.cost.design', amount: design, note: 'villa.cost.design.note' },
     { label: 'villa.cost.permits', amount: permits, note: 'villa.cost.permits.note' },
   ];
+
+  // A provision, not padding. The client's own costing carries an imprévus
+  // line; four per cent is the usual allowance on a standalone build, and a
+  // budget quoted without one is a budget that will be exceeded.
+  const contingency = Math.round(lines.reduce((sum, l) => sum + l.amount, 0) * CONTINGENCY_RATE);
+  lines.push({
+    label: 'villa.cost.contingency',
+    amount: contingency,
+    note: 'villa.cost.contingency.note',
+    noteParams: { pct: Math.round(CONTINGENCY_RATE * 100) },
+  });
 
   const buildTotal = lines.reduce((s, l) => s + l.amount, 0);
   const landTotal = Math.round(

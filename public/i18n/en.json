@@ -1151,5 +1151,9 @@
   "design.gate.cta": "Ask for the full costing",
   "insightDetail.cta.eyebrow": "From reading to your own numbers",
   "insightDetail.cta.heading": "Does any of this hold for the villa you have in mind?",
-  "insightDetail.cta.lede": "The useful version of an article like this is the one run against a real plot, a real budget and a real intention. Tell us yours and we will do that."
+  "insightDetail.cta.lede": "The useful version of an article like this is the one run against a real plot, a real budget and a real intention. Tell us yours and we will do that.",
+  "villa.cost.services": "Services and infrastructure",
+  "villa.cost.services.note": "Electrical, plumbing, water supply, drainage and air conditioning — {sqm} m² at ${rate}/m².",
+  "villa.cost.contingency": "Contingency",
+  "villa.cost.contingency.note": "{pct}% of the build, held against the unforeseen. A budget without one is a budget that will be exceeded."
 }

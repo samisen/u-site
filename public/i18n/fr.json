@@ -1151,5 +1151,9 @@
   "design.gate.cta": "Demander le chiffrage complet",
   "insightDetail.cta.eyebrow": "De la lecture à vos propres chiffres",
   "insightDetail.cta.heading": "Est-ce que tout cela vaut pour la villa que vous avez en tête ?",
-  "insightDetail.cta.lede": "La version utile d’un article comme celui-ci est celle qu’on applique à un vrai terrain, un vrai budget et une vraie intention. Dites-nous les vôtres et nous le ferons."
+  "insightDetail.cta.lede": "La version utile d’un article comme celui-ci est celle qu’on applique à un vrai terrain, un vrai budget et une vraie intention. Dites-nous les vôtres et nous le ferons.",
+  "villa.cost.services": "Réseaux et infrastructures",
+  "villa.cost.services.note": "Électricité, plomberie, alimentation en eau, assainissement et climatisation — {sqm} m² à {rate} $/m².",
+  "villa.cost.contingency": "Aléas",
+  "villa.cost.contingency.note": "{pct} % du coût de construction, en provision pour l’imprévu. Un budget sans cette ligne est un budget qui sera dépassé."
 }

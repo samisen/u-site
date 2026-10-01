@@ -1151,5 +1151,9 @@
   "design.gate.cta": "Tam maliyet dökümünü isteyin",
   "insightDetail.cta.eyebrow": "Okumaktan kendi rakamlarınıza",
   "insightDetail.cta.heading": "Bunlar aklınızdaki villa için de geçerli mi?",
-  "insightDetail.cta.lede": "Böyle bir yazının işe yarayan hali, gerçek bir parsele, gerçek bir bütçeye ve gerçek bir niyete uygulanmış olanıdır. Sizinkini söyleyin, biz yapalım."
+  "insightDetail.cta.lede": "Böyle bir yazının işe yarayan hali, gerçek bir parsele, gerçek bir bütçeye ve gerçek bir niyete uygulanmış olanıdır. Sizinkini söyleyin, biz yapalım.",
+  "villa.cost.services": "Tesisat ve altyapı",
+  "villa.cost.services.note": "Elektrik, sıhhi tesisat, su temini, drenaj ve klima — {sqm} m², m² başına {rate} $.",
+  "villa.cost.contingency": "Beklenmedik gider payı",
+  "villa.cost.contingency.note": "İnşaatın %{pct}’i, öngörülemeyene karşı ayrılır. Bu kalemi olmayan bütçe aşılacak bütçedir."
 }
