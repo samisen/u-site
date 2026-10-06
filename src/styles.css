@@ -36,8 +36,12 @@
      site that ask to be read rather than pressed. */
   --blue: #0e4973;
   --blue-soft: #e7eef3;
-  --accent: #4b5344;
-  --accent-soft: #e9e7dc;
+  /* --accent used to carry six unrelated jobs — trust marks, form errors, a
+     coverage warning, a map selection, a button and a room fill — which is
+     how an error message came to be painted in a brand colour. Each has its
+     own name now. */
+  --danger: #9c4b40;
+  --warning: #7d5f2e;
   /* whatever is legible on top of --brand, which flips with the theme */
   --on-brand: #ffffff;
 
@@ -101,8 +105,8 @@ html[data-theme='dark'] {
   /* lifted until it clears 4.5:1 on charcoal, like the green */
   --blue: #6097be;
   --blue-soft: #172630;
-  --accent: #8c9a7e;
-  --accent-soft: #2a2f26;
+  --danger: #e08e84;
+  --warning: #cfae78;
   --on-brand: #1a1a1a;
 
   --bg: #1a1a1a;
@@ -198,7 +202,8 @@ img { max-width: 100%; display: block; }
   --brand-strong: #46c3ad;
   --brand-soft: #10302b;
   --blue: #6097be;
-  --accent: #8c9a7e;
+  --danger: #e08e84;
+  --warning: #cfae78;
   --ink: #f7f4ec;
   --ink-2: rgba(247, 244, 236, .74);
   --ink-3: rgba(247, 244, 236, .58);
@@ -596,7 +601,7 @@ select:-webkit-autofill {
   border-color: var(--brand);
 }
 .ant-form-item-label > label { color: var(--ink-2); }
-.ant-form-item-explain-error { color: var(--accent); }
+.ant-form-item-explain-error { color: var(--danger); }
 
 /* ---- misc chrome ---- */
 

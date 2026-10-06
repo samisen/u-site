@@ -64,7 +64,7 @@
   transform-origin: center;
 }
 .marker.is-active .disc { fill: var(--brand-strong); }
-.marker.is-selected .disc { fill: var(--accent); }
+.marker.is-selected .disc { fill: var(--brand); }
 
 .marker.is-empty .disc { fill: var(--ink-3); opacity: .45; }
 .marker.is-empty .halo { fill: var(--ink-3); }

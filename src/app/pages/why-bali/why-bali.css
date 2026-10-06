@@ -32,7 +32,14 @@
   .story-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 360px); gap: 56px; align-items: start; }
 }
 .story-copy .lede { margin-top: 18px; }
-.sources { margin: 22px 0 0; font-size: 12px; color: var(--ink-3); }
+/* where the numbers above came from — evidence, in the evidence colour */
+.sources {
+  margin: 22px 0 0;
+  font-size: 12px;
+  color: var(--ink-3);
+  padding-inline-start: 14px;
+  border-inline-start: 2px solid color-mix(in srgb, var(--blue) 42%, transparent);
+}
 
 .story-media { margin: 0; }
 /* a portrait phone clip; left at full width it becomes taller than the screen */
