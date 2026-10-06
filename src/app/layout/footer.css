@@ -63,21 +63,43 @@
 .foot-note { opacity: .75; }
 
 
-/* The theme toggle, parked in the footer while the header design settles. */
+/* A two-state segment, sized to itself. It sits on the copyright row rather
+   than taking a line of its own across the full width. */
 .foot-theme {
-  appearance: none;
-  cursor: pointer;
   display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 14px;
-  border: 1px solid rgba(255, 255, 255, .22);
+  padding: 3px;
+  gap: 2px;
+  border: 1px solid rgba(255, 255, 255, .18);
   border-radius: 999px;
-  background: none;
-  color: rgba(255, 255, 255, .78);
-  font: inherit;
-  font-size: 12px;
-  transition: color .18s ease, border-color .18s ease;
+  justify-self: start;
 }
-.foot-theme:hover { color: #fff; border-color: rgba(255, 255, 255, .45); }
+
+.foot-theme-opt {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  background: none;
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 26px;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, .55);
+  transition: background-color .18s ease, color .18s ease;
+}
+.foot-theme-opt:hover { color: rgba(255, 255, 255, .9); }
+.foot-theme-opt.is-on {
+  background: rgba(255, 255, 255, .13);
+  color: #fff;
+}
+.foot-theme-opt:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
 .foot-theme-ico { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+
+@media (min-width: 700px) {
+  /* copyright on the left, the segment on the right of the same line */
+  .foot-bottom { grid-template-columns: 1fr auto; align-items: center; }
+  .foot-bottom > p:first-child { grid-column: 1; }
+  .foot-theme { grid-column: 2; grid-row: 1; justify-self: end; }
+  .foot-legal { grid-column: 1 / -1; }
+}

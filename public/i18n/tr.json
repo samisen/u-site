@@ -1154,5 +1154,8 @@
   "home.value.forBali": "Bali için",
   "home.final.title": "Bir sohbetle başlayalım.",
   "home.final.lede": "Aklınızdakini anlatın.",
-  "home.final.cta": "İletişime geçin"
+  "home.final.cta": "İletişime geçin",
+  "footer.theme": "Tema",
+  "footer.theme.light": "Açık tema",
+  "footer.theme.dark": "Koyu tema"
 }

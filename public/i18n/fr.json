@@ -1154,5 +1154,8 @@
   "home.value.forBali": "Fait pour Bali",
   "home.final.title": "Commençons par une conversation.",
   "home.final.lede": "Dites-nous ce que vous avez en tête.",
-  "home.final.cta": "Nous contacter"
+  "home.final.cta": "Nous contacter",
+  "footer.theme": "Thème",
+  "footer.theme.light": "Thème clair",
+  "footer.theme.dark": "Thème sombre"
 }

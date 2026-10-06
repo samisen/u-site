@@ -1154,5 +1154,8 @@
   "home.value.forBali": "Made for Bali",
   "home.final.title": "Start with a conversation.",
   "home.final.lede": "Tell us what you have in mind.",
-  "home.final.cta": "Get in touch"
+  "home.final.cta": "Get in touch",
+  "footer.theme": "Theme",
+  "footer.theme.light": "Light theme",
+  "footer.theme.dark": "Dark theme"
 }

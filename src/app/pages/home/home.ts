@@ -60,12 +60,18 @@ export class HomePage {
       const start = () => { stop(); timer = view.setInterval(tick, SLIDE_HOLD_MS); };
       const stop = () => { if (timer) view.clearInterval(timer); timer = 0; };
       const onVisibility = () => (this.doc.hidden ? stop() : start());
+      // Coming back to the page from the browser's cache restores the DOM but
+      // not the timer we cleared on the way out, which left the hero frozen
+      // on whichever frame it was showing.
+      const onShow = (e: PageTransitionEvent) => { if (e.persisted) start(); };
 
       start();
       this.doc.addEventListener('visibilitychange', onVisibility);
+      view.addEventListener('pageshow', onShow);
       onCleanup(() => {
         stop();
         this.doc.removeEventListener('visibilitychange', onVisibility);
+        view.removeEventListener('pageshow', onShow);
       });
     });
 

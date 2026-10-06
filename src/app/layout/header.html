@@ -57,14 +57,18 @@
            it, and on a phone the platform gives it a proper picker. -->
       <div class="lang">
         <label class="sr-only" for="lang-select">{{ 'header.language' | t }}</label>
+        <!-- The option carries the selection, not the select.
+             `[value]` on the select is applied while the @for options do not
+             yet exist, so the browser finds nothing to match and falls back
+             to the first one — which is how a French page could sit under a
+             switcher reading EN. Marking the option works whenever it runs. -->
         <select
           id="lang-select"
           class="lang-select"
-          [value]="i18n.locale()"
           (change)="setLocale($any($event.target).value)"
         >
           @for (l of locales; track l.id) {
-            <option [value]="l.id" [lang]="l.id">{{ l.short }}</option>
+            <option [value]="l.id" [lang]="l.id" [selected]="l.id === i18n.locale()">{{ l.short }}</option>
           }
         </select>
         <svg class="lang-chev" viewBox="0 0 12 8" aria-hidden="true">
@@ -111,14 +115,6 @@
         }
       </nav>
 
-      <nav class="drawer-sub" [attr.aria-label]="'header.more' | t">
-        @for (item of navSecondary; track item.link) {
-          <a [routerLink]="item.link" routerLinkActive="is-current" (click)="closeDrawer()">
-            {{ item.label | t }}
-          </a>
-        }
-      </nav>
-
       <div class="drawer-foot">
         <div class="lang-row">
           <span class="lang-row-label">{{ 'header.language' | t }}</span>
@@ -138,10 +134,6 @@
           </div>
         </div>
 
-        <button type="button" class="theme-row" (click)="theme.toggle()">
-          <span>{{ (theme.mode() === 'dark' ? 'header.lightTheme' : 'header.darkTheme') | t }}</span>
-          <nz-icon nzType="swap" />
-        </button>
         <a class="wa-row" [href]="whatsapp.url()" target="_blank" rel="noopener noreferrer">
           <nz-icon nzType="whats-app" />
           WhatsApp

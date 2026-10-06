@@ -27,8 +27,6 @@ interface NavItem {
   label: string;
   link: string;
   blurb: string;
-  /** Kept out of the main block in the mobile drawer. */
-  secondary?: boolean;
 }
 
 @Component({
@@ -111,14 +109,18 @@ export class HeaderComponent {
     { label: 'nav.projects', link: '/projects', blurb: 'nav.projects.blurb' },
     { label: 'nav.design', link: '/design-your-villa', blurb: 'nav.design.blurb' },
     { label: 'nav.process', link: '/how-we-build', blurb: 'nav.process.blurb' },
-    // Insights is reached from Why Bali and The Opportunity, and from the footer
-    { label: 'nav.insights', link: '/insights', blurb: 'nav.insights.blurb', secondary: true },
+    { label: 'nav.insights', link: '/insights', blurb: 'nav.insights.blurb' },
   ];
 
-  /** The bar shows the primary destinations only. */
-  readonly navBar = this.nav.filter((i) => !i.secondary);
-  readonly navMain = this.nav.filter((i) => !i.secondary);
-  readonly navSecondary = this.nav.filter((i) => i.secondary);
+  /**
+   * One list, everywhere. Insights used to be marked secondary, which drew it
+   * as a chip under the others in the drawer and left it out of the bar
+   * entirely — a destination with its own shape and no obvious way in. Now
+   * that the bar folds what does not fit, it can simply be a link like the
+   * rest.
+   */
+  readonly navBar = this.nav;
+  readonly navMain = this.nav;
 
   readonly isHome = toSignal(
     this.router.events.pipe(
