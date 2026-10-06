@@ -86,9 +86,16 @@
   flex-direction: column;
   gap: 16px;
   padding-top: 28px;
+  /* room under the row for the fixed WhatsApp button on a phone */
+  padding-bottom: 54px;
 }
+@media (min-width: 620px) { .hero-foot { padding-bottom: 0; } }
 @media (min-width: 620px) {
   .hero-foot { flex-direction: row; align-items: center; justify-content: space-between; }
+  /* The WhatsApp button is fixed to this corner, and the design direction's
+     hero was drawn without one. Explore steps aside rather than sitting
+     underneath it. */
+  .hero-explore { margin-inline-end: 186px; }
 }
 
 .hero-progress {

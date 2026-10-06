@@ -44,6 +44,7 @@ export class HeaderComponent {
   /* ------------------------------------------------- the bar's nav row -- */
 
   private readonly navEl = viewChild<ElementRef<HTMLElement>>('navEl');
+  private readonly navRow = viewChild<ElementRef<HTMLElement>>('navRow');
   private readonly navItems = viewChildren<ElementRef<HTMLElement>>('navItem');
   private readonly moreBtn = viewChild<ElementRef<HTMLElement>>('moreBtn');
 
@@ -72,7 +73,8 @@ export class HeaderComponent {
     const view = this.doc.defaultView;
     if (!nav || !view || !this.itemWidths.length) return;
 
-    const gap = parseFloat(view.getComputedStyle(nav).columnGap) || 0;
+    const row = this.navRow()?.nativeElement ?? nav;
+    const gap = parseFloat(view.getComputedStyle(row).columnGap) || 0;
     const room = nav.clientWidth;
     const moreWidth = this.moreBtn()?.nativeElement.offsetWidth || 78;
     const widthOf = (n: number) =>

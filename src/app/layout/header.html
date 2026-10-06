@@ -5,6 +5,9 @@
     </a>
 
     <nav class="nav-desktop" #navEl [attr.aria-label]="'header.mainNav' | t">
+      <!-- Only the links are clipped. The overflow menu hangs below the bar,
+           so it cannot live inside the box that does the clipping. -->
+      <span class="nav-row" #navRow>
       @for (item of navBar; track item.link; let i = $index) {
         <a
           #navItem
@@ -16,6 +19,7 @@
           routerLinkActive="is-active"
         >{{ item.label | t }}</a>
       }
+      </span>
 
       @if (navOverflow().length) {
         <div class="more">
