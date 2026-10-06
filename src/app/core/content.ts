@@ -315,6 +315,8 @@ export const DEVELOPMENT_MODELS: DevelopmentModel[] = [
 
 export interface HeroSlide {
   image: string;
+  /** The same frame at narrower widths, so a phone decodes a phone-sized one. */
+  srcset: string;
   /** Translation key for the place name shown against the counter. */
   place: string;
 }
@@ -328,10 +330,13 @@ export interface HeroSlide {
  * brief asks for on the first and third frames; that needs a shoot, not a
  * different crop.
  */
+const frame = (name: string) =>
+  `img/${name}-800.jpg 800w, img/${name}-1200.jpg 1200w, img/${name}.jpg 1600w`;
+
 export const HERO_SLIDES: HeroSlide[] = [
-  { image: 'img/uluwatu-2.jpg', place: 'home.hero.place.uluwatu' },
-  { image: 'img/rice-ubud.jpg', place: 'home.hero.place.ubud' },
-  { image: 'img/canggu.jpg', place: 'home.hero.place.canggu' },
+  { image: 'img/uluwatu-2.jpg', srcset: frame('uluwatu-2'), place: 'home.hero.place.uluwatu' },
+  { image: 'img/rice-ubud.jpg', srcset: frame('rice-ubud'), place: 'home.hero.place.ubud' },
+  { image: 'img/canggu.jpg', srcset: frame('canggu'), place: 'home.hero.place.canggu' },
 ];
 
 export interface HomeChapter {

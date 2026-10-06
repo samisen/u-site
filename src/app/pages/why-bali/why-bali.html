@@ -94,23 +94,24 @@
   </div>
 </section>
 
-<!-- ============ THE ISLAND, AREA BY AREA ============ -->
-<section class="section section-lg">
+<!-- ============ AND WHAT THAT MEANS FOR THE MONEY ============ -->
+<!-- The page has made the case for the island. The question it leaves a
+     reader with is what any of it does for their money, so it hands over to
+     the argument rather than to the catalogue. -->
+<section class="section section-lg bridge">
   <div class="container">
-    <div class="head head-split" appReveal>
+    <div class="bridge-inner" appReveal>
       <div>
-        <p class="eyebrow">{{ 'whyBali.areas.eyebrow' | t }}</p>
-        <h2 class="display">{{ 'home.areas.title' | t }}</h2>
-        <p class="lede">{{ 'whyBali.areas.lede' | t }}</p>
+        <p class="eyebrow">{{ 'whyBali.bridge.eyebrow' | t }}</p>
+        <h2 class="display">{{ 'whyBali.bridge.title' | t }}</h2>
       </div>
-      <a class="head-link" routerLink="/projects">
-        {{ 'whyBali.areas.link' | t }}
-        <nz-icon nzType="arrow-right" />
-      </a>
-    </div>
-
-    <div appReveal>
-      <app-bali-map />
+      <div class="bridge-side">
+        <p class="bridge-lede">{{ 'whyBali.bridge.lede' | t }}</p>
+        <a class="bridge-link" routerLink="/opportunity">
+          {{ 'whyBali.bridge.link' | t }}
+          <nz-icon nzType="arrow-right" />
+        </a>
+      </div>
     </div>
   </div>
 </section>

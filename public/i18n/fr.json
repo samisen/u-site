@@ -439,7 +439,7 @@
   "opportunity.practice.eyebrow": "En pratique",
   "opportunity.practice.lede": "Chaque page projet montre le rendement brut, le net après nos coûts modélisés, et les données dont les deux proviennent — pour que vous puissiez les contester.",
   "opportunity.practice.title": "Les hypothèses, appliquées.",
-  "opportunity.title": "Votre bien peut faire davantage",
+  "opportunity.title": "Votre investissement peut faire plus",
   "opportunity.yield.eyebrow": "Performance indicative",
   "opportunity.yield.how": "Comment nous arrivons à ce chiffre",
   "opportunity.yield.measure": "Rendement locatif net indicatif",
@@ -1157,5 +1157,9 @@
   "home.final.cta": "Nous contacter",
   "footer.theme": "Thème",
   "footer.theme.light": "Thème clair",
-  "footer.theme.dark": "Thème sombre"
+  "footer.theme.dark": "Thème sombre",
+  "whyBali.bridge.eyebrow": "Et ce que cela vaut",
+  "whyBali.bridge.title": "Tout cela se chiffre.",
+  "whyBali.bridge.lede": "Sept millions d'arrivées et une saison qui ne se referme jamais vraiment : voilà pourquoi une villa rapporte ici ce qu'elle rapporte. Ce que cela donne — après les frais, après les charges, sur l'argent réellement engagé — c'est la page suivante.",
+  "whyBali.bridge.link": "Voir le calcul"
 }

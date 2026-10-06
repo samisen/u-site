@@ -439,7 +439,7 @@
   "opportunity.practice.eyebrow": "Uygulamada",
   "opportunity.practice.lede": "Her proje sayfası brüt getiriyi, modellediğimiz maliyetler sonrası neti ve ikisinin de dayandığı girdileri gösterir — böylece onlarla tartışabilirsiniz.",
   "opportunity.practice.title": "Varsayımlar, uygulanmış hâliyle.",
-  "opportunity.title": "Mülkünüz daha fazlasını yapabilir",
+  "opportunity.title": "Yatırımınız daha fazlasını yapabilir",
   "opportunity.yield.eyebrow": "Gösterge performans",
   "opportunity.yield.how": "Bu rakama nasıl ulaşıyoruz",
   "opportunity.yield.measure": "Gösterge net kira getirisi",
@@ -1157,5 +1157,9 @@
   "home.final.cta": "İletişime geçin",
   "footer.theme": "Tema",
   "footer.theme.light": "Açık tema",
-  "footer.theme.dark": "Koyu tema"
+  "footer.theme.dark": "Koyu tema",
+  "whyBali.bridge.eyebrow": "Peki bu ne ediyor",
+  "whyBali.bridge.title": "Bunların hepsinin bir rakamı var.",
+  "whyBali.bridge.lede": "Yedi milyon giriş ve hiç tam kapanmayan bir sezon — buradaki bir villanın kazandığını kazanmasının sebebi bu. Bunun ne ettiği, ücret düşüldükten, işletme gideri düşüldükten ve gerçekten koyduğunuz para üzerinden, bir sonraki sayfada.",
+  "whyBali.bridge.link": "Hesabı görün"
 }

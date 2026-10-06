@@ -7,9 +7,12 @@
       class="hero-frame"
       [class.is-on]="slide() === i"
       [src]="s.image"
+      [srcset]="s.srcset"
+      sizes="100vw"
       alt=""
       aria-hidden="true"
-      [attr.fetchpriority]="i === 0 ? 'high' : null"
+      decoding="async"
+      [attr.fetchpriority]="i === 0 ? 'high' : 'low'"
       [attr.loading]="i === 0 ? 'eager' : 'lazy'"
     />
   }
@@ -88,9 +91,18 @@
         }
       </ol>
 
+      <!-- All three notes live in the same cell. Swapping the text instead
+           made the box grow and shrink as the words changed — a French note
+           that wraps to a third line is 26px taller than one that does not,
+           and the section appeared to breathe. Stacked, the box is always as
+           tall as the longest and nothing moves. -->
       <div class="stage-note">
-        <h3 class="stage-note-title">{{ 'home.stage.' + stages[stage()] + '.word' | t }}</h3>
-        <p class="stage-note-text">{{ 'home.stage.' + stages[stage()] + '.text' | t }}</p>
+        @for (s of stages; track s; let i = $index) {
+          <div class="stage-note-item" [class.is-on]="stage() === i" [attr.aria-hidden]="stage() === i ? null : 'true'">
+            <h3 class="stage-note-title">{{ 'home.stage.' + s + '.word' | t }}</h3>
+            <p class="stage-note-text">{{ 'home.stage.' + s + '.text' | t }}</p>
+          </div>
+        }
       </div>
     </div>
   </div>

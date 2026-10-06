@@ -439,7 +439,7 @@
   "opportunity.practice.eyebrow": "In practice",
   "opportunity.practice.lede": "Each project page shows the gross yield, the net after our modelled costs, and the inputs both come from — so you can argue with them.",
   "opportunity.practice.title": "The assumptions, applied.",
-  "opportunity.title": "Your Property Can Do More",
+  "opportunity.title": "Your Investment Can Do More",
   "opportunity.yield.eyebrow": "Indicative performance",
   "opportunity.yield.how": "How we arrive at the number",
   "opportunity.yield.measure": "Indicative Net Rental Yield",
@@ -1157,5 +1157,9 @@
   "home.final.cta": "Get in touch",
   "footer.theme": "Theme",
   "footer.theme.light": "Light theme",
-  "footer.theme.dark": "Dark theme"
+  "footer.theme.dark": "Dark theme",
+  "whyBali.bridge.eyebrow": "And what that is worth",
+  "whyBali.bridge.title": "All of that has a number attached.",
+  "whyBali.bridge.lede": "Seven million arrivals and a season that never really closes are the reason a villa here earns what it does. What that comes to — after the fee, after the running costs, on the money you actually put in — is the next page.",
+  "whyBali.bridge.link": "See how it adds up"
 }

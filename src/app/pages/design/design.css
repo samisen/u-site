@@ -27,8 +27,8 @@
 }
 @media (min-width: 1000px) { .editor { height: min(78svh, 860px); } }
 
-/* full screen: an overlay above the site chrome, with the real Fullscreen API
-   layered on top where the browser allows it */
+/* Full screen: the editor fills the window, over the site's own chrome. The
+   browser keeps its toolbar — this is a dialog, not a takeover. */
 .editor.is-fullscreen {
   position: fixed;
   inset: 0;

@@ -1,10 +1,5 @@
 :host { display: block; }
 
-/* The map, the filters and the cards read as one block, so they share the
-   band's padding at its edges and sit close together inside it. */
-.map-section { padding-block: 48px 24px; }
-@media (min-width: 768px) { .map-section { padding-block: 72px 28px; } }
-@media (min-width: 1200px) { .map-section { padding-block: 88px 28px; } }
 
 /* ============ filter bar ============ */
 
@@ -106,9 +101,9 @@
 
 /* ============ results ============ */
 
-.listing { padding-block: 28px 48px; }
-@media (min-width: 768px) { .listing { padding-block: 40px 72px; } }
-@media (min-width: 1200px) { .listing { padding-block: 40px 88px; } }
+.listing { padding-block: 40px 48px; }
+@media (min-width: 768px) { .listing { padding-block: 48px 72px; } }
+@media (min-width: 1200px) { .listing { padding-block: 56px 88px; } }
 
 .cards {
   display: grid;

@@ -5,7 +5,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { TOURISM } from '../../core/brand';
 import { INSIGHTS, LIVING_HERE, WHY_BALI, insightCategoryKey } from '../../core/content';
 import { CatalogService } from '../../core/catalog.service';
-import { BaliMapComponent } from '../../shared/bali-map';
 import { CtaBandComponent } from '../../shared/cta-band';
 import { PageHeroComponent } from '../../shared/page-hero';
 import { RevealDirective } from '../../shared/reveal.directive';
@@ -18,7 +17,6 @@ import { VideoPlayerComponent } from '../../shared/video-player';
     RouterLink,
     NzButtonModule,
     NzIconModule,
-    BaliMapComponent,
     PageHeroComponent,
     CtaBandComponent,
     VideoPlayerComponent,

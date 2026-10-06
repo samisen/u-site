@@ -26,16 +26,6 @@
      palette deciding something — they read as two greens that have not met. */
   --field: #0a5045;
 
-  /* Secondary: a corporate blue holding the primary's own lightness and
-     saturation, rotated to hue 205. A relative rather than a stranger — near
-     enough to belong, far enough to be unmistakably blue.
-
-     It has a different job from the green, which is the only reason to have
-     it. Green is for acting: buttons, links, anything that moves you on.
-     Blue is for understanding: figures, charts, evidence, the parts of the
-     site that ask to be read rather than pressed. */
-  --blue: #0e4973;
-  --blue-soft: #e7eef3;
   /* --accent used to carry six unrelated jobs — trust marks, form errors, a
      coverage warning, a map selection, a button and a room fill — which is
      how an error message came to be painted in a brand colour. Each has its
@@ -63,10 +53,12 @@
   --line: #e0dbcd;
   --line-strong: #cdc7b5;
 
-  /* charts: one neutral for the single data series, contrast-checked
-     against the surface in both themes */
-  --chart-bar: #7a7a75;
-  --chart-bar-strong: #5c5c58;
+  /* Charts: the brand green held back — muted and lighter than the primary,
+     so the bars read as the brand's family without competing with the figure
+     they are there to be measured against. Hover brings one up to the
+     primary itself. */
+  --chart-bar: #51857d;
+  --chart-bar-strong: #0e7364;
 
   /* effects */
   --shadow-sm: 0 1px 2px rgba(26, 26, 26, .04), 0 4px 14px rgba(26, 26, 26, .05);
@@ -102,9 +94,6 @@ html[data-theme='dark'] {
   --brand: #2fa894;
   --brand-strong: #46c3ad;
   --brand-soft: #10302b;
-  /* lifted until it clears 4.5:1 on charcoal, like the green */
-  --blue: #6097be;
-  --blue-soft: #172630;
   --danger: #e08e84;
   --warning: #cfae78;
   --on-brand: #1a1a1a;
@@ -124,8 +113,8 @@ html[data-theme='dark'] {
   --line: #343229;
   --line-strong: #474436;
 
-  --chart-bar: #9c9a90;
-  --chart-bar-strong: #c6c3b6;
+  --chart-bar: #6f9b94;
+  --chart-bar-strong: #9ec4bd;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
   --shadow-md: 0 10px 34px rgba(0, 0, 0, .45);
@@ -201,7 +190,6 @@ img { max-width: 100%; display: block; }
   --brand: #2fa894;
   --brand-strong: #46c3ad;
   --brand-soft: #10302b;
-  --blue: #6097be;
   --danger: #e08e84;
   --warning: #cfae78;
   --ink: #f7f4ec;

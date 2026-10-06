@@ -216,12 +216,14 @@
 /* A tall section with a sticky middle. The markers below it decide which
    word is lit; nothing here moves on its own. */
 
- /* The section is deliberately taller than the screen: its height is the
-    scroll distance the three words are spread across. */
+/* The section is deliberately taller than the screen: its height is the
+   scroll distance the three words are spread across. Long enough to read as
+   a deliberate pause, short enough that it does not feel like the page has
+   caught on something — two and a half screens did, this does not. */
 .stages {
   position: relative;
   background: var(--bg-sand);
-  min-height: 240svh;
+  min-height: 185svh;
 }
 
 .stages-inner {
@@ -252,12 +254,24 @@
   opacity: .45;
   transition: color .45s ease, opacity .45s ease;
 }
-.stage-word.is-on { color: var(--ink); opacity: 1; }
+.stage-word.is-on { color: var(--brand); opacity: 1; }
 @media (min-width: 768px) { .stage-word { font-size: clamp(3.4rem, 6vw, 5rem); } }
 
 .stage-note {
   border-inline-start: 1px solid var(--line);
   padding-inline-start: 26px;
+  /* one cell, three notes stacked in it */
+  display: grid;
+}
+
+.stage-note-item {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+.stage-note-item.is-on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .stage-note-item { transition: none; }
 }
 @media (max-width: 899px) {
   .stage-note { border-inline-start: 0; padding-inline-start: 0; border-top: 1px solid var(--line); padding-top: 22px; }

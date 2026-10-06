@@ -235,22 +235,30 @@ export class DesignPage {
       onCleanup(() => ro.disconnect());
     });
 
-    // leaving native fullscreen (Esc, or the browser chrome) drops the overlay
+    /**
+     * Full screen here means the editor filling the window, not the browser
+     * filling the monitor. Handing the page to the real Fullscreen API took
+     * the browser's own chrome away with it, which is a larger thing to do to
+     * someone than they asked for by pressing an expand button.
+     *
+     * Escape closes it and the page behind it holds still while it is open —
+     * the two things that make an overlay behave like a dialog.
+     */
     effect((onCleanup) => {
       const view = this.doc.defaultView;
-      if (!view) return;
-      const sync = () => {
-        if (!this.doc.fullscreenElement && this.fullscreen()) this.fullscreen.set(false);
-      };
+      if (!view || !this.fullscreen()) return;
+
       const onKey = (e: KeyboardEvent) => {
-        if (e.key === 'Escape' && this.fullscreen()) this.fullscreen.set(false);
+        if (e.key === 'Escape') this.fullscreen.set(false);
       };
-      this.doc.addEventListener('fullscreenchange', sync);
+      const body = this.doc.body;
+      const held = body.style.overflow;
+      body.style.overflow = 'hidden';
       view.addEventListener('keydown', onKey);
+
       onCleanup(() => {
-        this.doc.removeEventListener('fullscreenchange', sync);
+        body.style.overflow = held;
         view.removeEventListener('keydown', onKey);
-        this.exitNativeFullscreen();
       });
     });
   }
@@ -374,31 +382,12 @@ export class DesignPage {
   /** Leaves the overlay and the page together, without stranding the browser
       in native fullscreen. */
   leaveEditor(): void {
-    this.exitNativeFullscreen();
     this.fullscreen.set(false);
     void this.router.navigate(['/']);
   }
 
-  private exitNativeFullscreen(): void {
-    try {
-      if (this.doc.fullscreenElement) void this.doc.exitFullscreen?.();
-    } catch {
-      /* nothing to undo */
-    }
-  }
-
   toggleFullscreen(): void {
-    const next = !this.fullscreen();
-    this.fullscreen.set(next);
-    const host = this.editorEl()?.nativeElement;
-    // the overlay is what actually does the work; real fullscreen is a bonus
-    // and is blocked in some embedded contexts
-    try {
-      if (next) void host?.requestFullscreen?.();
-      else this.exitNativeFullscreen();
-    } catch {
-      /* overlay still applies */
-    }
+    this.fullscreen.update((v) => !v);
   }
   zoomIn(): void { this.zoom.update((z) => Math.min(3, +(z + 0.25).toFixed(2))); }
   zoomOut(): void { this.zoom.update((z) => Math.max(0.5, +(z - 0.25).toFixed(2))); }

@@ -13,7 +13,6 @@ import { CatalogService, ProjectFilters } from '../../core/catalog.service';
 import { STATUS_LABEL, TYPE_LABEL, usd } from '../../core/format';
 import { YIELD_CLAIM } from '../../core/brand';
 import { AreaId, ProjectStatus, ProjectType } from '../../core/models';
-import { BaliMapComponent } from '../../shared/bali-map';
 import { CtaBandComponent } from '../../shared/cta-band';
 import { PageHeroComponent } from '../../shared/page-hero';
 import { ProjectCardComponent } from '../../shared/project-card';
@@ -33,7 +32,6 @@ import { I18nService, TranslatePipe } from '../../core/i18n';
     NzSelectModule,
     NzSliderModule,
     NzPopoverModule,
-    BaliMapComponent,
     PageHeroComponent,
     ProjectCardComponent,
     CtaBandComponent,

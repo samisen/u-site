@@ -122,9 +122,7 @@
   grid-row: 1;
   margin: 0;
   font-size: 20px;
-  /* due diligence and safeguards: surfaces that ask to be trusted rather
-     than pressed, so they take the secondary rather than the action colour */
-  color: var(--blue);
+  color: var(--brand);
   line-height: 1;
   align-self: center;
 }
@@ -220,7 +218,7 @@
   line-height: 1.6;
   color: var(--ink-3);
   padding-inline-start: 14px;
-  border-inline-start: 2px solid color-mix(in srgb, var(--blue) 42%, transparent);
+  border-inline-start: 2px solid color-mix(in srgb, var(--brand) 42%, transparent);
 }
 
 /* ---------- land and licensing ---------- */
@@ -232,7 +230,7 @@
   line-height: 1.7;
   color: var(--ink-3);
   padding-inline-start: 14px;
-  border-inline-start: 2px solid color-mix(in srgb, var(--blue) 42%, transparent);
+  border-inline-start: 2px solid color-mix(in srgb, var(--brand) 42%, transparent);
 }
 
 /* ---------- the craft ---------- */

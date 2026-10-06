@@ -99,15 +99,12 @@
 }
 
 /* ---------- the Bali range: a card, never a seventh bar ---------- */
-/* In blue, not in the green that carries the buttons. This is a figure to
-   be read and weighed against the bars beside it, not a thing to press, and
-   the two should not look alike. */
 
 .range-card {
   padding: 20px;
   border-radius: var(--radius);
-  background: var(--blue-soft);
-  border: 1px solid color-mix(in srgb, var(--blue) 38%, transparent);
+  background: var(--brand-soft);
+  border: 1px solid color-mix(in srgb, var(--brand) 38%, transparent);
   display: grid;
   gap: 4px;
   align-content: start;
@@ -124,7 +121,7 @@
   font-size: 2.1rem;
   font-weight: 700;
   line-height: 1.05;
-  color: var(--blue);
+  color: var(--brand);
   letter-spacing: -.02em;
 }
 .range-value sup { font-size: .5em; top: -.7em; }
@@ -186,7 +183,7 @@
 }
 .chart-table tbody th { font-weight: 500; color: var(--ink); }
 .chart-table td { color: var(--ink-2); }
-.table-range th, .table-range td { color: var(--blue); font-weight: 600; }
+.table-range th, .table-range td { color: var(--brand); font-weight: 600; }
 
 .chart-caveat {
   margin: 14px 0 0;
