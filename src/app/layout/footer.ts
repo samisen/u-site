@@ -3,11 +3,12 @@ import { RouterLink } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { BRAND, YIELD_CLAIM } from '../core/brand';
 import { TranslatePipe } from '../core/i18n';
+import { ApexLogoComponent } from '../shared/apex-logo';
 import { WhatsappService } from '../core/whatsapp.service';
 
 @Component({
   selector: 'app-footer',
-  imports: [RouterLink, NzIconModule, TranslatePipe],
+  imports: [ApexLogoComponent, RouterLink, NzIconModule, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './footer.html',
   styleUrl: './footer.css',

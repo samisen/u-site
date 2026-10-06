@@ -8,6 +8,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { ThemeService } from '../core/theme.service';
 import { I18nService, Locale, LOCALES, TranslatePipe } from '../core/i18n';
 import { BRAND } from '../core/brand';
+import { ApexLogoComponent } from '../shared/apex-logo';
 import { WhatsappService } from '../core/whatsapp.service';
 
 interface NavItem {
@@ -21,7 +22,7 @@ interface NavItem {
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive, NzButtonModule, NzDrawerModule, NzIconModule, TranslatePipe],
+  imports: [ApexLogoComponent, RouterLink, RouterLinkActive, NzButtonModule, NzDrawerModule, NzIconModule, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './header.html',
   styleUrl: './header.css',

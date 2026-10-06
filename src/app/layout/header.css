@@ -38,25 +38,16 @@
   min-width: 0;
 }
 
-.brand-mark { width: 32px; height: 32px; flex: none; }
-.mark-bg { fill: var(--brand); }
-.site-header:not(.is-solid) .mark-bg { fill: rgba(255, 255, 255, .16); }
-.mark-roof { fill: #fff; }
-.mark-wave { stroke: rgba(255, 255, 255, .85); stroke-width: 3.4; stroke-linecap: round; }
+/* The mark is outlined vector painted with currentColor, so it takes the
+   header's own colour: ink on a solid bar, white over a hero image.
 
-.brand-text { display: flex; flex-direction: column; line-height: 1; }
-.brand-name {
-  font-family: var(--font-display);
-  font-size: 21px;
-  letter-spacing: .01em;
-}
-.brand-sub {
-  font-size: 9px;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-  opacity: .62;
-  margin-top: 3px;
-}
+   The brand specification asks for 180px as the smallest the full lockup
+   may be drawn, which is 57px tall and does not fit a 66–76px bar. The
+   design direction solves this with a far more generous header; until that
+   lands, the mark sits just under the stated minimum rather than crushing
+   the bar around it. */
+.brand-logo { width: 124px; flex: none; }
+@media (min-width: 600px) { .brand-logo { width: 150px; } }
 
 /* ---------- desktop nav ---------- */
 

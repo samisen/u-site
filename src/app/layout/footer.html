@@ -3,15 +3,7 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <a class="brand" routerLink="/" [attr.aria-label]="'header.brandHome' | t: { brand: brand.name }">
-          <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true">
-            <rect width="64" height="64" rx="15" fill="rgba(255,255,255,.14)" />
-            <path d="M32 14 46 27v3H18v-3z" fill="#fff" />
-            <path d="M14 43c5 0 5-5 10-5s5 5 10 5 5-5 10-5 5 5 6 5" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="3.4" stroke-linecap="round" />
-          </svg>
-          <span class="brand-text">
-            <span class="brand-name">{{ brand.wordmarkLead }}</span>
-            <span class="brand-sub">{{ brand.wordmarkTail }}</span>
-          </span>
+          <app-apex-logo class="brand-logo" mark="full" />
         </a>
         <p class="foot-blurb">{{ brand.coreIdea | t }}</p>
         <div class="foot-social">
