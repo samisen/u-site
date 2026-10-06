@@ -1,7 +1,5 @@
 :host { display: block; }
 
-.head { max-width: 62ch; margin-bottom: 36px; }
-@media (min-width: 768px) { .head { margin-bottom: 52px; } }
 
 /* ---------- stages ---------- */
 

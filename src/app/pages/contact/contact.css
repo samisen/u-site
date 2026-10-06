@@ -1,7 +1,8 @@
 :host { display: block; }
 
-.contact-section { padding-block: 40px 72px; }
-@media (min-width: 768px) { .contact-section { padding-block: 64px 104px; } }
+.contact-section { padding-block: 48px; }
+@media (min-width: 768px) { .contact-section { padding-block: 72px; } }
+@media (min-width: 1200px) { .contact-section { padding-block: 88px; } }
 
 .contact-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
 @media (min-width: 1000px) {

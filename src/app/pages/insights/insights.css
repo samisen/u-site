@@ -1,7 +1,8 @@
 :host { display: block; }
 
-.listing { padding-block: 40px 72px; }
-@media (min-width: 768px) { .listing { padding-block: 64px 104px; } }
+.listing { padding-block: 48px; }
+@media (min-width: 768px) { .listing { padding-block: 72px; } }
+@media (min-width: 1200px) { .listing { padding-block: 88px; } }
 
 .meta {
   display: flex;

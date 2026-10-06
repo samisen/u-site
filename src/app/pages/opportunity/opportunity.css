@@ -1,7 +1,6 @@
 :host { display: block; }
 
-.head { max-width: 64ch; margin-bottom: 36px; }
-@media (min-width: 768px) { .head { margin-bottom: 52px; } }
+.head { max-width: 64ch; }
 .head .lede + .lede { margin-top: 16px; }
 
 .head-split { max-width: none; display: flex; flex-direction: column; gap: 18px; }

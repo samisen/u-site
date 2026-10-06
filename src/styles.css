@@ -170,8 +170,14 @@ img { max-width: 100%; display: block; }
 .container-narrow > nz-collapse,
 .container-narrow > .ant-collapse { max-width: none; }
 
-.section { padding-block: 64px; }
-.section-lg { padding-block: 80px; }
+/* One vertical rhythm for the whole site.
+
+   Adjacent bands sit flush, so the space a reader sees between two blocks of
+   content is the sum of the one above and the one below. At 116 and 152 that
+   came to 232 and 304 pixels — far more than any of it needed, and different
+   on nearly every page besides. These are the halves of the gap, not the gap. */
+.section { padding-block: 48px; }
+.section-lg { padding-block: 60px; }
 .section-sand { background: var(--bg-sand); }
 /* A charcoal band inside an ivory page is a piece of dark mode sitting in a
    light one, so it re-declares the tokens rather than patching the few
@@ -200,12 +206,12 @@ img { max-width: 100%; display: block; }
 
 @media (min-width: 768px) {
   :root { --gutter: 32px; --header-h: 96px; }
-  .section { padding-block: 96px; }
-  .section-lg { padding-block: 128px; }
+  .section { padding-block: 72px; }
+  .section-lg { padding-block: 88px; }
 }
 @media (min-width: 1200px) {
-  .section { padding-block: 116px; }
-  .section-lg { padding-block: 152px; }
+  .section { padding-block: 88px; }
+  .section-lg { padding-block: 104px; }
 }
 
 .grid { display: grid; gap: 20px; }
@@ -282,6 +288,16 @@ h1.display { font-size: clamp(2.9rem, 11.5vw, 4.3rem); }
   max-width: 62ch;
 }
 @media (min-width: 768px) { .lede { font-size: 1.1rem; } }
+
+/* The block a section opens with: eyebrow, heading, and usually a lede.
+   It lived in three page stylesheets and not in the other four, so a heading
+   with no lede under it sat straight on the content below. One definition,
+   one gap, whether or not there is a lede to fill it. */
+.head {
+  max-width: 62ch;
+  margin-bottom: 32px;
+}
+@media (min-width: 768px) { .head { margin-bottom: 40px; } }
 
 .muted { color: var(--ink-3); }
 
