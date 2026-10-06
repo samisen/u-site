@@ -308,10 +308,10 @@
 @media (min-width: 760px) { .value { padding-block: 30px; } }
 
 /* ==================================================== 05. final band ==== */
-/* Dark olive, flat, no image. The one place on the page the brand's field
-   colour carries a whole block. */
+/* Flat, no image. The one place on the page the brand's field colour carries
+   a whole block. */
 
-.final { background: var(--olive-field); color: #fff; }
+.final { background: var(--field); color: #fff; }
 
 .final-inner {
   display: grid;

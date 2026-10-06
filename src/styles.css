@@ -10,24 +10,32 @@
      which is why dark mode looked half-applied in Safari but fine in Chrome. */
   color-scheme: light;
 
-  /* The approved palette is charcoal, ivory and dark olive. Olive is the
-     brand's field colour and stays that — it is what the dark band at the
-     foot of the page is made of.
-     
-     Actions are a separate job from identity, and olive is a quiet colour
-     that does not ask to be pressed. The green carries the buttons and the
-     links; everything structural stays olive. */
+  /* The ground is charcoal and ivory. The green carries everything that
+     acts — buttons, links, anything that moves you on. */
   --brand: #0e7364;
   --brand-strong: #0a5d51;
   --brand-soft: #e4f0ed;
-  --olive: #4b5344;
-  --olive-strong: #3a4034;
-  --olive-soft: #e9e7dc;
-  /* The field colour, for a block made of olive rather than text written in
-     it. Deliberately the same in both themes: the dark theme lifts --olive so
-     it can be read against charcoal, and a lifted olive is a light surface
-     that white text falls off. */
-  --olive-field: #4b5344;
+  /* The field colour: a block made of the brand rather than words written in
+     it. The same in both themes, because the dark theme lifts --brand so it
+     can be read against charcoal, and a lifted colour is a light surface that
+     white text falls off.
+
+     It is the primary at a deeper value, not the pack's olive. Olive sits at
+     hue 92 with a tenth of the saturation; the green that carries the buttons
+     sits at 171 with four fifths of it. Side by side they do not read as one
+     palette deciding something — they read as two greens that have not met. */
+  --field: #0a5045;
+
+  /* Secondary: a corporate blue holding the primary's own lightness and
+     saturation, rotated to hue 205. A relative rather than a stranger — near
+     enough to belong, far enough to be unmistakably blue.
+
+     It has a different job from the green, which is the only reason to have
+     it. Green is for acting: buttons, links, anything that moves you on.
+     Blue is for understanding: figures, charts, evidence, the parts of the
+     site that ask to be read rather than pressed. */
+  --blue: #0e4973;
+  --blue-soft: #e7eef3;
   --accent: #4b5344;
   --accent-soft: #e9e7dc;
   /* whatever is legible on top of --brand, which flips with the theme */
@@ -81,18 +89,18 @@
 html[data-theme='dark'] {
   color-scheme: dark;
   /* The direction gives no dark specification, so this is derived from it:
-     the palette turned over — charcoal ground, ivory ink — with the olive
-     lifted until it clears 4.5:1 against the ground, which #4b5344 does not. */
-  /* The green lifts for the same reason the olive did: at #0f7b6c it reads
-     3.4:1 against charcoal, which is fine behind a button and not fine as
-     link text. Lifting it makes it a light surface, so what sits on it goes
-     dark — that is what --on-brand is for. */
+     the palette turned over, charcoal ground and ivory ink, with every
+     colour lifted until it clears 4.5:1 against that ground. */
+  /* The green lifts because at #0e7364 it reads 3.4:1 against charcoal,
+     which is fine behind a button and not fine as link text. Lifting it
+     makes it a light surface, so what sits on it goes dark — that is what
+     --on-brand is for. */
   --brand: #2fa894;
   --brand-strong: #46c3ad;
   --brand-soft: #10302b;
-  --olive: #8c9a7e;
-  --olive-strong: #a7b497;
-  --olive-soft: #2a2f26;
+  /* lifted until it clears 4.5:1 on charcoal, like the green */
+  --blue: #6097be;
+  --blue-soft: #172630;
   --accent: #8c9a7e;
   --accent-soft: #2a2f26;
   --on-brand: #1a1a1a;
@@ -181,15 +189,15 @@ img { max-width: 100%; display: block; }
 .section-sand { background: var(--bg-sand); }
 /* A charcoal band inside an ivory page is a piece of dark mode sitting in a
    light one, so it re-declares the tokens rather than patching the few
-   elements someone remembered. Olive at #4b5344 is invisible on charcoal;
-   the lifted olive the dark theme already uses is what belongs here. */
+   elements someone remembered. The lifted values the dark theme already
+   uses are what belong here. */
 .section-deep {
   background: var(--bg-deep);
   color: var(--ink-on-dark);
   --brand: #2fa894;
   --brand-strong: #46c3ad;
   --brand-soft: #10302b;
-  --olive: #8c9a7e;
+  --blue: #6097be;
   --accent: #8c9a7e;
   --ink: #f7f4ec;
   --ink-2: rgba(247, 244, 236, .74);
@@ -260,8 +268,8 @@ img { max-width: 100%; display: block; }
   font-size: clamp(2.5rem, 9.5vw, 3.4rem);
 }
 /* Italic carries the emphasis on its own. Colouring it was fine against a
-   bright teal; against the olive it disappears over a light photograph, and
-   the direction uses no coloured text anywhere in any case. */
+   bright teal; a darker one disappears over a light photograph, and the
+   direction uses no coloured text anywhere in any case. */
 .display em { font-style: italic; }
 
 h1.display { font-size: clamp(2.9rem, 11.5vw, 4.3rem); }
