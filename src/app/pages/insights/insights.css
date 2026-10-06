@@ -71,7 +71,7 @@
   transition: border-color .2s ease, background-color .2s ease, color .2s ease;
 }
 .filter:hover { border-color: var(--line-strong); }
-.filter.is-on { background: var(--brand); border-color: var(--brand); color: #fff; }
+.filter.is-on { background: var(--brand); border-color: var(--brand); color: var(--on-brand); }
 
 /* ---------- cards ---------- */
 

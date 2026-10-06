@@ -15,7 +15,7 @@
       <div class="hero-head">
         <div class="hero-copy">
           <div class="tags">
-            <nz-tag [nzColor]="statusColor()">{{ statusLabel() | t }}</nz-tag>
+            <nz-tag class="tag-status" [class]="'tag-status is-' + statusKey()">{{ statusLabel() | t }}</nz-tag>
             <nz-tag>{{ typeLabel() | t }}</nz-tag>
             <span class="loc">
               <nz-icon nzType="environment" />
@@ -162,7 +162,7 @@
 
             <nz-timeline class="tl">
               @for (t of p.timeline; track t.date) {
-                <nz-timeline-item [nzColor]="t.progress <= p.progress ? 'green' : 'gray'">
+                <nz-timeline-item [nzColor]="t.progress <= p.progress ? '#4b5344' : '#c0bbaa'">
                   <div class="tl-item">
                     <span class="tl-date mono">{{ t.date | t }}</span>
                     <h4>{{ t.title | t }}</h4>

@@ -274,4 +274,4 @@
   background: var(--surface-2);
 }
 .lang-row .lang-btn { flex: 1; padding: 10px 4px; font-size: 13px; letter-spacing: 0; }
-.lang-row .lang-btn.is-on { background: var(--brand); color: #fff; }
+.lang-row .lang-btn.is-on { background: var(--brand); color: var(--on-brand); }

@@ -4,7 +4,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { TranslatePipe } from '../core/i18n';
 import { CatalogService } from '../core/catalog.service';
-import { STATUS_COLOR, STATUS_LABEL, TYPE_LABEL, usd } from '../core/format';
+import { STATUS_LABEL, TYPE_LABEL, usd } from '../core/format';
 import { Project } from '../core/models';
 
 @Component({
@@ -27,6 +27,6 @@ export class ProjectCardComponent {
   });
 
   readonly statusLabel = computed(() => STATUS_LABEL[this.project().status]);
-  readonly statusColor = computed(() => STATUS_COLOR[this.project().status]);
+  readonly statusKey = computed(() => this.project().status);
   readonly typeLabel = computed(() => TYPE_LABEL[this.project().type]);
 }

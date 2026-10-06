@@ -21,7 +21,7 @@ import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { CatalogService } from '../../core/catalog.service';
 import { MANAGEMENT_FEE, OPERATING_COST } from '../../core/yield-model';
 import { YIELD_CLAIM } from '../../core/brand';
-import { STATUS_COLOR, STATUS_LABEL, TYPE_LABEL, usd } from '../../core/format';
+import { STATUS_LABEL, TYPE_LABEL, usd } from '../../core/format';
 import { ProjectCardComponent } from '../../shared/project-card';
 import { VideoPlayerComponent } from '../../shared/video-player';
 import { RevealDirective } from '../../shared/reveal.directive';
@@ -70,7 +70,7 @@ export class ProjectDetailPage {
   });
 
   readonly statusLabel = computed(() => STATUS_LABEL[this.project()?.status ?? ''] ?? '');
-  readonly statusColor = computed(() => STATUS_COLOR[this.project()?.status ?? ''] ?? 'default');
+  readonly statusKey = computed(() => this.project()?.status ?? 'available');
   readonly typeLabel = computed(() => TYPE_LABEL[this.project()?.type ?? ''] ?? '');
 
   /* ---------- yield model ---------- */

@@ -2,7 +2,7 @@
   <div class="media">
     <img [src]="project().hero" [alt]="project().name | t" loading="lazy" decoding="async" />
     <div class="media-top">
-      <nz-tag [nzColor]="statusColor()">{{ statusLabel() | t }}</nz-tag>
+      <nz-tag class="tag-status" [class]="'tag-status is-' + statusKey()">{{ statusLabel() | t }}</nz-tag>
     </div>
   </div>
 

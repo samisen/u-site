@@ -24,14 +24,6 @@ export const STATUS_LABEL: Record<string, string> = {
   'coming-soon': 'status.comingSoon',
 };
 
-export const STATUS_COLOR: Record<string, string> = {
-  available: 'green',
-  construction: 'gold',
-  reserved: 'blue',
-  delivered: 'default',
-  'coming-soon': 'purple',
-};
-
 /** Translation keys — pipe the result through `t`. */
 export const TYPE_LABEL: Record<string, string> = {
   villa: 'type.villa',
