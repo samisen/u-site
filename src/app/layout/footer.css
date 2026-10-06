@@ -61,3 +61,23 @@
 .foot-bottom p { margin: 0; }
 .foot-legal { max-width: 96ch; line-height: 1.6; }
 .foot-note { opacity: .75; }
+
+
+/* The theme toggle, parked in the footer while the header design settles. */
+.foot-theme {
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 999px;
+  background: none;
+  color: rgba(255, 255, 255, .78);
+  font: inherit;
+  font-size: 12px;
+  transition: color .18s ease, border-color .18s ease;
+}
+.foot-theme:hover { color: #fff; border-color: rgba(255, 255, 255, .45); }
+.foot-theme-ico { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.7; }

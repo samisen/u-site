@@ -12,16 +12,6 @@
  * "one-size-fits-all", or fear-based framing.
  */
 
-export interface ValuePillar {
-  key: 'lifestyle' | 'investment';
-  eyebrow: string;
-  title: string;
-  lead: string;
-  body: string;
-  points: string[];
-  image: string;
-}
-
 export interface BuildStep {
   index: string;
   name: string;
@@ -64,46 +54,6 @@ export interface Insight {
   image: string;
   body: string[];
 }
-
-/* ---------------------------------------------------------------- hero ---- */
-
-export const HERO = {
-  headline: 'home.hero.headline',
-  support: 'home.hero.support',
-  video: 'media/villa-tour-short.mp4',
-  poster: 'media/villa-pool-aerial.jpg',
-};
-
-/* -------------------------------------------------------- the two values -- */
-
-export const TWO_VALUES: ValuePillar[] = [
-  {
-    key: 'lifestyle',
-    eyebrow: 'home.value.lifestyle.eyebrow',
-    title: 'home.value.lifestyle.title',
-    lead: 'home.value.lifestyle.lead',
-    body: 'home.value.lifestyle.body',
-    points: [
-      'home.value.lifestyle.point1',
-      'home.value.lifestyle.point2',
-      'home.value.lifestyle.point3',
-    ],
-    image: 'media/villa-pool-lounge.jpg',
-  },
-  {
-    key: 'investment',
-    eyebrow: 'home.value.investment.eyebrow',
-    title: 'home.value.investment.title',
-    lead: 'home.value.investment.lead',
-    body: 'home.value.investment.body',
-    points: [
-      'home.value.investment.point1',
-      'home.value.investment.point2',
-      'home.value.investment.point3',
-    ],
-    image: 'media/villa-pool-aerial.jpg',
-  },
-];
 
 /* ------------------------------------------------------------- why bali --- */
 
@@ -209,7 +159,6 @@ export const OWNER_PROFILES: OwnerProfile[] = (
 export const TAILOR_MADE_LINE = 'process.tailorMade';
 export const ROLE_LINE = 'process.role';
 export const BELIEF_LINE = 'process.belief';
-export const MISSION_LINE = 'home.mission';
 
 /* ------------------------------------------------------------- insights --- */
 
@@ -357,3 +306,60 @@ export const DEVELOPMENT_MODELS: DevelopmentModel[] = [
   { id: 'landowner', icon: 'environment', link: null },
 ];
 
+
+/* ============================================================== homepage ====
+   The homepage follows its own brief — a slow hero, two chapters, one scroll
+   interaction, a line of values and a dark band — so its content sits here
+   rather than being scattered through the template.
+   ========================================================================== */
+
+export interface HeroSlide {
+  image: string;
+  /** Translation key for the place name shown against the counter. */
+  place: string;
+}
+
+/**
+ * Three images, one at a time, crossfading slowly.
+ *
+ * The brief is strict about their art direction: no people, similar grain and
+ * contrast, a calm horizon. These three are the set in hand that holds to
+ * that — cool, quiet, unpeopled. What it does not have is the golden hour the
+ * brief asks for on the first and third frames; that needs a shoot, not a
+ * different crop.
+ */
+export const HERO_SLIDES: HeroSlide[] = [
+  { image: 'img/uluwatu-2.jpg', place: 'home.hero.place.uluwatu' },
+  { image: 'img/rice-ubud.jpg', place: 'home.hero.place.ubud' },
+  { image: 'img/canggu.jpg', place: 'home.hero.place.canggu' },
+];
+
+export interface HomeChapter {
+  id: 'discover' | 'create';
+  links: { label: string; to: string }[];
+}
+
+/** Two chapters, two ways in each. Everything else on the site hangs off these. */
+export const HOME_CHAPTERS: HomeChapter[] = [
+  {
+    id: 'discover',
+    links: [
+      { label: 'home.chapter.discover.link1', to: '/why-bali' },
+      { label: 'home.chapter.discover.link2', to: '/locations' },
+    ],
+  },
+  {
+    id: 'create',
+    links: [
+      { label: 'home.chapter.create.link1', to: '/projects' },
+      { label: 'home.chapter.create.link2', to: '/design-your-villa' },
+    ],
+  },
+];
+
+/** The scroll-driven triplet. One word is dark at a time; the rest go quiet. */
+export const HOME_STAGES = ['design', 'build', 'manage'] as const;
+export type HomeStage = (typeof HOME_STAGES)[number];
+
+/** Four words on one line, no icons. */
+export const HOME_VALUES = ['designLed', 'endToEnd', 'grounded', 'forBali'] as const;

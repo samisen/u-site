@@ -23,6 +23,11 @@
   --olive: #4b5344;
   --olive-strong: #3a4034;
   --olive-soft: #e9e7dc;
+  /* The field colour, for a block made of olive rather than text written in
+     it. Deliberately the same in both themes: the dark theme lifts --olive so
+     it can be read against charcoal, and a lifted olive is a light surface
+     that white text falls off. */
+  --olive-field: #4b5344;
   --accent: #4b5344;
   --accent-soft: #e9e7dc;
   /* whatever is legible on top of --brand, which flips with the theme */

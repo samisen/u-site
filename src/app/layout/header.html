@@ -4,9 +4,46 @@
       <app-apex-logo class="brand-logo" mark="full" />
     </a>
 
-    <nav class="nav-desktop" [attr.aria-label]="'header.mainNav' | t">
-      @for (item of navBar; track item.link) {
-        <a [routerLink]="item.link" routerLinkActive="is-active">{{ item.label | t }}</a>
+    <nav class="nav-desktop" #navEl [attr.aria-label]="'header.mainNav' | t">
+      @for (item of navBar; track item.link; let i = $index) {
+        <a
+          #navItem
+          class="nav-link"
+          [class.is-folded]="i >= navVisible()"
+          [attr.aria-hidden]="i >= navVisible() ? 'true' : null"
+          [attr.tabindex]="i >= navVisible() ? -1 : null"
+          [routerLink]="item.link"
+          routerLinkActive="is-active"
+        >{{ item.label | t }}</a>
+      }
+
+      @if (navOverflow().length) {
+        <div class="more">
+          <button
+            type="button"
+            class="more-btn"
+            #moreBtn
+            (click)="toggleMore()"
+            [attr.aria-expanded]="moreOpen()"
+            aria-haspopup="true"
+          >
+            {{ 'header.more' | t }}
+            <svg class="more-chev" viewBox="0 0 12 8" aria-hidden="true">
+              <path d="M1 1.5 6 6.5 11 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+          </button>
+
+          @if (moreOpen()) {
+            <div class="more-menu">
+              @for (item of navOverflow(); track item.link) {
+                <a [routerLink]="item.link" routerLinkActive="is-active" (click)="closeMore()">
+                  <span class="more-label">{{ item.label | t }}</span>
+                  <span class="more-blurb">{{ item.blurb | t }}</span>
+                </a>
+              }
+            </div>
+          }
+        </div>
       }
     </nav>
 
@@ -30,26 +67,6 @@
           <path d="M1 1.5 6 6.5 11 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
         </svg>
       </div>
-
-      <button
-        type="button"
-        class="icon-btn theme-btn"
-        (click)="theme.toggle()"
-        [attr.aria-label]="(theme.mode() === 'dark' ? 'header.toLight' : 'header.toDark') | t"
-      >
-        @if (theme.mode() === 'dark') {
-          <svg viewBox="0 0 24 24" aria-hidden="true" class="ico">
-            <circle cx="12" cy="12" r="4.4" />
-            <g stroke-linecap="round">
-              <path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6" />
-            </g>
-          </svg>
-        } @else {
-          <svg viewBox="0 0 24 24" aria-hidden="true" class="ico">
-            <path d="M20.5 14.3A8.6 8.6 0 0 1 9.7 3.5a8.6 8.6 0 1 0 10.8 10.8z" />
-          </svg>
-        }
-      </button>
 
       <a class="cta-desktop" nz-button nzType="primary" routerLink="/contact">{{ brand.cta.primary | t }}</a>
 

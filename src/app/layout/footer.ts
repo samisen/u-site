@@ -5,6 +5,7 @@ import { BRAND, YIELD_CLAIM } from '../core/brand';
 import { TranslatePipe } from '../core/i18n';
 import { ApexLogoComponent } from '../shared/apex-logo';
 import { WhatsappService } from '../core/whatsapp.service';
+import { ThemeService } from '../core/theme.service';
 
 @Component({
   selector: 'app-footer',
@@ -15,6 +16,8 @@ import { WhatsappService } from '../core/whatsapp.service';
 })
 export class FooterComponent {
   readonly whatsapp = inject(WhatsappService);
+  /** Parked here while the design settles — it used to sit in the bar. */
+  readonly theme = inject(ThemeService);
   readonly year = new Date().getFullYear();
   readonly brand = BRAND;
   readonly yieldClaim = YIELD_CLAIM;

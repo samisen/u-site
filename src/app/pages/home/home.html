@@ -1,151 +1,120 @@
 <!-- ============ 01. HERO ============ -->
 <section class="hero">
-  <img class="hero-bg" [src]="hero.poster" alt="" aria-hidden="true" />
-  <span class="hero-veil"></span>
+  <!-- The frames are atmosphere, not content: the words over them never
+       change, so there is nothing here for a screen reader to miss. -->
+  @for (s of slides; track s.image; let i = $index) {
+    <img
+      class="hero-frame"
+      [class.is-on]="slide() === i"
+      [src]="s.image"
+      alt=""
+      aria-hidden="true"
+      [attr.fetchpriority]="i === 0 ? 'high' : null"
+      [attr.loading]="i === 0 ? 'eager' : 'lazy'"
+    />
+  }
+  <span class="hero-veil" aria-hidden="true"></span>
 
   <div class="container hero-inner">
-    <p class="hero-kicker">{{ brand.coreIdea | t }}</p>
+    <h1 class="hero-title" [innerHTML]="'home.hero.title' | t"></h1>
+    <p class="hero-support">{{ 'home.hero.support' | t }}</p>
+  </div>
 
-    <h1 class="display hero-title" [innerHTML]="'home.hero.title' | t"></h1>
-
-    <p class="hero-support">{{ hero.support | t }}</p>
-
-    <div class="hero-actions">
-      <a nz-button nzType="primary" nzSize="large" routerLink="/design-your-villa">
-        {{ brand.cta.tailorMade | t }}
-        <nz-icon nzType="arrow-right" />
-      </a>
-      <a nz-button nzSize="large" nzGhost routerLink="/projects">{{ 'home.hero.seeProjects' | t }}</a>
+  <div class="container hero-foot">
+    <div class="hero-progress" role="group" [attr.aria-label]="'home.hero.frames' | t">
+      <span class="hero-count mono">
+        {{ (slide() + 1).toString().padStart(2, '0') }}<span class="hero-of"> / {{ slides.length.toString().padStart(2, '0') }}</span>
+      </span>
+      <span class="hero-rails">
+        @for (s of slides; track s.image; let i = $index) {
+          <button
+            type="button"
+            class="hero-rail"
+            [class.is-on]="slide() === i"
+            (click)="showSlide(i)"
+            [attr.aria-label]="s.place | t"
+            [attr.aria-current]="slide() === i ? 'true' : null"
+          ></button>
+        }
+      </span>
+      <span class="hero-place">{{ slides[slide()].place | t }}</span>
     </div>
+
+    <a class="hero-explore" href="#chapters">
+      {{ 'home.hero.explore' | t }}
+      <nz-icon nzType="arrow-right" class="hero-explore-ico" />
+    </a>
   </div>
 </section>
 
-<!-- ============ 02. TWO THINGS. ONE PROPERTY. ============ -->
-<section class="section section-lg">
+<!-- ============ 02. DISCOVER / CREATE ============ -->
+<section class="chapters" id="chapters">
   <div class="container">
-    <div class="head" appReveal>
-      <p class="eyebrow">{{ 'home.values.eyebrow' | t }}</p>
-      <h2 class="display">{{ 'home.values.title' | t }}</h2>
-      <p class="lede">{{ mission | t }}</p>
-    </div>
+    @for (c of chapters; track c.id; let i = $index) {
+      <article class="chapter">
+        <p class="chapter-num mono">{{ ('0' + (i + 1)) }}</p>
 
-    <div class="values">
-      @for (v of values; track v.key; let i = $index) {
-        <article class="value" [appReveal]="i * 90">
-          <div class="value-media">
-            @if (v.key === 'lifestyle') {
-              <app-video-player
-                class="value-player"
-                [src]="hero.video"
-                [poster]="v.image"
-                label="video.villaFilm"
-              />
-            } @else {
-              <img [src]="v.image" [alt]="v.title | t" loading="lazy" />
-            }
+        <div class="chapter-body">
+          <h2 class="chapter-title">{{ 'home.chapter.' + c.id + '.title' | t }}</h2>
+
+          <div class="chapter-side">
+            <p class="chapter-lede">{{ 'home.chapter.' + c.id + '.lede' | t }}</p>
+            <ul class="chapter-links">
+              @for (l of c.links; track l.to) {
+                <li>
+                  <a [routerLink]="l.to">
+                    <span>{{ l.label | t }}</span>
+                    <nz-icon nzType="arrow-right" />
+                  </a>
+                </li>
+              }
+            </ul>
           </div>
-
-          <div class="value-body">
-            <p class="eyebrow">{{ v.eyebrow | t }}</p>
-            <h3 class="title-md">{{ v.title | t }}</h3>
-            <p class="value-lead">{{ v.lead | t }}</p>
-            <p class="value-text">{{ v.body | t }}</p>
-          </div>
-        </article>
-      }
-    </div>
-  </div>
-</section>
-
-<!-- ============ 03. TWO DOORS ============ -->
-<section class="section section-lg section-sand doors">
-  <div class="container">
-    <div class="door-grid">
-      <a class="door" routerLink="/why-bali" appReveal>
-        <img class="door-bg" src="img/uluwatu-cliffs.jpg" alt="" aria-hidden="true" loading="lazy" />
-        <span class="door-veil"></span>
-        <span class="door-body">
-          <span class="door-eyebrow">{{ 'nav.whyBali' | t }}</span>
-          <span class="door-title">{{ 'whyBali.title' | t }}</span>
-          <span class="door-text">
-            {{ 'home.door.whyBali.text' | t: { arrivals: tourism.baliArrivalsShort, growth: tourism.baliGrowthPct } }}
-          </span>
-          <span class="door-go">{{ 'home.door.whyBali.go' | t }} <nz-icon nzType="arrow-right" /></span>
-        </span>
-      </a>
-
-      <a class="door" routerLink="/opportunity" appReveal="90">
-        <img class="door-bg" src="media/villa-pool-aerial.jpg" alt="" aria-hidden="true" loading="lazy" />
-        <span class="door-veil"></span>
-        <span class="door-body">
-          <span class="door-eyebrow">{{ 'opportunity.eyebrow' | t }}</span>
-          <span class="door-title">{{ 'opportunity.title' | t }}</span>
-          <span class="door-text">
-            {{ 'home.door.opportunity.text' | t: { range: claim.range } }}<sup>*</sup>
-          </span>
-          <span class="door-go">{{ 'home.door.opportunity.go' | t }} <nz-icon nzType="arrow-right" /></span>
-        </span>
-      </a>
-    </div>
-    <p class="doors-foot">{{ claim.footnote | t }}</p>
-  </div>
-</section>
-
-<!-- ============ 05. WHERE WE BUILD ============ -->
-<section class="section section-lg">
-  <div class="container">
-    <div class="head head-split" appReveal>
-      <div>
-        <p class="eyebrow">{{ 'map.empty.eyebrow' | t }}</p>
-        <h2 class="display">{{ 'home.areas.title' | t }}</h2>
-        <p class="lede">{{ 'home.areas.lede' | t }}</p>
-      </div>
-      <a class="head-link" routerLink="/projects">
-        {{ 'common.allProjects' | t }}
-        <nz-icon nzType="arrow-right" />
-      </a>
-    </div>
-
-    <div appReveal>
-      <app-bali-map [selected]="mapArea()" (selectArea)="onMapSelect($event)" />
-    </div>
-
-    <div class="grid grid-3 map-projects">
-      @for (p of featured(); track p.id; let i = $index) {
-        <div [appReveal]="i * 70">
-          <app-project-card [project]="p" />
         </div>
-      }
-    </div>
+      </article>
+    }
   </div>
 </section>
 
-<!-- ============ 06. DESIGN YOUR VILLA ============ -->
-<section class="section section-lg section-sand design-teaser">
-  <div class="container design-grid">
-    <div appReveal>
-      <p class="eyebrow">{{ 'home.design.eyebrow' | t }}</p>
-      <h2 class="display">{{ 'home.design.title' | t }}</h2>
-      <p class="lede">{{ 'home.design.lede' | t }}</p>
-      <div class="design-actions">
-        <a nz-button nzType="primary" nzSize="large" routerLink="/design-your-villa">
-          {{ brand.cta.tailorMade | t }}
-          <nz-icon nzType="arrow-right" />
-        </a>
-        <a nz-button nzSize="large" routerLink="/how-we-build">{{ brand.cta.process | t }}</a>
+<!-- ============ 03. DESIGN · BUILD · MANAGE ============ -->
+<section class="stages" #stagesEl>
+  <div class="container stages-inner">
+    <p class="chapter-num mono">03</p>
+
+    <div class="stages-grid">
+      <ol class="stage-words">
+        @for (s of stages; track s; let i = $index) {
+          <li class="stage-word" [class.is-on]="stage() === i">{{ 'home.stage.' + s + '.word' | t }}</li>
+        }
+      </ol>
+
+      <div class="stage-note">
+        <h3 class="stage-note-title">{{ 'home.stage.' + stages[stage()] + '.word' | t }}</h3>
+        <p class="stage-note-text">{{ 'home.stage.' + stages[stage()] + '.text' | t }}</p>
       </div>
     </div>
-
-    <figure class="design-shot" appReveal="100">
-      <img src="media/villa-pool-lounge.jpg" [alt]="'home.design.imageAlt' | t" loading="lazy" />
-    </figure>
   </div>
 </section>
 
-<!-- ============ 07. FINAL CTA ============ -->
-<app-cta-band
-  eyebrow="ctaBand.default.eyebrow"
-  heading="ctaBand.default.heading"
-  lede="home.cta.lede"
-  primaryLabel="cta.primary"
-/>
+<!-- ============ 04. CREDIBILITY STRIP ============ -->
+<section class="values">
+  <div class="container values-row">
+    @for (v of values; track v) {
+      <span class="value">{{ 'home.value.' + v | t }}</span>
+    }
+  </div>
+</section>
+
+<!-- ============ 05. FINAL CTA ============ -->
+<section class="final">
+  <div class="container final-inner">
+    <h2 class="final-title">{{ 'home.final.title' | t }}</h2>
+    <div class="final-side">
+      <p class="final-lede">{{ 'home.final.lede' | t }}</p>
+      <a class="final-cta" routerLink="/contact">
+        {{ 'home.final.cta' | t }}
+        <nz-icon nzType="arrow-right" />
+      </a>
+    </div>
+  </div>
+</section>

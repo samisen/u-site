@@ -43,6 +43,27 @@
           <span class="foot-note">{{ 'footer.placeholder' | t }}</span>
         }
       </p>
+      <button
+        type="button"
+        class="foot-theme"
+        (click)="theme.toggle()"
+        [attr.aria-label]="(theme.mode() === 'dark' ? 'header.toLight' : 'header.toDark') | t"
+      >
+        @if (theme.mode() === 'dark') {
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="foot-theme-ico">
+            <circle cx="12" cy="12" r="4.4" />
+            <g stroke-linecap="round">
+              <path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6" />
+            </g>
+          </svg>
+        } @else {
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="foot-theme-ico">
+            <path d="M20.5 14.3A8.6 8.6 0 0 1 9.7 3.5a8.6 8.6 0 1 0 10.8 10.8z" />
+          </svg>
+        }
+        {{ (theme.mode() === 'dark' ? 'header.toLight' : 'header.toDark') | t }}
+      </button>
+
       <p class="foot-legal">
         {{ yieldClaim.footnote | t }}
         {{ 'footer.legal' | t }}

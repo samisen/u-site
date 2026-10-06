@@ -53,12 +53,18 @@
 
 .nav-desktop { display: none; }
 
-@media (min-width: 1200px) {
+@media (min-width: 1100px) {
+  /* The row takes the space between the mark and the actions and keeps it,
+     whatever is in it. A row that sized itself to its contents would change
+     width as links fold away, and the measurement would chase itself. */
   .nav-desktop {
     display: flex;
     align-items: center;
     gap: 4px;
-    margin-inline: auto;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-inline: 24px;
+    overflow: hidden;
   }
   .nav-desktop a {
     position: relative;
@@ -300,3 +306,60 @@
 }
 .lang-row .lang-btn { flex: 1; padding: 10px 4px; font-size: 13px; letter-spacing: 0; }
 .lang-row .lang-btn.is-on { background: var(--brand); color: var(--on-brand); }
+
+
+/* ---------- what does not fit ---------- */
+
+.nav-link.is-folded { display: none; }
+
+.more { position: relative; flex: none; }
+
+.more-btn {
+  appearance: none;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 13.6px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: inherit;
+  opacity: .82;
+  transition: opacity .18s ease;
+}
+.more-btn:hover { opacity: 1; }
+.more-chev { width: 9px; transition: transform .2s ease; }
+.more-btn[aria-expanded='true'] .more-chev { transform: rotate(180deg); }
+
+.more-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  inset-inline-end: 0;
+  z-index: 60;
+  min-width: 240px;
+  padding: 8px;
+  display: grid;
+  gap: 2px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+.more-menu a {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background-color .16s ease;
+}
+.more-menu a:hover { background: var(--surface-2); }
+.more-menu a.is-active { background: var(--brand-soft); }
+.more-label { font-size: 14px; font-weight: 500; }
+.more-blurb { font-size: 12px; color: var(--ink-3); }
