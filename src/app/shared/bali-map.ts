@@ -42,7 +42,7 @@ export class BaliMapComponent {
   readonly markers = computed<AreaMarker[]>(() => {
     // the marker labels are drawn as SVG text, so they are resolved here
     this.i18n.version();
-    return this.catalog.areas().map((area) => {
+    const list = this.catalog.areas().map((area) => {
       const count = this.catalog.projects().filter((p) => p.area === area.id).length;
       return {
         id: area.id,
@@ -53,6 +53,20 @@ export class BaliMapComponent {
         radius: count ? 13 + Math.sqrt(count) * 7 : 8,
       };
     });
+
+    /**
+     * The chosen marker is drawn last.
+     *
+     * SVG has no z-index: whatever comes later in the document paints on top.
+     * The west coast is tight enough that Canggu, Pererenan, Cemagi and Seseh
+     * overlap at this scale, so without this the marker the visitor just chose
+     * can sit underneath one of its neighbours.
+     */
+    const chosen = this.active();
+    if (!chosen) return list;
+    const i = list.findIndex((m) => m.id === chosen);
+    if (i < 0) return list;
+    return [...list.slice(0, i), ...list.slice(i + 1), list[i]];
   });
 
   /** The area whose card is shown: hover wins, then the current selection. */

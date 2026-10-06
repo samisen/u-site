@@ -6,7 +6,7 @@ import { CatalogService } from '../../core/catalog.service';
 import { TranslatePipe } from '../../core/i18n';
 import { usd } from '../../core/format';
 import { AREA_FACETS, AreaId } from '../../core/models';
-import { netYieldPct } from '../../core/yield-model';
+import { areaInvestmentUsd, netYieldPct } from '../../core/yield-model';
 import { BaliMapComponent } from '../../shared/bali-map';
 import { CtaBandComponent } from '../../shared/cta-band';
 import { PageHeroComponent } from '../../shared/page-hero';
@@ -75,11 +75,16 @@ export class LocationsPage {
   }
 
   /**
-   * What a representative villa in this area would return, on the same
-   * investment and the same letting assumption everywhere, so the only thing
-   * varying between the cards is the area itself.
+   * What the same villa would return here: one house, one letting
+   * assumption, and the ground priced at what this area actually charges
+   * for it. Land is the only cost that really moves between areas, so it is
+   * the only one allowed to.
    */
-  indicativeYield(nightly: number, occupancy: number): string {
-    return netYieldPct(nightly, occupancy, 330_000).toFixed(1);
+  indicativeYield(area: { avgNightlyRateUsd: number; occupancy: number; landPriceArePerYearUsd: number }): string {
+    return netYieldPct(
+      area.avgNightlyRateUsd,
+      area.occupancy,
+      areaInvestmentUsd(area.landPriceArePerYearUsd),
+    ).toFixed(1);
   }
 }

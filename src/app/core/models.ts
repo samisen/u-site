@@ -2,8 +2,8 @@ export type ProjectStatus = 'available' | 'construction' | 'reserved' | 'deliver
 export type ProjectType = 'villa' | 'townhouse' | 'apartment' | 'commercial' | 'land';
 /** Listed as values as well as a type, so a link carrying one can be checked. */
 export const AREA_IDS = [
-  'canggu', 'pererenan', 'seminyak', 'uluwatu',
-  'ubud', 'sanur', 'nusa-dua', 'tabanan',
+  'canggu', 'pererenan', 'cemagi', 'seseh', 'seminyak',
+  'uluwatu', 'nyang-nyang', 'ubud', 'sanur', 'nusa-dua', 'tabanan',
 ] as const;
 
 export type AreaId = (typeof AREA_IDS)[number];

@@ -46,7 +46,7 @@
               @for (item of navOverflow(); track item.link) {
                 <a [routerLink]="item.link" routerLinkActive="is-active" (click)="closeMore()">
                   <span class="more-label">{{ item.label | t }}</span>
-                  <span class="more-blurb">{{ item.blurb | t }}</span>
+                  <span class="more-blurb">{{ item.blurb | t: { count: areaCount } }}</span>
                 </a>
               }
             </div>
@@ -114,7 +114,7 @@
         @for (item of navMain; track item.link) {
           <a [routerLink]="item.link" routerLinkActive="is-current" (click)="closeDrawer()">
             <span class="d-label">{{ item.label | t }}</span>
-            <span class="d-blurb">{{ item.blurb | t }}</span>
+            <span class="d-blurb">{{ item.blurb | t: { count: areaCount } }}</span>
           </a>
         }
       </nav>

@@ -19,6 +19,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { ThemeService } from '../core/theme.service';
 import { I18nService, Locale, LOCALES, TranslatePipe } from '../core/i18n';
 import { BRAND } from '../core/brand';
+import { AREA_IDS } from '../core/models';
 import { ApexLogoComponent } from '../shared/apex-logo';
 import { WhatsappService } from '../core/whatsapp.service';
 
@@ -111,6 +112,9 @@ export class HeaderComponent {
   readonly drawerOpen = signal(false);
 
   readonly brand = BRAND;
+
+  /** The Locations blurb counts the areas, so adding one does not date the copy. */
+  readonly areaCount = AREA_IDS.length;
 
   readonly nav: NavItem[] = [
     { label: 'nav.whyBali', link: '/why-bali', blurb: 'nav.whyBali.blurb' },

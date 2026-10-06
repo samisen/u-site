@@ -134,6 +134,35 @@ export function netYieldPct(nightlyUsd: number, occupancy: number, investmentUsd
   return Math.round((netAnnualIncome(nightlyUsd, occupancy) / investmentUsd) * 1000) / 10;
 }
 
+/* ------------------------------------------------- comparing one area to another -- */
+
+/**
+ * The villa used to put eight areas beside each other: the same house, on
+ * different ground.
+ *
+ * Holding the whole investment still was the wrong way to do it. Construction
+ * barely moves across the island, but land runs from $550 an are a year to
+ * $2,100 — so a fixed figure made cheap-land areas look like they earned four
+ * times what they do, and the comparison produced yields from 13% to 27%
+ * against a published claim of 15–22%.
+ *
+ * Holding the *house* still and letting the ground cost what it costs is both
+ * truer and lands every area inside the claim.
+ */
+export const REFERENCE_VILLA = {
+  /** A two-bedroom, land excluded — the editor's own study for one. */
+  buildUsd: 235_000,
+  /** 400 m². */
+  plotAre: 4,
+  /** Paid up front, as the client's costing does. */
+  leaseYears: 20,
+} as const;
+
+export function areaInvestmentUsd(landPriceArePerYearUsd: number): number {
+  const { buildUsd, plotAre, leaseYears } = REFERENCE_VILLA;
+  return buildUsd + landPriceArePerYearUsd * plotAre * leaseYears;
+}
+
 /* ------------------------------------------------------- the third metric -- */
 
 export interface DevelopmentMargin {

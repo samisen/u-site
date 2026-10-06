@@ -14,7 +14,7 @@
   <div class="container">
     <div class="head" appReveal>
       <p class="eyebrow">{{ 'locations.map.eyebrow' | t }}</p>
-      <h2 class="display">{{ 'home.areas.title' | t }}</h2>
+      <h2 class="display">{{ 'home.areas.title' | t: { count: areas().length } }}</h2>
       <p class="lede">{{ 'locations.map.lede' | t }}</p>
     </div>
 
@@ -70,7 +70,7 @@
             </div>
             <div>
               <dt>{{ 'locations.indicative' | t }}<sup>*</sup></dt>
-              <dd class="mono accent">{{ indicativeYield(a.avgNightlyRateUsd, a.occupancy) }}%</dd>
+              <dd class="mono accent">{{ indicativeYield(a) }}%</dd>
             </div>
           </dl>
 

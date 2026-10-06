@@ -26,8 +26,11 @@ export interface MapPoint {
 export const AREA_POINTS: Record<AreaId, MapPoint> = {
   'canggu': { x: 550.5, y: 462.6 },
   'pererenan': { x: 536, y: 460 },
+  'cemagi': { x: 537, y: 445 },
+  'seseh': { x: 530, y: 434 },
   'seminyak': { x: 573.2, y: 495.5 },
   'uluwatu': { x: 509.6, y: 602.5 },
+  'nyang-nyang': { x: 532.4, y: 605.7 },
   'ubud': { x: 645.1, y: 353.8 },
   'sanur': { x: 645.2, y: 493.5 },
   'nusa-dua': { x: 618.8, y: 576.6 },

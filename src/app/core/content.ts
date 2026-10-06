@@ -183,13 +183,13 @@ const INSIGHT_SOURCE: {
   { slug: 'why-bali-lifestyle-tourism-property', category: 'bali-lifestyle', readMinutes: 7, image: 'media/villa-pool-aerial.jpg', paragraphs: 3 },
   { slug: 'personal-use-and-rental-income', category: 'investment', readMinutes: 6, image: 'media/villa-deck.jpg', paragraphs: 3 },
   { slug: 'gross-yield-vs-net-return', category: 'investment', readMinutes: 5, image: 'media/villa-facade.jpg', paragraphs: 3 },
-  { slug: 'what-drives-villa-revenue', category: 'operations', readMinutes: 6, image: 'media/villa-pool-lounge.jpg', paragraphs: 3, areas: ['canggu', 'seminyak', 'uluwatu'] },
-  { slug: 'location-design-guest-experience', category: 'design', readMinutes: 6, image: 'media/villa-deck-pool.jpg', paragraphs: 3, areas: ['uluwatu', 'ubud', 'canggu'] },
+  { slug: 'what-drives-villa-revenue', category: 'operations', readMinutes: 6, image: 'media/villa-pool-lounge.jpg', paragraphs: 3, areas: ['canggu', 'cemagi', 'seminyak', 'uluwatu', 'nyang-nyang'] },
+  { slug: 'location-design-guest-experience', category: 'design', readMinutes: 6, image: 'media/villa-deck-pool.jpg', paragraphs: 3, areas: ['uluwatu', 'nyang-nyang', 'seseh', 'ubud', 'canggu'] },
   { slug: 'tailor-made-owner-goals', category: 'development', readMinutes: 5, image: 'media/villa-facade.jpg', paragraphs: 3 },
   { slug: 'owning-in-bali-introduction', category: 'development', readMinutes: 8, image: 'media/villa-deck.jpg', paragraphs: 3 },
   { slug: 'short-term-vs-residential', category: 'operations', readMinutes: 6, image: 'media/villa-pool-lounge.jpg', paragraphs: 3, areas: ['sanur', 'nusa-dua', 'ubud', 'tabanan'] },
   { slug: 'how-to-read-a-villa-investment-model', category: 'investment', readMinutes: 7, image: 'media/villa-pool-aerial.jpg', paragraphs: 4 },
-  { slug: 'a-week-in-your-own-bali-villa', category: 'bali-lifestyle', readMinutes: 4, image: 'media/villa-deck-pool.jpg', paragraphs: 3, areas: ['canggu', 'pererenan', 'uluwatu', 'ubud'] },
+  { slug: 'a-week-in-your-own-bali-villa', category: 'bali-lifestyle', readMinutes: 4, image: 'media/villa-deck-pool.jpg', paragraphs: 3, areas: ['canggu', 'pererenan', 'cemagi', 'seseh', 'uluwatu', 'ubud'] },
 ];
 
 export const INSIGHTS: Insight[] = INSIGHT_SOURCE.map((a) => ({
