@@ -2,8 +2,13 @@
 
 /* ========================================================== 01. hero ==== */
 
+/* The hero is held while everything else rises over it. Sticky rather than
+   pinned-with-extra-height: the page is exactly as long as it was, nothing
+   scroll-jacks, and the sections gain a depth they share. */
 .hero {
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 0;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
@@ -152,18 +157,43 @@
 
 /* =================================================== 02. the chapters ==== */
 
-.chapters { background: var(--bg); padding-block: 72px; }
+/* Each layer carries its own opaque ground, or the hero shows through it. */
+.chapters {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+  padding-block: 72px;
+}
 @media (min-width: 768px) { .chapters { padding-block: 112px; } }
 
 .chapter { padding-block: 48px; border-top: 1px solid var(--line); }
 .chapter:first-child { border-top: 0; padding-top: 0; }
 @media (min-width: 768px) { .chapter { padding-block: 76px; } }
 
+/* The one thing all three sections have in common: a number, and a rule in
+   the brand's own colour that draws itself as the section arrives. */
 .chapter-num {
+  display: flex;
+  align-items: center;
+  gap: 16px;
   margin: 0 0 22px;
   font-size: 12px;
   letter-spacing: .1em;
   color: var(--ink-3);
+}
+.chapter-num::after {
+  content: '';
+  flex: none;
+  width: 96px;
+  height: 1px;
+  background: var(--brand);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .9s cubic-bezier(.22, .61, .36, 1) .15s;
+}
+.chapter-num.is-visible::after { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .chapter-num::after { transition: none; transform: scaleX(1); }
 }
 
 .chapter-body { display: grid; gap: 26px; }
@@ -222,6 +252,7 @@
    caught on something — two and a half screens did, this does not. */
 .stages {
   position: relative;
+  z-index: 2;
   background: var(--bg-sand);
   min-height: 185svh;
 }
@@ -296,7 +327,7 @@
 
 /* ============================================ 04. credibility strip ===== */
 
-.values { background: var(--bg); border-block: 1px solid var(--line); }
+.values { position: relative; z-index: 3; background: var(--bg); border-block: 1px solid var(--line); }
 
 .values-row {
   display: grid;
@@ -325,7 +356,7 @@
 /* Flat, no image. The one place on the page the brand's field colour carries
    a whole block. */
 
-.final { background: var(--field); color: #fff; }
+.final { position: relative; z-index: 3; background: var(--field); color: #fff; }
 
 .final-inner {
   display: grid;

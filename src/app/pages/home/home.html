@@ -55,12 +55,12 @@
   <div class="container">
     @for (c of chapters; track c.id; let i = $index) {
       <article class="chapter">
-        <p class="chapter-num mono">{{ ('0' + (i + 1)) }}</p>
+        <p class="chapter-num mono" appReveal>{{ ('0' + (i + 1)) }}</p>
 
         <div class="chapter-body">
-          <h2 class="chapter-title">{{ 'home.chapter.' + c.id + '.title' | t }}</h2>
+          <h2 class="chapter-title" [appReveal]="90">{{ 'home.chapter.' + c.id + '.title' | t }}</h2>
 
-          <div class="chapter-side">
+          <div class="chapter-side" [appReveal]="180">
             <p class="chapter-lede">{{ 'home.chapter.' + c.id + '.lede' | t }}</p>
             <ul class="chapter-links">
               @for (l of c.links; track l.to) {
@@ -82,10 +82,10 @@
 <!-- ============ 03. DESIGN · BUILD · MANAGE ============ -->
 <section class="stages" #stagesEl>
   <div class="container stages-inner">
-    <p class="chapter-num mono">03</p>
+    <p class="chapter-num mono" appReveal>03</p>
 
     <div class="stages-grid">
-      <ol class="stage-words">
+      <ol class="stage-words" [appReveal]="90">
         @for (s of stages; track s; let i = $index) {
           <li class="stage-word" [class.is-on]="stage() === i">{{ 'home.stage.' + s + '.word' | t }}</li>
         }
@@ -96,7 +96,7 @@
            that wraps to a third line is 26px taller than one that does not,
            and the section appeared to breathe. Stacked, the box is always as
            tall as the longest and nothing moves. -->
-      <div class="stage-note">
+      <div class="stage-note" [appReveal]="180">
         @for (s of stages; track s; let i = $index) {
           <div class="stage-note-item" [class.is-on]="stage() === i" [attr.aria-hidden]="stage() === i ? null : 'true'">
             <h3 class="stage-note-title">{{ 'home.stage.' + s + '.word' | t }}</h3>

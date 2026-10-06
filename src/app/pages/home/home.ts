@@ -13,13 +13,14 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { BRAND } from '../../core/brand';
 import { HERO_SLIDES, HOME_CHAPTERS, HOME_STAGES, HOME_VALUES } from '../../core/content';
 import { TranslatePipe } from '../../core/i18n';
+import { RevealDirective } from '../../shared/reveal.directive';
 
 /** How long a frame holds before it begins giving way to the next. */
 const SLIDE_HOLD_MS = 6500;
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, NzIconModule, TranslatePipe],
+  imports: [RouterLink, NzIconModule, RevealDirective, TranslatePipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.html',
   styleUrl: './home.css',
