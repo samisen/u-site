@@ -5,7 +5,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { CatalogService } from '../../core/catalog.service';
 import { TranslatePipe } from '../../core/i18n';
 import { usd } from '../../core/format';
-import { AreaId } from '../../core/models';
+import { AREA_FACETS, AreaId } from '../../core/models';
 import { netYieldPct } from '../../core/yield-model';
 import { BaliMapComponent } from '../../shared/bali-map';
 import { CtaBandComponent } from '../../shared/cta-band';
@@ -42,11 +42,19 @@ export class LocationsPage {
 
   readonly areas = this.catalog.areas;
 
-  /** Open the first area by default, so the page never reads as a bare list. */
-  readonly open = signal<AreaId | null>(null);
+  readonly facets = AREA_FACETS;
 
-  toggle(id: AreaId): void {
-    this.open.update((current) => (current === id ? null : id));
+  /**
+   * One area is always chosen. An empty detail panel beside a list of eight
+   * places is a worse first impression than simply opening on the first one.
+   */
+  readonly chosen = signal<AreaId>('canggu');
+  readonly current = computed(
+    () => this.areas().find((a) => a.id === this.chosen()) ?? this.areas()[0],
+  );
+
+  choose(id: AreaId): void {
+    this.chosen.set(id);
   }
 
   /** How the areas separate once the numbers are beside each other. */

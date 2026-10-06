@@ -98,6 +98,16 @@ export class HeaderComponent {
   readonly locales = LOCALES;
 
   readonly scrolled = signal(false);
+
+  /**
+   * How far the bar has arrived, 0 to 1.
+   *
+   * It used to flip at 24 pixels, which over a photograph is a bar that
+   * suddenly appears. Reading the scroll instead lets the background and the
+   * text meet in the middle: the bar is solid well before the hero's words
+   * reach it, and nothing snaps.
+   */
+  readonly settle = signal(0);
   readonly drawerOpen = signal(false);
 
   readonly brand = BRAND;
@@ -184,8 +194,20 @@ export class HeaderComponent {
   }
 
   onScroll(): void {
-    const y = this.doc.defaultView?.scrollY ?? 0;
+    const view = this.doc.defaultView;
+    if (!view) return;
+    const y = view.scrollY;
     this.scrolled.set(y > 24);
+
+    // A third of the screen, capped — long enough to read as a transition,
+    // short enough to finish before the hero's words come up to the bar.
+    const over = Math.min(view.innerHeight * 0.34, 300);
+    const next = this.isHome() ? Math.min(1, Math.max(0, y / over)) : 1;
+
+    // Rounded, so a signal is only written when the bar would actually look
+    // different. No rAF throttle: a frame that never paints would leave the
+    // guard set and the bar frozen for the rest of the session.
+    this.settle.set(Math.round(next * 100) / 100);
   }
 
   openDrawer(): void {

@@ -1,5 +1,4 @@
-<div class="map-wrap">
-  <div class="map-plot">
+<div class="map-plot">
     <svg
       class="map-svg"
       [attr.viewBox]="'0 0 ' + map.width + ' ' + map.height"
@@ -7,7 +6,6 @@
       [attr.aria-label]="'map.aria' | t"
       (mouseleave)="hovered.set(null)"
     >
-      <g class="map-focus" [style.transform]="focus()">
       @for (d of map.paths; track $index) {
         <path class="island" [attr.d]="d" />
       }
@@ -43,74 +41,5 @@
           <text class="pin-label" [attr.x]="m.x" [attr.y]="m.y - m.radius - 10">{{ m.name }}</text>
         </g>
       }
-      </g>
     </svg>
   </div>
-
-  <!-- ---------- side panel ---------- -->
-  <div class="map-panel">
-    @if (activeArea(); as a) {
-      <div class="panel-card">
-        <p class="panel-eyebrow">{{ a.subtitle | t }}</p>
-        <h3 class="panel-name">{{ a.name | t }}</h3>
-        <p class="panel-tag">{{ a.tagline | t }}</p>
-
-        <dl class="panel-stats">
-          <div>
-            <dt>{{ 'map.projectsHere' | t }}</dt>
-            <dd class="mono">{{ activeCount() }}</dd>
-          </div>
-          <div>
-            <dt>{{ 'map.nightlyRate' | t }}</dt>
-            <dd class="mono">&#36;{{ a.avgNightlyRateUsd }}</dd>
-          </div>
-          <div>
-            <dt>{{ 'map.occupancy' | t }}</dt>
-            <dd class="mono">{{ (a.occupancy * 100).toFixed(0) }}%</dd>
-          </div>
-          <div>
-            <dt>{{ 'map.airport' | t }}</dt>
-            <dd class="mono">{{ 'unit.minutes' | t: { n: a.driveToAirportMin } }}</dd>
-          </div>
-        </dl>
-
-        <p class="panel-desc">{{ a.description | t }}</p>
-
-        <!-- What the place is actually like, the same seven lines for every
-             area so eight of them can be compared against each other. -->
-        <dl class="panel-life">
-          @for (f of facets; track f.key) {
-            <div class="life-row">
-              <dt><nz-icon [nzType]="f.icon" />{{ 'facet.' + f.key | t }}</dt>
-              <dd>{{ 'area.' + a.id + '.life.' + f.key | t }}</dd>
-            </div>
-          }
-        </dl>
-
-        @if (selected() === a.id) {
-          <button type="button" class="panel-action is-clear" (click)="clear()">
-            <nz-icon nzType="close" />
-            {{ 'map.clearFilter' | t }}
-          </button>
-        } @else if (activeCount() > 0) {
-          <button type="button" class="panel-action" (click)="toggle(a.id)">
-            {{ (activeCount() === 1 ? 'map.showOne' : 'map.showMany') | t: { count: activeCount() } }}
-            <nz-icon nzType="arrow-right" />
-          </button>
-        } @else {
-          <p class="panel-none">{{ 'map.noneHere' | t }}</p>
-        }
-      </div>
-    } @else {
-      <div class="panel-card panel-empty">
-        <p class="panel-eyebrow">{{ 'map.empty.eyebrow' | t }}</p>
-        <h3 class="panel-name">{{ 'map.empty.title' | t }}</h3>
-        <p class="panel-desc">{{ 'map.empty.text' | t }}</p>
-        <p class="panel-hint">
-          <nz-icon nzType="compass" />
-          {{ 'map.empty.hint' | t }}
-        </p>
-      </div>
-    }
-  </div>
-</div>

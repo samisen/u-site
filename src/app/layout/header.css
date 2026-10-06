@@ -1,23 +1,26 @@
 :host { display: block; }
 
+/* --settle runs 0 to 1 as the page moves under the bar, so the background
+   arrives and the text changes colour together rather than the whole bar
+   flipping at a threshold. Off the homepage it is pinned to 1. */
 .site-header {
+  --settle: 1;
   position: fixed;
   inset: 0 0 auto;
   z-index: 100;
   height: var(--header-h);
-  color: #fff;
-  transition: background-color .35s ease, border-color .35s ease, color .35s ease, backdrop-filter .35s ease;
-  border-bottom: 1px solid transparent;
-  background: linear-gradient(180deg, rgba(6, 14, 12, .55), rgba(6, 14, 12, 0));
+  color: color-mix(in srgb, var(--ink) calc(var(--settle) * 100%), #fff);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) calc(var(--settle) * 100%), transparent);
+  background:
+    linear-gradient(180deg, rgba(6, 14, 12, calc(.5 * (1 - var(--settle)))), transparent),
+    color-mix(in srgb, var(--bg) calc(var(--settle) * 88%), transparent);
+  backdrop-filter: saturate(160%) blur(calc(var(--settle) * 14px));
+  -webkit-backdrop-filter: saturate(160%) blur(calc(var(--settle) * 14px));
 }
 
-.site-header.is-solid {
-  color: var(--ink);
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: saturate(160%) blur(14px);
-  -webkit-backdrop-filter: saturate(160%) blur(14px);
-  border-bottom-color: var(--line);
-}
+/* A short tail so a flick of the wheel does not look stepped; the value
+   itself already moves smoothly with the scroll. */
+.site-header { transition: color .18s linear, background-color .18s linear; }
 
 .bar {
   height: 100%;

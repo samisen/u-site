@@ -1,4 +1,8 @@
-<header class="site-header" [class.is-solid]="scrolled() || !isHome()">
+<header
+  class="site-header"
+  [class.is-solid]="scrolled() || !isHome()"
+  [style.--settle]="isHome() ? settle() : 1"
+>
   <div class="container bar">
     <a class="brand" routerLink="/" [attr.aria-label]="'header.brandHome' | t: { brand: brand.name }">
       <app-apex-logo class="brand-logo" mark="full" />

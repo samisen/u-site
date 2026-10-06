@@ -17,15 +17,13 @@
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: 8px;
-  /* Canggu, Pererenan and Seminyak are a few kilometres apart on a 150 km
-     island, so on a phone the map pans rather than shrinking the markers
-     into each other. */
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
-.map-svg { display: block; width: 100%; min-width: 580px; height: auto; overflow: visible; }
-@media (min-width: 700px) { .map-svg { min-width: 0; } }
+/* The whole island, always. It used to pan sideways on a phone so the
+   clustered west-coast markers stayed apart — but nobody picks an area off
+   the map now, the list does that, so the map only has to show where. */
+.map-svg { display: block; width: 100%; height: auto; overflow: visible; }
 
 .island {
   fill: var(--surface-3);
@@ -97,130 +95,14 @@
 .marker.is-active .pin-label,
 .marker.is-selected .pin-label { opacity: 1; }
 
-/* ---------- panel ---------- */
+/* Markers that are not the chosen one step back, so the eye finds the place
+   it was told about rather than counting eight dots. */
+.map-svg:has(.marker.is-selected) .marker:not(.is-selected) { opacity: .45; }
+.marker { transition: opacity .35s ease; }
 
-.map-panel { display: flex; }
-
-.panel-card {
-  flex: 1;
-  padding: 22px 22px 24px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  display: flex;
-  flex-direction: column;
-}
-@media (min-width: 768px) { .panel-card { padding: 26px 26px 28px; } }
-
-.panel-eyebrow {
-  margin: 0 0 6px;
-  font-size: 10.5px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-.panel-name {
-  margin: 0 0 8px;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.7rem;
-  line-height: 1.1;
-  color: var(--ink);
-}
-.panel-tag { margin: 0 0 18px; font-size: 14.5px; color: var(--brand); font-weight: 500; }
-
-.panel-stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px 18px;
-  margin: 0 0 18px;
-  padding: 16px 0;
-  border-block: 1px solid var(--line);
-}
-.panel-stats dt { font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
-.panel-stats dd { margin: 3px 0 0; font-size: 1.15rem; font-weight: 600; color: var(--ink); }
-
-.panel-desc { margin: 0; font-size: 14.2px; line-height: 1.65; color: var(--ink-2); }
-
-.panel-action {
-  margin-top: auto;
-  padding-top: 20px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: 0;
-  background: none;
-  color: var(--brand);
-  font-size: 14.5px;
-  font-weight: 500;
-  cursor: pointer;
-  align-self: flex-start;
-}
-.panel-action.is-clear { color: var(--ink-3); }
-.panel-none { margin: 18px 0 0; font-size: 13.5px; color: var(--ink-3); }
-
-.panel-empty .panel-desc { margin-bottom: 20px; }
-.panel-hint {
-  margin: auto 0 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: var(--ink-3);
-}
-.panel-hint nz-icon { color: var(--brand); }
-
-/* ---------- the island leans towards what you point at ---------- */
-
-.map-focus {
-  transform-origin: 0 0;
-  transition: transform .7s cubic-bezier(.22, .61, .36, 1);
-}
-@media (prefers-reduced-motion: reduce) {
-  .map-focus { transition: none; }
+/* On a small map the labels would collide, so only the chosen one is named. */
+@media (max-width: 640px) {
+  .pin-label { font-size: 21px; }
+  .marker:not(.is-selected) .pin-label { opacity: 0 !important; }
 }
 
-/* Everything that is not the one being looked at steps back, so the focus
-   reads as attention rather than as the map simply growing. */
-.map-svg:has(.marker.is-active) .marker:not(.is-active) { opacity: .4; }
-.marker { transition: opacity .4s ease; }
-
-/* ---------- what living there is like ---------- */
-
-.panel-life {
-  margin: 20px 0 0;
-  display: grid;
-  gap: 0;
-  border-top: 1px solid var(--line);
-}
-
-.life-row {
-  display: grid;
-  grid-template-columns: 112px minmax(0, 1fr);
-  gap: 14px;
-  padding: 11px 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.life-row dt {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-.life-row dt nz-icon { font-size: 13px; color: var(--brand); }
-
-.life-row dd {
-  margin: 0;
-  font-size: 13.2px;
-  line-height: 1.55;
-  color: var(--ink-2);
-}
-
-@media (max-width: 560px) {
-  .life-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
-}

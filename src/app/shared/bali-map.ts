@@ -3,7 +3,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { I18nService, TranslatePipe } from '../core/i18n';
 import { AREA_POINTS, BALI_MAP, MAP_LANDMARKS } from '../core/bali-geo';
 import { CatalogService } from '../core/catalog.service';
-import { AREA_FACETS, AreaId } from '../core/models';
+import { AreaId } from '../core/models';
 import { usd } from '../core/format';
 
 interface AreaMarker {
@@ -58,25 +58,6 @@ export class BaliMapComponent {
   /** The area whose card is shown: hover wins, then the current selection. */
   readonly active = computed(() => this.hovered() ?? this.selected());
 
-  readonly facets = AREA_FACETS;
-
-  /**
-   * The island leans towards whatever is being looked at.
-   *
-   * A CSS transform on a group rather than an animated viewBox: a viewBox
-   * cannot be transitioned, a transform can, and the compositor does the
-   * work. The scale is deliberately gentle — enough to say "here", not so
-   * much that the rest of the island leaves the frame.
-   */
-  readonly focus = computed(() => {
-    const id = this.active();
-    const marker = id ? this.markers().find((m) => m.id === id) : undefined;
-    if (!marker) return 'none';
-    const zoom = 1.42;
-    const x = this.map.width / 2 - zoom * marker.x;
-    const y = this.map.height / 2 - zoom * marker.y;
-    return `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${zoom})`;
-  });
 
   readonly activeArea = computed(() => {
     const id = this.active();

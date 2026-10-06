@@ -5,8 +5,12 @@
   image="img/rice-ubud.jpg"
 />
 
-<!-- ============ THE MAP ============ -->
-<section class="section">
+<!-- ============ PICK A PLACE, THEN READ IT ============ -->
+<!-- One selector, not two. The list chooses — it never clusters, it works
+     under a thumb, and it holds what you chose. The map answers "where is
+     this on the island" at a fixed size, which is the only job it is good
+     at and the only one that does not grow with the text beside it. -->
+<section class="section places">
   <div class="container">
     <div class="head" appReveal>
       <p class="eyebrow">{{ 'locations.map.eyebrow' | t }}</p>
@@ -14,8 +18,85 @@
       <p class="lede">{{ 'locations.map.lede' | t }}</p>
     </div>
 
-    <div appReveal>
-      <app-bali-map />
+    <div class="places-grid">
+      <!-- ---------- the selector ---------- -->
+      <nav class="place-list" [attr.aria-label]="'locations.list.title' | t">
+        @for (a of areas(); track a.id) {
+          <button
+            type="button"
+            class="place-row"
+            [class.is-on]="current().id === a.id"
+            [attr.aria-current]="current().id === a.id ? 'true' : null"
+            (click)="choose(a.id)"
+          >
+            <span class="place-name">{{ a.name | t }}</span>
+            <span class="place-sub">{{ a.subtitle | t }}</span>
+            <span class="place-rate mono">{{ money(a.avgNightlyRateUsd) }}</span>
+          </button>
+        }
+      </nav>
+
+      <!-- ---------- the detail ---------- -->
+      @let a = current();
+      <article class="place-detail">
+        <div class="detail-map">
+          <app-bali-map [selected]="a.id" (selectArea)="choose($event ?? a.id)" />
+        </div>
+
+        <div class="detail-body">
+          <p class="eyebrow">{{ a.subtitle | t }}</p>
+          <h3 class="detail-name">{{ a.name | t }}</h3>
+          <p class="detail-tag">{{ a.tagline | t }}</p>
+          <p class="detail-desc">{{ a.description | t }}</p>
+
+          <ul class="detail-for">
+            @for (b of a.bestFor; track b) {
+              <li><nz-icon nzType="check" /> {{ b | t }}</li>
+            }
+          </ul>
+
+          <dl class="detail-nums">
+            <div>
+              <dt>{{ 'locations.landRate' | t }}</dt>
+              <dd class="mono">{{ money(a.landPriceArePerYearUsd) }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'locations.nightly' | t }}</dt>
+              <dd class="mono">{{ money(a.avgNightlyRateUsd) }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'locations.airport' | t }}</dt>
+              <dd class="mono">{{ 'locations.minutes' | t: { min: a.driveToAirportMin } }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'locations.indicative' | t }}<sup>*</sup></dt>
+              <dd class="mono accent">{{ indicativeYield(a.avgNightlyRateUsd, a.occupancy) }}%</dd>
+            </div>
+          </dl>
+
+          <!-- What living there is actually like: the same seven lines for
+               every area, so eight of them can be compared. -->
+          <dl class="detail-life">
+            @for (f of facets; track f.key) {
+              <div class="life-row">
+                <dt><nz-icon [nzType]="f.icon" />{{ 'facet.' + f.key | t }}</dt>
+                <dd>{{ 'area.' + a.id + '.life.' + f.key | t }}</dd>
+              </div>
+            }
+          </dl>
+
+          <div class="detail-actions">
+            <a nz-button nzType="primary" routerLink="/design-your-villa">
+              {{ 'locations.design' | t }}
+              <nz-icon nzType="arrow-right" />
+            </a>
+            <a nz-button routerLink="/projects">{{ 'locations.projects' | t }}</a>
+            <a nz-button routerLink="/insights" [queryParams]="{ area: a.id }">
+              {{ 'locations.reading' | t }}
+            </a>
+          </div>
+        </div>
+      </article>
     </div>
 
     <p class="spread" appReveal>
@@ -30,76 +111,6 @@
               }
       }}
     </p>
-  </div>
-</section>
-
-<!-- ============ AREA BY AREA ============ -->
-<section class="section section-sand">
-  <div class="container">
-    <div class="head" appReveal>
-      <p class="eyebrow">{{ 'locations.list.eyebrow' | t }}</p>
-      <h2 class="display">{{ 'locations.list.title' | t }}</h2>
-      <p class="lede">{{ 'locations.list.lede' | t }}</p>
-    </div>
-
-    <div class="areas">
-      @for (a of areas(); track a.id; let i = $index) {
-        <article class="area" [class.is-open]="open() === a.id" [appReveal]="i * 40">
-          <button type="button" class="area-head" (click)="toggle(a.id)" [attr.aria-expanded]="open() === a.id">
-            <span class="area-id">
-              <span class="area-name">{{ a.name | t }}</span>
-              <span class="area-sub">{{ a.subtitle | t }}</span>
-            </span>
-            <span class="area-peek mono">{{ money(a.avgNightlyRateUsd) }}<small>/night</small></span>
-            <nz-icon class="area-chev" [nzType]="open() === a.id ? 'up' : 'down'" />
-          </button>
-
-          @if (open() === a.id) {
-            <div class="area-body">
-              <p class="area-tag">{{ a.tagline | t }}</p>
-              <p class="area-desc">{{ a.description | t }}</p>
-
-              <ul class="area-for">
-                @for (b of a.bestFor; track b) {
-                  <li><nz-icon nzType="check" /> {{ b | t }}</li>
-                }
-              </ul>
-
-              <dl class="area-nums">
-                <div>
-                  <dt>{{ 'locations.landRate' | t }}</dt>
-                  <dd class="mono">{{ money(a.landPriceArePerYearUsd) }}</dd>
-                </div>
-                <div>
-                  <dt>{{ 'locations.nightly' | t }}</dt>
-                  <dd class="mono">{{ money(a.avgNightlyRateUsd) }}</dd>
-                </div>
-                <div>
-                  <dt>{{ 'locations.airport' | t }}</dt>
-                  <dd class="mono">{{ 'locations.minutes' | t: { min: a.driveToAirportMin } }}</dd>
-                </div>
-                <div>
-                  <dt>{{ 'locations.indicative' | t }}<sup>*</sup></dt>
-                  <dd class="mono accent">{{ indicativeYield(a.avgNightlyRateUsd, a.occupancy) }}%</dd>
-                </div>
-              </dl>
-
-              <div class="area-actions">
-                <a nz-button nzType="primary" routerLink="/design-your-villa">
-                  {{ 'locations.design' | t }}
-                  <nz-icon nzType="arrow-right" />
-                </a>
-                <a nz-button routerLink="/projects">{{ 'locations.projects' | t }}</a>
-                <!-- the reading that is actually about this place -->
-                <a nz-button routerLink="/insights" [queryParams]="{ area: a.id }">
-                  {{ 'locations.reading' | t }}
-                </a>
-              </div>
-            </div>
-          }
-        </article>
-      }
-    </div>
 
     <p class="areas-note" appReveal>{{ 'locations.note' | t }}</p>
   </div>
