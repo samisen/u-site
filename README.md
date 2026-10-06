@@ -29,6 +29,15 @@ npm start
 
 Then open http://localhost:4200. Production build: `npm run build` (output in `dist/`).
 
+The site opens behind an access code. The default is **`asd987`**; set your own in
+`.env` (see `.env.example`) and in the `SITE_PASSWORD` repository secret for CI.
+
+> **`Could not resolve "./gate-key"`** means `src/app/core/gate-key.ts` has not been
+> generated. It is derived from the access code at build time and deliberately not
+> committed, so `npm install`, `npm start` and `npm run build` all generate it — but
+> `ng serve` and `ng build` run directly skip npm's hooks and will not. Either use the
+> npm scripts, or run `npm run gate:key` once.
+
 > **If a page renders as header + footer with nothing between them**, the dev
 > server's dependency pre-bundle has gone stale — Vite logs "Re-optimizing
 > dependencies" and the lazy route chunk 404s. `angular.json` now excludes

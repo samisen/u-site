@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "postinstall": "node scripts/gate-key.mjs",
     "prestart": "node scripts/gate-key.mjs",
     "start": "ng serve",
     "prebuild": "node scripts/gate-key.mjs",
