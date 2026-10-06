@@ -8,6 +8,26 @@ export const AREA_IDS = [
 
 export type AreaId = (typeof AREA_IDS)[number];
 
+/**
+ * What living in an area is actually like, facet by facet.
+ *
+ * The same seven are listed for every area, including the ones an area does
+ * not have — "no surf, the coast is forty minutes away" tells a reader more
+ * than leaving the line out, and it is the honest way to compare eight places
+ * against each other.
+ */
+export const AREA_FACETS = [
+  { key: 'surf', icon: 'compass' },
+  { key: 'gym', icon: 'thunderbolt' },
+  { key: 'dining', icon: 'shop' },
+  { key: 'nightlife', icon: 'star' },
+  { key: 'schools', icon: 'solution' },
+  { key: 'health', icon: 'safety-certificate' },
+  { key: 'hotels', icon: 'apartment' },
+] as const;
+
+export type AreaFacet = (typeof AREA_FACETS)[number]['key'];
+
 export interface Area {
   id: AreaId;
   name: string;

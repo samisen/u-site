@@ -12,6 +12,8 @@
  * "one-size-fits-all", or fear-based framing.
  */
 
+import { AreaId } from './models';
+
 export interface BuildStep {
   index: string;
   name: string;
@@ -47,6 +49,8 @@ export interface Insight {
   slug: string;
   title: string;
   category: InsightCategory;
+  /** The areas this piece actually talks about. Empty means it is island-wide. */
+  areas: AreaId[];
   excerpt: string;
   readMinutes: number;
   date: string;
@@ -162,28 +166,36 @@ export const BELIEF_LINE = 'process.belief';
 
 /* ------------------------------------------------------------- insights --- */
 
+/**
+ * `areas` is what a piece genuinely discusses, not a tag sprayed on for
+ * coverage. The financial pieces carry none, because the arithmetic does not
+ * change with the postcode — and saying so is more useful than pretending it
+ * does.
+ */
 const INSIGHT_SOURCE: {
   slug: string;
   category: InsightCategory;
   readMinutes: number;
   image: string;
   paragraphs: number;
+  areas?: AreaId[];
 }[] = [
   { slug: 'why-bali-lifestyle-tourism-property', category: 'bali-lifestyle', readMinutes: 7, image: 'media/villa-pool-aerial.jpg', paragraphs: 3 },
   { slug: 'personal-use-and-rental-income', category: 'investment', readMinutes: 6, image: 'media/villa-deck.jpg', paragraphs: 3 },
   { slug: 'gross-yield-vs-net-return', category: 'investment', readMinutes: 5, image: 'media/villa-facade.jpg', paragraphs: 3 },
-  { slug: 'what-drives-villa-revenue', category: 'operations', readMinutes: 6, image: 'media/villa-pool-lounge.jpg', paragraphs: 3 },
-  { slug: 'location-design-guest-experience', category: 'design', readMinutes: 6, image: 'media/villa-deck-pool.jpg', paragraphs: 3 },
+  { slug: 'what-drives-villa-revenue', category: 'operations', readMinutes: 6, image: 'media/villa-pool-lounge.jpg', paragraphs: 3, areas: ['canggu', 'seminyak', 'uluwatu'] },
+  { slug: 'location-design-guest-experience', category: 'design', readMinutes: 6, image: 'media/villa-deck-pool.jpg', paragraphs: 3, areas: ['uluwatu', 'ubud', 'canggu'] },
   { slug: 'tailor-made-owner-goals', category: 'development', readMinutes: 5, image: 'media/villa-facade.jpg', paragraphs: 3 },
   { slug: 'owning-in-bali-introduction', category: 'development', readMinutes: 8, image: 'media/villa-deck.jpg', paragraphs: 3 },
-  { slug: 'short-term-vs-residential', category: 'operations', readMinutes: 6, image: 'media/villa-pool-lounge.jpg', paragraphs: 3 },
+  { slug: 'short-term-vs-residential', category: 'operations', readMinutes: 6, image: 'media/villa-pool-lounge.jpg', paragraphs: 3, areas: ['sanur', 'nusa-dua', 'ubud', 'tabanan'] },
   { slug: 'how-to-read-a-villa-investment-model', category: 'investment', readMinutes: 7, image: 'media/villa-pool-aerial.jpg', paragraphs: 4 },
-  { slug: 'a-week-in-your-own-bali-villa', category: 'bali-lifestyle', readMinutes: 4, image: 'media/villa-deck-pool.jpg', paragraphs: 3 },
+  { slug: 'a-week-in-your-own-bali-villa', category: 'bali-lifestyle', readMinutes: 4, image: 'media/villa-deck-pool.jpg', paragraphs: 3, areas: ['canggu', 'pererenan', 'uluwatu', 'ubud'] },
 ];
 
 export const INSIGHTS: Insight[] = INSIGHT_SOURCE.map((a) => ({
   slug: a.slug,
   category: a.category,
+  areas: a.areas ?? [],
   readMinutes: a.readMinutes,
   image: a.image,
   title: `insight.${a.slug}.title`,
@@ -312,6 +324,7 @@ export const DEVELOPMENT_MODELS: DevelopmentModel[] = [
    interaction, a line of values and a dark band — so its content sits here
    rather than being scattered through the template.
    ========================================================================== */
+
 
 export interface HeroSlide {
   image: string;

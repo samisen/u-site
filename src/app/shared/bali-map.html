@@ -7,6 +7,7 @@
       [attr.aria-label]="'map.aria' | t"
       (mouseleave)="hovered.set(null)"
     >
+      <g class="map-focus" [style.transform]="focus()">
       @for (d of map.paths; track $index) {
         <path class="island" [attr.d]="d" />
       }
@@ -42,6 +43,7 @@
           <text class="pin-label" [attr.x]="m.x" [attr.y]="m.y - m.radius - 10">{{ m.name }}</text>
         </g>
       }
+      </g>
     </svg>
   </div>
 
@@ -73,6 +75,17 @@
         </dl>
 
         <p class="panel-desc">{{ a.description | t }}</p>
+
+        <!-- What the place is actually like, the same seven lines for every
+             area so eight of them can be compared against each other. -->
+        <dl class="panel-life">
+          @for (f of facets; track f.key) {
+            <div class="life-row">
+              <dt><nz-icon [nzType]="f.icon" />{{ 'facet.' + f.key | t }}</dt>
+              <dd>{{ 'area.' + a.id + '.life.' + f.key | t }}</dd>
+            </div>
+          }
+        </dl>
 
         @if (selected() === a.id) {
           <button type="button" class="panel-action is-clear" (click)="clear()">

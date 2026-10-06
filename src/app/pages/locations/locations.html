@@ -90,6 +90,10 @@
                   <nz-icon nzType="arrow-right" />
                 </a>
                 <a nz-button routerLink="/projects">{{ 'locations.projects' | t }}</a>
+                <!-- the reading that is actually about this place -->
+                <a nz-button routerLink="/insights" [queryParams]="{ area: a.id }">
+                  {{ 'locations.reading' | t }}
+                </a>
               </div>
             </div>
           }

@@ -6,8 +6,22 @@
 
 <section class="section listing">
   <div class="container">
+    <!-- Arrived from a place: say so, and offer the way back out. -->
+    @if (areaName(); as name) {
+      <div class="area-chip" appReveal>
+        <span class="area-chip-label">
+          <nz-icon nzType="environment" />
+          {{ 'insights.fromArea' | t: { area: name | t } }}
+        </span>
+        <button type="button" class="area-chip-clear" (click)="clearArea()">
+          {{ 'insights.allAreas' | t }}
+          <nz-icon nzType="close" />
+        </button>
+      </div>
+    }
+
     <!-- lead article -->
-    @if (active() === 'all') {
+    @if (lead(); as lead) {
       <a class="lead-card" [routerLink]="['/insights', lead.slug]" appReveal>
         <div class="lead-media">
           <img [src]="lead.image" [alt]="lead.title | t" />
@@ -47,6 +61,9 @@
 
     <!-- article grid -->
     <div class="grid grid-3">
+      @if (!rest().length) {
+        <p class="listing-empty">{{ 'insights.noneForArea' | t }}</p>
+      }
       @for (a of rest(); track a.slug; let i = $index) {
         <a class="card" [routerLink]="['/insights', a.slug]" [appReveal]="(i % 3) * 70">
           <div class="card-media">
