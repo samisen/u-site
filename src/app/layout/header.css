@@ -41,13 +41,13 @@
 /* The mark is outlined vector painted with currentColor, so it takes the
    header's own colour: ink on a solid bar, white over a hero image.
 
-   The brand specification asks for 180px as the smallest the full lockup
-   may be drawn, which is 57px tall and does not fit a 66–76px bar. The
-   design direction solves this with a far more generous header; until that
-   lands, the mark sits just under the stated minimum rather than crushing
-   the bar around it. */
-.brand-logo { width: 124px; flex: none; }
-@media (min-width: 600px) { .brand-logo { width: 150px; } }
+   180px is the smallest the brand specification allows the full lockup to be
+   drawn, and it is not arbitrary: below it the hairlines in DEVELOPMENTS
+   start dropping out at 1×. The bar is sized to hold that rather than the
+   mark squeezed to fit the bar — which is the proportion the design
+   direction uses anyway. */
+.brand-logo { width: 140px; flex: none; }
+@media (min-width: 768px) { .brand-logo { width: 180px; } }
 
 /* ---------- desktop nav ---------- */
 
@@ -222,15 +222,40 @@
 
 .lang {
   display: none;
+  position: relative;
   align-items: center;
-  gap: 2px;
-  padding: 3px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
-  background: color-mix(in srgb, currentColor 7%, transparent);
 }
 /* below this the bar has no room for it — the drawer carries it instead */
-@media (min-width: 560px) { .lang { display: inline-flex; } }
+@media (min-width: 480px) { .lang { display: inline-flex; } }
+
+.lang-select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  background: color-mix(in srgb, currentColor 7%, transparent);
+  color: inherit;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  border-radius: 999px;
+  padding: 6px 26px 6px 12px;
+  cursor: pointer;
+  transition: background-color .18s ease, border-color .18s ease;
+}
+.lang-select:hover { background: color-mix(in srgb, currentColor 13%, transparent); }
+.lang-select:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+/* the menu is painted by the platform, so it needs real colours rather than
+   the inherited white the bar uses over a hero image */
+.lang-select option { background: var(--surface); color: var(--ink); }
+
+.lang-chev {
+  position: absolute;
+  right: 10px;
+  width: 9px;
+  pointer-events: none;
+  opacity: .7;
+}
 
 .lang-btn {
   border: 0;

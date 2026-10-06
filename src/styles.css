@@ -10,12 +10,19 @@
      which is why dark mode looked half-applied in Safari but fine in Chrome. */
   color-scheme: light;
 
-  /* brand — the approved palette: charcoal, ivory, dark olive. There is no
-     fourth colour. Emphasis comes from scale and weight, not from hue, which
-     is what makes the design direction read as calm rather than loud. */
-  --brand: #4b5344;
-  --brand-strong: #3a4034;
-  --brand-soft: #e9e7dc;
+  /* The approved palette is charcoal, ivory and dark olive. Olive is the
+     brand's field colour and stays that — it is what the dark band at the
+     foot of the page is made of.
+     
+     Actions are a separate job from identity, and olive is a quiet colour
+     that does not ask to be pressed. The green carries the buttons and the
+     links; everything structural stays olive. */
+  --brand: #0e7364;
+  --brand-strong: #0a5d51;
+  --brand-soft: #e4f0ed;
+  --olive: #4b5344;
+  --olive-strong: #3a4034;
+  --olive-soft: #e9e7dc;
   --accent: #4b5344;
   --accent-soft: #e9e7dc;
   /* whatever is legible on top of --brand, which flips with the theme */
@@ -63,7 +70,7 @@
   --gutter: 20px;
   --radius: 14px;
   --radius-lg: 22px;
-  --header-h: 66px;
+  --header-h: 76px;
 }
 
 html[data-theme='dark'] {
@@ -71,9 +78,16 @@ html[data-theme='dark'] {
   /* The direction gives no dark specification, so this is derived from it:
      the palette turned over — charcoal ground, ivory ink — with the olive
      lifted until it clears 4.5:1 against the ground, which #4b5344 does not. */
-  --brand: #8c9a7e;
-  --brand-strong: #a7b497;
-  --brand-soft: #2a2f26;
+  /* The green lifts for the same reason the olive did: at #0f7b6c it reads
+     3.4:1 against charcoal, which is fine behind a button and not fine as
+     link text. Lifting it makes it a light surface, so what sits on it goes
+     dark — that is what --on-brand is for. */
+  --brand: #2fa894;
+  --brand-strong: #46c3ad;
+  --brand-soft: #10302b;
+  --olive: #8c9a7e;
+  --olive-strong: #a7b497;
+  --olive-soft: #2a2f26;
   --accent: #8c9a7e;
   --accent-soft: #2a2f26;
   --on-brand: #1a1a1a;
@@ -161,9 +175,10 @@ img { max-width: 100%; display: block; }
 .section-deep {
   background: var(--bg-deep);
   color: var(--ink-on-dark);
-  --brand: #8c9a7e;
-  --brand-strong: #a7b497;
-  --brand-soft: #2a2f26;
+  --brand: #2fa894;
+  --brand-strong: #46c3ad;
+  --brand-soft: #10302b;
+  --olive: #8c9a7e;
   --accent: #8c9a7e;
   --ink: #f7f4ec;
   --ink-2: rgba(247, 244, 236, .74);
@@ -179,7 +194,7 @@ img { max-width: 100%; display: block; }
 .section-deep .lede, .section-deep p { color: var(--ink-2); }
 
 @media (min-width: 768px) {
-  :root { --gutter: 32px; --header-h: 76px; }
+  :root { --gutter: 32px; --header-h: 96px; }
   .section { padding-block: 96px; }
   .section-lg { padding-block: 128px; }
 }

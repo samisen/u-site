@@ -11,22 +11,24 @@
     </nav>
 
     <div class="bar-actions">
-      <!-- language: three letters rather than a menu, so the choice is one tap -->
-      <div class="lang" role="group" [attr.aria-label]="'header.language' | t">
-        @for (l of locales; track l.id) {
-          <button
-            type="button"
-            class="lang-btn"
-            [class.is-on]="i18n.locale() === l.id"
-            [attr.aria-pressed]="i18n.locale() === l.id"
-            [attr.title]="l.name"
-            [attr.lang]="l.id"
-            (click)="setLocale(l.id)"
-          >
-            <span aria-hidden="true">{{ l.short }}</span>
-            <span class="sr-only">{{ l.name }}</span>
-          </button>
-        }
+      <!-- A native select: it is the smallest control that holds three
+           languages, it reads as "EN ⌄" the way the design direction draws
+           it, and on a phone the platform gives it a proper picker. -->
+      <div class="lang">
+        <label class="sr-only" for="lang-select">{{ 'header.language' | t }}</label>
+        <select
+          id="lang-select"
+          class="lang-select"
+          [value]="i18n.locale()"
+          (change)="setLocale($any($event.target).value)"
+        >
+          @for (l of locales; track l.id) {
+            <option [value]="l.id" [lang]="l.id">{{ l.short }}</option>
+          }
+        </select>
+        <svg class="lang-chev" viewBox="0 0 12 8" aria-hidden="true">
+          <path d="M1 1.5 6 6.5 11 1.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
       </div>
 
       <button
